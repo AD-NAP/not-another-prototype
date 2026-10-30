@@ -2,5 +2,7 @@
 type: llm
 ---
 
-PASS if the reply drafts at least two issues, and every issue has: acceptance criteria written as Given / When / Then (a plain checklist is acceptable only for a tiny size S issue), at least one edge case criterion, a size of S or M, and a priority.
-FAIL if any issue lacks acceptance criteria, uses vague untestable words such as "fast", "easy", "user-friendly" or "minimal" without a measure, has no edge case, or has no size or priority.
+Judge only the issues drafted for now (the must-haves). Items listed for later may be short placeholders.
+
+PASS if the must-have issues together cover the streak count, the reset, and the 7-day message; every must-have issue has acceptance criteria that are specific enough for a test to check (a clear expected result, not an opinion); and every must-have issue has at least one criterion for an edge case, such as a missed day, a habit with no history, or the 7-day message repeating.
+FAIL if a must-have is missing, a must-have issue has no acceptance criteria or no edge case, or a criterion uses a vague word such as "fast", "easy", "user-friendly", "correct" or "minimal" without a measure.
