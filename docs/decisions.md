@@ -43,3 +43,87 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 **Why one repo.** A change across layers (for example a new event the office must show) is one PR. All the attention goes to one repo. A root `.claude-plugin/marketplace.json` points to `plugin/`, so people can still install only the plugin.
 
 **When to split.** Only for a real reason, such as making the plugin public while the office stays private, or the plugin needing its own release cycle. Git can keep the folder's history when splitting.
+
+## 4. Agile sprints matched to usage limits (2026-10-30)
+
+**Decision.** NAP works in agile sprints shaped around Claude's usage limits.
+
+| Agile | In NAP |
+|---|---|
+| Sprint | One week, ending at the weekly usage reset |
+| Work day | One 5-hour usage window |
+| Sprint planning | The CEO and the PM pick a sprint goal and the issues that fit the week |
+| Daily standup | The Kopi Report at the end of each window: done, in progress, waiting, questions |
+| Sprint review | Before the weekly reset: see what shipped, accept it or send it back |
+| Retrospective | What went well, what didn't, one process change. The change becomes a real edit to a skill. |
+| Velocity | How many issues usually fit in a window or a week. Used to size the next sprint. |
+
+**Why.** Agile's core promise is working software at the end of every short cycle. When credits run out, the user should have finished features, not only plans.
+
+**Rules that make work ship:**
+1. **Finish before starting.** Each Engineer works on one issue at a time, through tests, review and merge (a WIP limit of 1). Running out of credits loses at most one half-done issue per Engineer.
+2. **Vertical slices.** Each issue is a thin feature that works end to end.
+3. **Definition of done.** Tests pass, review approved, CI green, merged. "Almost done" doesn't count.
+4. **Most valuable first.** If the week ends early, what's missing is the least important work.
+5. **Just-in-time planning.** Detailed issues only for the next sprint. Planning must not eat the credits meant for building.
+6. **Protect the sprint.** New ideas mid-sprint go to the backlog. The CEO can swap one in, but never just add it on top.
+
+## 5. Engineers pull their work (2026-10-30)
+
+**Decision.** Nobody hands out issues. Engineers pull them.
+
+| Role | Responsibility |
+|---|---|
+| PM | Orders the backlog: what matters most next |
+| Tech Lead | Labels issues `ready` and marks which ones conflict (touch the same files) |
+| Engineer | Takes the top `ready` issue that doesn't conflict with work in progress |
+
+**Why.** This is how Scrum teams work: the PM sets the order, the team assigns itself. Engineer agents are identical, so who takes an issue doesn't matter. What matters is the order and whether two issues can run side by side.
+
+**Cost.** Picking the next issue is a plain rule, not judgement. The runner can do it in code, so no credits are spent deciding who works on what. Until the runner exists, the user starts the next issue.
+
+## 6. Two phases: Sprint 0, then sprints (2026-10-30)
+
+**Decision.** Each project starts with a one-time **Sprint 0** (inception) that creates the foundational documents, then moves to weekly sprints. The documents follow the usual order: why, then what, then how.
+
+| # | Document | Question it answers | Owner |
+|---|---|---|---|
+| 1 | Vision brief | Why build this, and for whom? | CEO + PM |
+| 2 | PRD | What must it do? Personas, user journeys, epics, MVP vs later, non-functional requirements | PM |
+| 3 | UX flows | How does it feel to use? Only for projects with a UI. | UX Designer |
+| 4 | Architecture doc | How will we build it? Components, data, integrations, stack with alternatives | Architect |
+| 5 | ADRs | Why X over Y? One per big decision, continuing for the life of the project | Architect |
+| 6 | Engineering setup | How do we work here? Repo layout, standards, test strategy, CI, definition of done | Platform |
+| 7 | Story map and first backlog | What do we build first? Stories along the user journey, sliced into releases | PM |
+
+**Why this order.** Each document needs the one before it. Good user stories need the users and the problem. The stack choice needs the requirements. Sprint 1 needs the MVP and the architecture.
+
+**Just enough.** Each document is kept short, often one or two pages.
+
+**Sprint 0 ends with running code:** a walking skeleton, a tiny version of the app that goes through the real stack, tests and CI. Even the planning sprint ships something.
+
+**Existing projects** skip most of Sprint 0. Their documents describe what is already there.
+
+**One role, several small skills.** A role can own more than one skill, so no single skill carries too much. For example, the PM owns separate skills for the vision brief, the PRD, the story map and the sprint backlog. Each skill loads only when its job comes up.
+
+## 7. The Architect is its own role (2026-10-30)
+
+**Decision.** The Architect is a separate role from the Tech Lead.
+
+**Why.**
+- One job per skill. Smaller skills follow their instructions more reliably.
+- Different rhythm: the Architect works in Sprint 0 and on rare big changes, the Tech Lead every sprint. Sprints stay lighter because the Architect's skill only loads when needed.
+- Different model: architecture is worth the strongest model, feature design often isn't.
+- A second opinion: the Architect checks feature designs against the architecture, so nobody checks their own work.
+
+**Boundary rule.** If a change affects how the parts connect, the stack, how data is stored, or a non-functional requirement (speed, security, cost), it goes to the Architect. Everything else stays with the Tech Lead.
+
+| | Architect | Tech Lead |
+|---|---|---|
+| When | Sprint 0, plus big changes | Every sprint |
+| Owns | Architecture doc, stack choice, system-level ADRs | Feature designs, task splits, `ready` and conflict labels |
+| ADRs | Accepts or rejects them | Proposes one when a feature needs it |
+| Checks | Feature designs flagged as touching the architecture | That the Engineers' work matches the design |
+| Stays grounded by | Reading the walking skeleton and real code before deciding | Working close to the code every sprint |
+
+**Costs accepted.** One more role to build and test, and one more handoff. Small projects may barely use it.

@@ -1,6 +1,6 @@
 # NAP: Not Another Prototype
 
-An AI dev team for developers: PM, Tech Lead, Test Engineer, Engineer and Reviewer, all following one process (issues first, TDD, review, CI). The CEO (the user) briefs the team and watches it work in a pixel-art office.
+An AI dev team for developers, working in agile sprints. Sprint 0 roles (PM, UX Designer, Architect, Platform) create the foundational docs. Sprint roles (PM, Tech Lead, Test Engineer, Engineer, Reviewer) build, with issues first, TDD, review and CI. The CEO (the user) briefs the team and watches it work in a pixel-art office.
 
 ## Start here
 - `docs/design.md`: how NAP works (roles, workflow, gates, headcount, rules).
@@ -12,7 +12,7 @@ One repo, three layers. Each layer works without the ones above it.
 
 - `plugin/`: **the team.** A Claude Code plugin named `nap`, so commands read like `/nap:pm`.
   - `plugin/.claude-plugin/plugin.json`: the plugin manifest.
-  - `plugin/skills/<name>/SKILL.md`: one skill per role, the role's procedure.
+  - `plugin/skills/<name>/SKILL.md`: skills, each doing one job for a role. A role can own several.
   - `plugin/agents/<name>.md`: subagents for roles that need a fresh context (Test Engineer, Engineer, Reviewer).
   - `plugin/hooks/hooks.json`: shared rules. Plugin subagents ignore hooks in their own files, so all hooks go here.
 - `runner/`: **the runner.** Not started. A Claude Agent SDK app that loads the plugin and runs agents in the background.
