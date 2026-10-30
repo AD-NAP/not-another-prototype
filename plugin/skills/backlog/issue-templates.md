@@ -125,3 +125,6 @@ Why it's good: each criterion names a starting situation, one action and a resul
 | "Store answers in a Redis cache." | Leave the storage choice to the Tech Lead. If the user required Redis, list it under Constraints. |
 | "Build the quiz feature." (size L) | Split into: generate questions, mark answers, show the final score. |
 | "As a developer, I want CI." | Use the task template: "Why: PRs can be merged with failing tests today." |
+| "Then the Engineer writes only the minimal code." | Can't be tested. Move the intent to Notes, or test something checkable: "then the full test suite passes, not only the new tests." |
+| "Can be tested with the tests from issue 1." | Refer to other issues by title in the draft, and by #number once they exist. |
+| A task with two hooks and a CI check, sized S. | Two or more separate mechanisms is at least M. Three or more: split it. |

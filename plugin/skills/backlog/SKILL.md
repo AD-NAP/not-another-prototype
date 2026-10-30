@@ -50,13 +50,15 @@ Use the templates in [issue-templates.md](issue-templates.md). Every issue has a
 
 Rules for every issue:
 - **Acceptance criteria are Given / When / Then by default.** A plain checklist is allowed only for a size S issue with one obvious outcome and no state. Every checklist item must still be something a test can check.
-- **At least one edge case** per issue (empty input, repeated action, missing data, limits).
-- **Testable words only.** No "fast", "easy", "nice", "intuitive", "user-friendly", "robust", "secure" or "works well" without a measure.
+- **At least one edge case** per issue, including bugs and tasks. Start that criterion with "Edge case:". Think of empty input, repeated actions, missing data, limits, and the work being blocked or wrong.
+- **Testable words only.** No "fast", "easy", "nice", "intuitive", "user-friendly", "robust", "secure", "works well", "minimal", "correct", "proper", "clean", "appropriate" or "matches" without a measure. Ask: could a test check this? If not, rewrite it or move it to Notes.
 - **One issue = one PR.** Size is **S** (one behaviour) or **M** (a few related behaviours). Anything bigger is **L**: split it into thin vertical slices that each work end to end.
+- **Size check.** An issue that covers more than one separate mechanism (for example two hooks and a CI check) or has more than 4 criteria is at least **M**. Three or more mechanisms, or more than 6 criteria: split it.
 - **What and why, never how.** No libraries, tables, endpoints, classes or file names in the story or criteria, unless the user gave them as a constraint.
 - **Out of scope** lists what this issue deliberately leaves out.
 - **Priority:** `high`, `medium` or `low`, by value to the user. Put the most valuable issues first.
 - **Dependencies:** note them as "Depends on: <title>" in the draft.
+- **Refer to other drafts by title,** never by a draft number such as "issue 1". This applies everywhere: Depends on, Notes, Constraints and Out of scope.
 - **No duplicates.** If an open issue already covers it, say so and suggest updating that issue instead.
 
 ## 4. Check the draft
@@ -88,7 +90,7 @@ Then wait. Apply the user's changes and show the changed issues again. Repeat un
    `gh label create "<name>" --color <hex> --description "<short text>"`
 2. Create the issues in order: dependencies first, then by priority. Write each body to a temporary file and run:
    `gh issue create --title "<title>" --body-file <file> --label "type: <type>" --label "priority: <priority>" --label "size: <size>"`
-3. Replace "Depends on: <title>" with "Depends on: #<number>" now that numbers exist (`gh issue edit <number> --body-file <file>`).
+3. Now that numbers exist, replace **every** reference to another draft with its number, in every section, not only "Depends on" (`gh issue edit <number> --body-file <file>`). Then check that no issue still refers to a draft by title or position.
 4. Show a final table with each issue's number, title, priority and link.
 
 If `gh` isn't available, write the approved issues to `docs/backlog/YYYY-MM-DD-<short-goal>.md`, in the same format, and tell the user where the file is.
