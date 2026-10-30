@@ -20,6 +20,23 @@ NAP is a Claude Code plugin that gives you a team of agents modelled on a big te
 
 You brief the team, approve the big decisions, and a person approves every merge.
 
+## How it fits together
+
+| Folder | Layer | Status |
+|---|---|---|
+| `plugin/` | **The team.** Skills, agents and hooks for Claude Code. Works on its own. | Started |
+| `runner/` | **The runner.** Runs the team in the background with the Claude Agent SDK. | Not started |
+| `office/` | **The office.** A pixel-art office where you watch the team and make the calls. | Not started |
+
+## Install the plugin
+
+Once there is something to install:
+
+```
+/plugin marketplace add AD-NAP/not-another-prototype
+/plugin install nap@not-another-prototype
+```
+
 ## Built on
 
 NAP plans to build on [Superpowers](https://github.com/obra/superpowers) for brainstorming, planning, worktrees and debugging, and add the team on top.
