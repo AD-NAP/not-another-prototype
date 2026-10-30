@@ -15,6 +15,7 @@ One repo, three layers. Each layer works without the ones above it.
   - `plugin/skills/<name>/SKILL.md`: skills, each doing one job for a role. A role can own several.
   - `plugin/agents/<name>.md`: subagents for roles that need a fresh context (Test Engineer, Engineer, Reviewer).
   - `plugin/hooks/hooks.json`: shared rules. Plugin subagents ignore hooks in their own files, so all hooks go here.
+  - `plugin/evals/<case>/`: eval cases for `claude plugin eval plugin`. One folder per behaviour, with `prompt.md` and `graders/`.
 - `runner/`: **the runner.** Not started. A Claude Agent SDK app that loads the plugin and runs agents in the background.
 - `office/`: **the office.** Not started. The pixel-art web app the CEO uses.
 - `.claude-plugin/marketplace.json`: makes the repo a marketplace, so people can install just the plugin.
