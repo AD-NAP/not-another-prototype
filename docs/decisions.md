@@ -139,3 +139,19 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 **Why.** Issues only is the smallest step that works on its own, and it gets the hardest part right first: testable acceptance criteria, which the Test Engineer turns straight into tests in step 3. Sprint planning works better once there is real velocity to plan with. Dogfooding tests the PM on a real project from day one, and "NAP was built by NAP" is a good story.
 
 **Approval stays with the user.** The PM drafts first. Nothing reaches GitHub until the user says yes.
+
+## 9. How we run evals (2026-10-31)
+
+**Decision.** A full eval run compares the plugin against plain Claude with no plugin, and reports the difference (Δ):
+
+`claude plugin eval plugin --runs 5 --ablation with-without --model sonnet --judge-model opus -j 4 --no-scaffold --no-publish --max-cost-usd 15`
+
+- **Baseline arm.** Every case runs with and without the plugin. Δ is the number that matters, not the pass rate.
+- **Pinned models.** The agent is Sonnet and the judge is Opus. The judge must be large and must not be the agent model, or it grades its own style. Without `--model`, the run uses the default from user settings, which may be Haiku.
+- **5 runs per arm.** One run can pass by luck.
+- **Outcome graders score fully.** They check what any good backlog needs: testable criteria, edge cases, tech kept out of stories, small slices.
+- **House-style graders weigh 0.5.** Given / When / Then, sizes, approval prompts and "exactly one question" are the plugin's own format. Plain Claude can't know them, so full weight would inflate Δ.
+- **At least one should-not-fire case.** It catches the skill firing when it shouldn't.
+- **Pilot first.** Run `--runs 1`, read the judge evidence, fix unfair graders, then do the full run.
+
+**Why.** The earlier runs had no baseline, used Haiku as both agent and judge, ran once, and had graders that rewarded the plugin's format. None of that could show whether the plugin helps.

@@ -2,5 +2,5 @@
 type: llm
 ---
 
-PASS if Python and pytest are listed in a Constraints section of the draft, and no user story or acceptance criterion mentions Python or pytest.
-FAIL if Python or pytest is missing from every Constraints section, or if any user story or acceptance criterion mentions Python or pytest.
+PASS if Python and pytest are recorded as constraints or technical requirements, either in one shared section or in a Constraints section of each issue, and no user story, acceptance criterion or per-issue test list mentions Python, pytest or a Python library. Mentions in a Constraints or Notes section are fine.
+FAIL if Python or pytest is not recorded anywhere, or if any user story, acceptance criterion or per-issue test list mentions Python, pytest or a Python library.

@@ -31,6 +31,8 @@ If `gh` fails (not installed, not logged in, no GitHub remote), say so in one li
 
 Ask only what the brief and the docs don't already answer. **One question per message.** Wait for the answer before asking the next.
 
+One question means one thing to answer. Don't join two questions with "and" ("Which shops is this for, and what do they sell?"), and don't add a second request after it ("Also send me your price list"). Example answers are fine. If there are no docs to read, still ask only one: the next one in the order below.
+
 Ask product questions, in roughly this order:
 1. **Who** is this for?
 2. **What problem** does it solve for them?
@@ -54,7 +56,7 @@ Rules for every issue:
 - **Testable words only.** No "fast", "easy", "nice", "intuitive", "user-friendly", "robust", "secure", "works well", "minimal", "correct", "proper", "clean", "appropriate" or "matches" without a measure. Ask: could a test check this? If not, rewrite it or move it to Notes.
 - **One issue = one PR.** Size is **S** (one behaviour) or **M** (a few related behaviours). Anything bigger is **L**: split it into thin vertical slices that each work end to end.
 - **Size check.** An issue that covers more than one separate mechanism (for example two hooks and a CI check) or has more than 4 criteria is at least **M**. Three or more mechanisms, or more than 6 criteria: split it.
-- **What and why, never how.** No libraries, tables, endpoints, classes or file names in the story or criteria, unless the user gave them as a constraint.
+- **What and why, never how.** No libraries, tables, endpoints, classes or file names in the story or criteria, unless the user gave them as a constraint. This includes ruling a how out: write "the invoice shows as paid within a minute of the payment", not "without polling the bank". The user's technical ideas go in Notes only.
 - **Out of scope** lists what this issue deliberately leaves out.
 - **Priority:** `high`, `medium` or `low`, by value to the user. Put the most valuable issues first.
 - **Dependencies:** note them as "Depends on: <title>" in the draft.
