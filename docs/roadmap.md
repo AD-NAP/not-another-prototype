@@ -7,7 +7,7 @@ The sprint loop comes before Sprint 0. The sprint loop is what turns plans into 
 | # | Step | What it delivers | Status |
 |---|---|---|---|
 | 1 | **Learn** | Try existing tools. Superpowers is kept and built on (see [decision 2](decisions.md#2-build-on-superpowers-2026-10-30)). | Done |
-| 2 | **PM: sprint backlog** | A PM skill turns a short brief into GitHub issues with testable acceptance criteria. The user approves them. | **Next** |
+| 2 | **PM: sprint backlog** | A PM skill turns a short brief into GitHub issues with testable acceptance criteria and a priority label. The user approves them first. Its first job: NAP's own issues for step 3 (see [decision 8](decisions.md#8-step-2-scope-github-issues-dogfooded-on-nap-2026-10-30)). | **Next** |
 | 3 | **TDD pair** | The Test Engineer writes failing tests for one issue. The Engineer makes them pass. CI fails without tests. | |
 | 4 | **Reviewer** | Reviews the PR in a fresh context. The user still approves the merge. | |
 | 5 | **Tech Lead** | Adds a feature design, task split and `ready` and conflict labels before the tests. The full sprint loop runs on one project, with the event log. | |
@@ -24,7 +24,6 @@ The sprint loop comes before Sprint 0. The sprint loop is what turns plans into 
 
 ## Open questions
 
-- Where the issues and backlog live: GitHub Issues and Projects, or files in the repo.
 - Where agents run on their own: GitHub Actions, Claude cloud sessions, or the user's machine.
 - Budget: a token cap per project or per agent.
 - How velocity is measured: issues per window, or something closer to token cost.

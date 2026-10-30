@@ -127,3 +127,15 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 | Stays grounded by | Reading the walking skeleton and real code before deciding | Working close to the code every sprint |
 
 **Costs accepted.** One more role to build and test, and one more handoff. Small projects may barely use it.
+
+## 8. Step 2 scope: GitHub Issues, dogfooded on NAP (2026-10-30)
+
+**Decision.**
+- **Issues live in GitHub Issues.** They are visible, a PR can close one ("Closes #12"), labels track status, and the runner and office can read them later.
+- **Priority is a label:** `priority: high`, `priority: medium` or `priority: low`, plus the order the PM gives. A GitHub Project board can come later with sprint planning.
+- **Step 2 is issues only.** Brief, questions, draft issues, the user's approval, then the issues are created on GitHub in priority order. Sprint goals, velocity and picking the week's issues wait for step 6.
+- **Dogfood on NAP.** The PM's first real job is writing NAP's own issues for step 3 (the TDD pair).
+
+**Why.** Issues only is the smallest step that works on its own, and it gets the hardest part right first: testable acceptance criteria, which the Test Engineer turns straight into tests in step 3. Sprint planning works better once there is real velocity to plan with. Dogfooding tests the PM on a real project from day one, and "NAP was built by NAP" is a good story.
+
+**Approval stays with the user.** The PM drafts first. Nothing reaches GitHub until the user says yes.
