@@ -1,0 +1,12 @@
+{
+  "name": "nap",
+  "displayName": "NAP: Not Another Prototype",
+  "version": "0.0.1",
+  "description": "An AI dev team for developers, with TDD, code review and CI built in.",
+  "author": {
+    "name": "Mohd Shafik",
+    "url": "https://github.com/AD-NAP"
+  },
+  "repository": "https://github.com/AD-NAP/not-another-prototype",
+  "keywords": ["agents", "tdd", "code-review", "workflow", "team"]
+}
