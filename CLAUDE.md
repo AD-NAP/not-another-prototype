@@ -25,3 +25,4 @@ One repo, three layers. Each layer works without the ones above it.
 - Every skill and agent change needs a way to check it works, such as an eval case or a test project run.
 - Run `claude plugin validate .` (the marketplace) and `claude plugin validate plugin` before committing.
 - Keep writing plain and short. No em dashes.
+- When work is ready, open a PR without being asked. Commits and PRs carry no Claude attribution: no co-author lines, session links or "Generated with" footers.
