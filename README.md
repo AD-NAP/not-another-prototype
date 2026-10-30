@@ -28,6 +28,8 @@ You brief the team, approve the big decisions, and a person approves every merge
 | `runner/` | **The runner.** Runs the team in the background with the Claude Agent SDK. | Not started |
 | `office/` | **The office.** A pixel-art office where you watch the team and make the calls. | Not started |
 
+More in the docs: [design](docs/design.md), [decisions](docs/decisions.md), [roadmap](docs/roadmap.md).
+
 ## Install the plugin
 
 Once there is something to install:

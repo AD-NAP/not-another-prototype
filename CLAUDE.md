@@ -2,6 +2,11 @@
 
 An AI dev team for developers: PM, Tech Lead, Test Engineer, Engineer and Reviewer, all following one process (issues first, TDD, review, CI). The CEO (the user) briefs the team and watches it work in a pixel-art office.
 
+## Start here
+- `docs/design.md`: how NAP works (roles, workflow, gates, headcount, rules).
+- `docs/decisions.md`: big decisions and why. Add a new entry for a new decision.
+- `docs/roadmap.md`: the build steps and which one is next. Update its status column when a step is done.
+
 ## Layout
 One repo, three layers. Each layer works without the ones above it.
 
