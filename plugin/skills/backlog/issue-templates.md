@@ -128,3 +128,5 @@ Why it's good: each criterion names a starting situation, one action and a resul
 | "Then the Engineer writes only the minimal code." | Can't be tested. Move the intent to Notes, or test something checkable: "then the full test suite passes, not only the new tests." |
 | "Can be tested with the tests from issue 1." | Refer to other issues by title in the draft, and by #number once they exist. |
 | A task with two hooks and a CI check, sized S. | Two or more separate mechanisms is at least M. Three or more: split it. |
+| "Then the invoice shows as paid, without polling the bank." | Ruling a how out still names it. Write only what the user sees: "then the invoice shows as paid within a minute of the payment." |
+| "Which shops is this for, and what do they sell?" | Two questions in one. Ask one, wait, then ask the next. |
