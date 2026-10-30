@@ -2,3 +2,4 @@
 .env
 *.local.json
 node_modules/
+plugin/evals/results/
