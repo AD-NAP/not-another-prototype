@@ -66,7 +66,9 @@ Number every criterion, edge cases included. Split a criterion with two outcomes
 
 Every test must fail **because the behaviour is missing**. Never because of a syntax error, a typo, or an import that breaks the whole file.
 
-The code usually doesn't exist yet. A top-level import of a missing module stops the whole file before any test runs, so it fails for the wrong reason. Instead, load the code under test **inside each test**, through a small helper at the top of the test file, and fail with a clear message when it is missing:
+The code usually doesn't exist yet. A top-level import of a missing module stops the whole file before any test runs, so it fails for the wrong reason. Instead, load the code under test **inside each test**, through a small helper at the top of the test file, and fail with a clear message when it is missing.
+
+The helper must say "Not implemented yet" **only** when the code under test itself is missing. Any other error (a missing dependency, a syntax error, a bug inside the code) must show as itself. These tests stay in place after the Engineer writes the code, so a helper that hides real errors would tell the Engineer the code is missing when it is actually broken. Copy these helpers as they are:
 
 ```python
 import importlib
@@ -74,9 +76,16 @@ import pytest
 
 def load(name, module="shop.discounts"):
     try:
-        return getattr(importlib.import_module(module), name)
-    except (ImportError, AttributeError):
+        mod = importlib.import_module(module)
+    except ModuleNotFoundError as e:
+        # Only the module under test (or its package) missing means "not implemented".
+        # Anything else is a real error in the code, so let it show.
+        if e.name is None or not (module == e.name or module.startswith(e.name + ".")):
+            raise
+        pytest.fail(f"Not implemented yet: {module}")
+    if not hasattr(mod, name):
         pytest.fail(f"Not implemented yet: {module}.{name}")
+    return getattr(mod, name)
 
 def test_c1_valid_code_takes_ten_percent_off():
     apply_code = load("apply_code")
@@ -88,8 +97,17 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 async function load(name, path = "../src/discounts.js") {
-  const mod = await import(path).catch(() => ({}));
-  assert.equal(typeof mod[name], "function", `Not implemented yet: ${path} ${name}`);
+  const url = new URL(path, import.meta.url).href;
+  let mod;
+  try {
+    mod = await import(url);
+  } catch (err) {
+    // Only the file under test missing means "not implemented".
+    // Any other error is a real bug in the code, so let it show.
+    if (err.code !== "ERR_MODULE_NOT_FOUND" || err.url !== url) throw err;
+    assert.fail(`Not implemented yet: ${path}`);
+  }
+  assert.ok(name in mod, `Not implemented yet: ${path} ${name}`);
   return mod[name];
 }
 
@@ -98,6 +116,8 @@ test("C1: a valid code takes 10% off", async () => {
   assert.equal(applyCode({ total: 50, code: "SAVE10" }), 45);
 });
 ```
+
+For another language, follow the same rule: catch only "this module or file is missing", and let every other error through.
 
 If the code already exists, a normal import is fine.
 
