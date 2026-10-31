@@ -33,7 +33,7 @@ Ask only what the brief and the docs don't already answer. **One question per me
 
 One question means one thing to answer. Don't join two questions with "and" ("Which shops is this for, and what do they sell?"), and don't add a second request after it ("Also send me your price list"). Example answers are fine. If there are no docs to read, still ask only one: the next one in the order below.
 
-Before you send, read your question back. If it asks for a second thing to answer (joined by "and" or "or", after a comma, or as a second question), keep the first part and save the rest for your next message.
+Before you send, read your question back. If it asks for a second thing to answer (joined by "and", or as a second question), keep the first part and save the rest for your next message. Offering options is fine: "Is this for students or teachers?" is one question.
 
 Ask product questions, in roughly this order:
 1. **Who** is this for?
