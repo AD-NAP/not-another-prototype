@@ -33,6 +33,8 @@ Ask only what the brief and the docs don't already answer. **One question per me
 
 One question means one thing to answer. Don't join two questions with "and" ("Which shops is this for, and what do they sell?"), and don't add a second request after it ("Also send me your price list"). Example answers are fine. If there are no docs to read, still ask only one: the next one in the order below.
 
+Before you send, read your question back. If it asks for a second thing to answer (joined by "and" or "or", after a comma, or as a second question), keep the first part and save the rest for your next message.
+
 Ask product questions, in roughly this order:
 1. **Who** is this for?
 2. **What problem** does it solve for them?
@@ -43,7 +45,7 @@ Ask product questions, in roughly this order:
 Rules:
 - Offer a suggested answer when you can, so the user can reply "yes" ("I'd guess learners revising before the exam. Right?").
 - Stop asking once you can write good issues. Usually 2 to 5 questions. If the user says "your call", make a sensible choice and note it in the draft.
-- If the brief is vague ("make it better", "improve the app"), don't guess. Ask what problem they want solved.
+- If the brief is vague ("make it better", "improve the app"), don't guess. Ask the first question in the order above that the brief and docs don't answer, on its own. Usually that is **who** it is for. The problem comes in the next message.
 - Don't ask technical questions. If the user volunteers a technical choice, record it as a **constraint**, not as acceptance criteria.
 
 ## 3. Draft the issues
