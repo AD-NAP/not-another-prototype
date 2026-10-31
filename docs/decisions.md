@@ -155,3 +155,11 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 - **Pilot first.** Run `--runs 1`, read the judge evidence, fix unfair graders, then do the full run.
 
 **Why.** The earlier runs had no baseline, used Haiku as both agent and judge, ran once, and had graders that rewarded the plugin's format. None of that could show whether the plugin helps.
+
+## 10. Subagent roles get an entry skill (2026-10-31)
+
+**Decision.** Each subagent role gets a thin skill that hands the work to it. The Test Engineer's is `/nap:failing-tests`: it finds the issue, passes the issue and the design to the `nap:test-engineer` agent word for word, leaves out any implementation code, and relays the report. The procedure itself lives in the agent file.
+
+**Why.** In the first eval pilot, the agent alone never ran. Claude wrote the tests itself in every case, because small tasks rarely get delegated, so the plugin made no difference (Δ 0). With the skill as the entry point, the agent ran in every case. The skill is also where the fresh context is protected: it decides what the agent sees, so code the user pastes "in case it helps" never reaches it. This fits decision 1: the skill is the "how" of starting the role, the subagent is the "who".
+
+**Eval command for cases that write files.** The decision 9 command plus `--allow-tools Write Edit`, so the agent can write test files. `--tag <tag>` runs only one role's cases. Bash stays off: native Windows has no sandbox for it, so these evals judge test files by reading them, not by running them.
