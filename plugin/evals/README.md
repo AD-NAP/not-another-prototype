@@ -1,8 +1,10 @@
 # Evals
 
-How we test NAP's skills and agents. Every new skill or agent follows this. The reasons are in [decision 9](../../docs/decisions.md#9-how-we-run-evals-2026-10-31) and [decision 11](../../docs/decisions.md#11-one-eval-format-per-case-scores-no-shell-2026-11-01).
+How we test NAP's skills and agents. Every new skill or agent follows this. The reasons are in [decision 9](../../docs/decisions.md#9-how-we-run-evals-2026-10-31), [decision 11](../../docs/decisions.md#11-one-eval-format-per-case-scores-no-shell-2026-11-01) and [decision 12](../../docs/decisions.md#12-one-run-evals-until-the-mvp-2026-11-01).
 
-The question an eval answers: **does the plugin do better than plain Claude?** Every case runs with the plugin and without it. The difference is Δ.
+Evals run in two modes:
+- **Check (now, until the MVP):** one run per case. Does the role work, and do the graders read right? Cheap enough for a Pro plan.
+- **Measure (later, when refining a role):** 10 runs per case, with and without the plugin. Does the plugin do better than plain Claude? The difference is Δ.
 
 ## 1. Write the cases
 
@@ -71,6 +73,11 @@ Rules for rubrics (`llm` graders):
 - Point at the right thing with `focus`: `{ source: file, path: tests/test_x.py }` for a file, the default for the final reply.
 - One idea per grader. Two ideas in one rubric make failures hard to read.
 
+Traps we hit:
+- **`tool_used` misses a subagent's calls.** It counts only the main conversation. To check that an agent didn't edit a file, check the file's contents with `regex` or `llm`.
+- **A `focus` or `target` file that doesn't exist crashes the grader**, and the run scores it as a fail. If the role may stop before writing a file, have the scaffold create a starting version.
+- **Without a shell, `gh` and `git` are refused.** For a PR or issue comment, judge what the agent tried or said (`focus: trace`), and say so in the rubric.
+
 ### What each role needs
 
 - **At least one happy path.** The main job, done right.
@@ -78,38 +85,50 @@ Rules for rubrics (`llm` graders):
 - **At least one should-not-fire case.** A nearby request that is not this role's job. Use `tool_used` with `min: 0`, `max: 0` and `arm: both`.
 - **A cross-firing check in every case.** A `with-only` grader that another NAP skill did not fire.
 
-## 2. Pilot
+## 2. Check (the default for now)
+
+Run one role at a time, once, with the plugin only:
 
 ```bash
-claude plugin eval plugin --tag <role> --runs 1 --ablation with-without --model sonnet --judge-model opus --no-publish
+claude plugin eval plugin --tag <role> --runs 1 --ablation none --model sonnet --judge-model opus --no-publish
 ```
 
-Open `report.html` and read the judge's evidence for every failure, in both arms. Fix graders that are unfair or unclear, not just the ones that fail. Repeat until the graders read right.
-
-## 3. Full run
-
-```bash
-claude plugin eval plugin --tag <role> --runs 5 --ablation with-without --model sonnet --judge-model opus -j 4 --no-publish --max-cost-usd 15
-```
+- **Always pass `--runs 1`.** Without it each case runs 3 times.
+- **`--ablation none`** skips the run without the plugin, which halves the usage.
+- **A new role's first check** adds the baseline once (`--ablation with-without`), to see that the plugin changes something at all.
+- After a small change, run only the cases it touches: `--case <name>` (one name or glob; repeat it and only the last counts).
 
 Add as needed:
 - `--allow-tools Write Edit` when the role writes files.
 - `--scaffold` when a case has a `case.yaml` scaffold. Otherwise `--no-scaffold`.
+- `--keep-temp` to keep each run's transcript (`out/trace.jsonl`) for reading. Delete the temp folders after.
 
 Always pin `--model sonnet --judge-model opus`. Without them the agent may be Haiku and the judge defaults to Haiku.
 
+Open `report.html` and read the judge's evidence for every failure. Fix graders that are unfair or unclear, not just the ones that fail.
+
+## 3. Measure (later)
+
+When a role is being refined, not before the MVP. 10 runs per case, with and without the plugin:
+
+```bash
+claude plugin eval plugin --tag <role> --runs 10 --ablation with-without --model sonnet --judge-model opus -j 4 --no-publish
+```
+
+This uses a lot of usage (the Engineer's 4 cases cost about $4.50 per run with the baseline), so plan it for when the weekly limit has room.
+
 ## 4. Record
 
-1. **Per-case table in the PR**, from `report.html`: case, with, without, Δ.
-2. **One line in [the roadmap](../../docs/roadmap.md)**: number of cases, mean with, without and Δ, and which cases tie with plain Claude.
-3. **Update [Latest scores](#latest-scores)** below.
-4. **Clean up `results/`.** It is not committed. Keep only the latest full run per role and delete pilots.
+1. **Per-case table in the PR**, from `report.html`. Say whether it was a check (1 run) or a measure (10 runs).
+2. **One line in [the roadmap](../../docs/roadmap.md)** when a role is done.
+3. **Update [Latest scores](#latest-scores)** after a measure.
+4. **Clean up `results/`.** It is not committed. Keep only the latest run per role.
 
 ## Reading the numbers
 
-- **Read Δ per case, not the mean.** A case where both arms score 1.00 shows nothing about the plugin. The mean hides that.
-- **Small Δ is noise.** Plain Claude's score on the same case moves by up to 0.2 between runs. Treat a case Δ under 0.2 as a tie.
-- **5 runs per arm for normal work. 10 for the Proof step** (roadmap step 7), when numbers go in the README.
+- **A check is pass or fail.** One run says the role works and the graders are fair. It can't say how much the plugin helps, so don't read Δ from it.
+- **In a measure, read Δ per case, not the mean.** A case where both arms score 1.00 shows nothing about the plugin. The mean hides that.
+- **Small Δ is noise.** Plain Claude's score on the same case moved by up to 0.2 between runs. Treat a case Δ under 0.2 as a tie.
 
 ## No shell
 
@@ -119,7 +138,7 @@ So the judge reads files instead of running them. A test file is judged by readi
 
 ## Latest scores
 
-5 runs per arm, Sonnet agent, Opus judge.
+From before decision 12: 5 runs per arm, Sonnet agent, Opus judge. The Engineer has only a check so far (1 run, in PR #13).
 
 **PM: `/nap:backlog`** (2026-10-30)
 
