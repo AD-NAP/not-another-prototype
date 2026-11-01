@@ -1,5 +1,6 @@
 ---
 description: A vague brief must lead to one product question, not a guessed draft.
+tags: [backlog]
 max_turns: 15
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

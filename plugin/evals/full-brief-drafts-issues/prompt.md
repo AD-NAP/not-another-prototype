@@ -1,5 +1,6 @@
 ---
 description: A complete brief goes straight to a draft with testable criteria, and nothing is created before approval.
+tags: [backlog]
 max_turns: 20
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
