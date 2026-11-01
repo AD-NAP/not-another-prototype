@@ -132,6 +132,58 @@ test("C5 other agents, including a user's own 'engineer', are never blocked", ()
   allowed(call("Explore", "Read", { file_path: abs("shop/cart.py") }));
   allowed(call("engineer", "Edit", { file_path: abs("tests/test_cart.py") }));
   allowed(call("test-engineer", "Read", { file_path: abs("shop/cart.py") }));
+  allowed(call("reviewer", "Edit", { file_path: abs("shop/cart.py") }));
+});
+
+// Reviewer (#16): read-only. The PR has no new commits and is not merged.
+const REV = "nap:reviewer";
+
+test("R1 Reviewer file edits are blocked with the rule", () => {
+  for (const tool of ["Edit", "Write"]) {
+    const r = call(REV, tool, { file_path: abs("shop/cart.py") });
+    blocked(r);
+    assert.match(r.message, /Reviewer is read-only/);
+  }
+  blocked(call(REV, "Write", { file_path: abs("tests/test_cart.py") }));
+});
+
+test("R2 Reviewer commits, pushes, merges and closes are blocked", () => {
+  for (const command of [
+    "git commit -am fix",
+    "git push origin HEAD",
+    "git checkout feature && git merge main",
+    "git reset --hard HEAD~1",
+    "gh pr merge 5 --squash",
+    "gh pr close 5",
+    "gh pr edit 5 --title x",
+    "gh issue close 3",
+  ]) {
+    const r = call(REV, "Bash", { command });
+    blocked(r);
+    assert.match(r.message, /never commits, pushes, merges or closes/, command);
+  }
+});
+
+test("R3 Reviewer shell writes into the project are blocked", () => {
+  blocked(call(REV, "Bash", { command: "echo x > shop/cart.py" }));
+  blocked(call(REV, "Bash", { command: "sed -i 's/a/b/' shop/cart.py" }));
+  blocked(call(REV, "PowerShell", { command: "Set-Content shop/cart.py 'x'" }));
+});
+
+test("R4 Reviewer may read, view the PR and post its review", () => {
+  allowed(call(REV, "Read", { file_path: abs("shop/cart.py") }));
+  allowed(call(REV, "Grep", { pattern: "def", path: abs("shop") }));
+  allowed(call(REV, "Bash", { command: "gh pr view 5 --json title,body,files" }));
+  allowed(call(REV, "Bash", { command: "gh pr diff 5" }));
+  allowed(call(REV, "Bash", { command: "gh issue view 3" }));
+  allowed(call(REV, "Bash", { command: "git log --oneline -5 && git diff main...HEAD" }));
+  allowed(call(REV, "Bash", { command: 'gh pr review 5 --request-changes --body "> quote\n| 1 | C1 | Not met | shop/cart.py:3 |"' }));
+  allowed(call(REV, "Bash", { command: "gh pr review 5 --comment --body 'Review: approve'" }));
+  allowed(call(REV, "Bash", { command: "gh pr diff 5 > /tmp/pr.diff 2>&1" }));
+});
+
+test("quoted '>' is not a redirect for the Engineer either", () => {
+  allowed(call(ENG, "Bash", { command: 'gh pr create --body "Closes #3 > tests/test_cart.py stays as is"' }));
 });
 
 // The script itself: exit 2 with the message on stderr when blocking, exit 0 otherwise.
