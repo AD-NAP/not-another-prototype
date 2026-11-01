@@ -11,6 +11,9 @@ cp -R "$SHARED/shop/." .
 if [ -d "$FIXTURES/tests" ]; then
   cp "$FIXTURES"/tests/*.py tests/
 fi
+if [ -d "$FIXTURES/shop" ]; then
+  cp "$FIXTURES"/shop/*.py shop/
+fi
 
 git init -q -b main
 git add -A
