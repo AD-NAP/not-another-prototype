@@ -71,6 +71,11 @@ Rules for rubrics (`llm` graders):
 - Point at the right thing with `focus`: `{ source: file, path: tests/test_x.py }` for a file, the default for the final reply.
 - One idea per grader. Two ideas in one rubric make failures hard to read.
 
+Traps we hit:
+- **`tool_used` misses a subagent's calls.** It counts only the main conversation. To check that an agent didn't edit a file, check the file's contents with `regex` or `llm`.
+- **A `focus` or `target` file that doesn't exist crashes the grader**, and the run scores it as a fail. If the role may stop before writing a file, have the scaffold create a starting version.
+- **Without a shell, `gh` and `git` are refused.** For a PR or issue comment, judge what the agent tried or said (`focus: trace`), and say so in the rubric.
+
 ### What each role needs
 
 - **At least one happy path.** The main job, done right.
@@ -83,6 +88,8 @@ Rules for rubrics (`llm` graders):
 ```bash
 claude plugin eval plugin --tag <role> --runs 1 --ablation with-without --model sonnet --judge-model opus --no-publish
 ```
+
+Add `--keep-temp` to keep each run's transcript (`out/trace.jsonl`) for reading. Delete the temp folders after. `--case` takes one name or glob; repeat it and only the last counts.
 
 Open `report.html` and read the judge's evidence for every failure, in both arms. Fix graders that are unfair or unclear, not just the ones that fail. Repeat until the graders read right.
 
