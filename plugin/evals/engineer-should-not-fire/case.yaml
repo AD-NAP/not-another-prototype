@@ -1,32 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 name: engineer-should-not-fire
-description: A question about existing code, not a request to build an issue. The Engineer must not run, and no branch or PR may appear.
-tags: [engineer]
 context:
   scaffold_script: scaffold.sh
-execution:
-  prompt: |
-    Why does cart_total round to cents? Just explain it. Don't change any files.
-  max_turns: 10
-  timeout_seconds: 300
-  allowed_tools: [Read, Glob, Grep, Skill, Agent, Edit, Write, Bash]
-runs: 1
-graders:
-  - name: answers-directly
-    type: llm
-    weight: 1
-    criteria: PASS if the reply explains that cart_total rounds the sum to two decimal places (cents). FAIL if it doesn't answer.
-  - name: engineer-not-fired
-    type: llm
-    weight: 1
-    criteria: PASS if the transcript shows no launch of the nap:engineer agent and no call to a build-issue skill. FAIL if either happened.
-  - name: no-branch-or-pr
-    type: llm
-    weight: 1
-    focus: { source: file, path: .gh-calls.log }
-    criteria: PASS if this log is empty, so no gh call of any kind was made. FAIL if it has any line.
-  - name: no-files-changed
-    type: llm
-    weight: 1
-    focus: { source: file, path: shop/cart.py }
-    criteria: PASS if shop/cart.py is unchanged from the original (cart_total still rounds with round(..., 2)). FAIL otherwise.
