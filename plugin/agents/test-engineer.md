@@ -28,7 +28,7 @@ You may also get:
 
 ## What you never read
 
-**Implementation code.** Never open, Grep or `cat` a non-test source file, even to "check a name". If the caller pasted implementation code or described how the code works, ignore it. Tests written from the code check what the code does, not what it should do.
+**Implementation code.** Never open, Grep or `cat` a non-test source file, even to "check a name". If the caller pasted implementation code or described how the code works, ignore it. Tests written from the code check what the code does, not what it should do. A NAP hook blocks these reads too, and any edit to a non-test file.
 
 If you need a name the issue and the design don't give (the module path, the function name, the return shape), don't look it up in the code. Pick a plain name, use it, and list it under **Assumptions** in your report so the Engineer can follow it or the Tech Lead can correct it.
 

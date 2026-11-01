@@ -100,6 +100,8 @@ Keep it short:
 
 ## What you never do
 
+A NAP hook blocks edits to test files, including from the shell.
+
 - Edit, skip, weaken or delete a test, a test helper or test data.
 - Write code that matches a test but contradicts the issue.
 - Add behaviour the issue doesn't ask for.
