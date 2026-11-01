@@ -130,6 +130,10 @@ This uses a lot of usage (the Engineer's 4 cases cost about $4.50 per run with t
 - **In a measure, read Δ per case, not the mean.** A case where both arms score 1.00 shows nothing about the plugin. The mean hides that.
 - **Small Δ is noise.** Plain Claude's score on the same case moved by up to 0.2 between runs. Treat a case Δ under 0.2 as a tie.
 
+## Hooks are tested with unit tests
+
+Hooks are code, so they get unit tests, not evals: `node --test plugin/hooks/lanes.test.mjs`. They are free and exact. Evals still load the hooks, so a role's eval checks also run with its lane rules on.
+
 ## No shell
 
 Evals never grant `Bash` or `PowerShell`. On native Windows there is no sandbox for them, so the run refuses. On Linux they need `bubblewrap` and `socat`, which did not work reliably for us.

@@ -175,3 +175,15 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 **Decision.** Until the MVP, evals are checks: one run per case, with the plugin only (`--runs 1 --ablation none`). A new role's first check adds the baseline once, to see the plugin changes something. Measuring how much the plugin helps (10 runs per case, with and without it) waits until each role is refined after the MVP. This replaces the 5-run full run in decisions 9 and 11. The models, grader weights, format and no-shell rule stay.
 
 **Why.** The project runs on a Claude Pro plan. A 5-run Engineer eval with the baseline would cost about $22 of usage, and the pilots alone kept hitting the 5-hour limit and eating the weekly one. The goal now is a working MVP across all roles. One run is enough to show a role works and its graders are fair; it can't show a reliable Δ, so we don't report one from it.
+
+## 13. Lane hooks match the agent and stay best effort in the shell (2026-11-01)
+
+**Decision.** One `PreToolUse` hook, `plugin/hooks/lanes.mjs`, keeps the TDD roles in their lanes. It reads `agent_type` from the hook input and acts only for `nap:engineer` and `nap:test-engineer`, matched exactly. The main session, other agents and a user's own agent named `engineer` are never blocked.
+
+- **Engineer:** no edits to test files, with file tools or shell writes (`>`, `sed -i`, `rm`, `git checkout`, `Set-Content` and the like).
+- **Test Engineer:** no reads of source files (Read, Grep, and shell readers such as `cat`, `grep`, `rg`, `Get-Content`), and no edits to anything but test files. Tests, docs and config stay readable.
+- **Shell checks are best effort.** They catch the common commands. They can't catch everything (for example `python -c "open(...)"`), and the agent instructions still carry the rule.
+- **Node, not bash or Python.** It runs the same on Windows, Mac and Linux. If Node is missing the hook fails open: it doesn't block, so NAP still works with the instructions alone.
+- **Unit tests, not evals.** 16 `node:test` cases cover each rule and the exit code. They cost no usage.
+
+**Why.** Instructions alone left the rules to the agents' goodwill. The hook docs confirm plugin hooks fire inside plugin subagents, with `agent_type` set to the plugin-scoped name (`nap:engineer`), so one shared hook can tell the roles apart. A real session confirmed the name and that the hook runs on Windows. Full shell enforcement would need a sandbox per role, which is out of reach for now (see decision 11), so the issue's note "say how much enforcement is enough" is answered here: common commands blocked, the rest left to instructions.
