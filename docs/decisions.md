@@ -187,3 +187,11 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 - **Unit tests, not evals.** 16 `node:test` cases cover each rule and the exit code. They cost no usage.
 
 **Why.** Instructions alone left the rules to the agents' goodwill. The hook docs confirm plugin hooks fire inside plugin subagents, with `agent_type` set to the plugin-scoped name (`nap:engineer`), so one shared hook can tell the roles apart. A real session confirmed the name and that the hook runs on Windows. Full shell enforcement would need a sandbox per role, which is out of reach for now (see decision 11), so the issue's note "say how much enforcement is enough" is answered here: common commands blocked, the rest left to instructions.
+
+## 14. The Reviewer falls back to a comment review on your own PR (2026-11-01)
+
+**Decision.** The `nap:reviewer` agent, started by `/nap:review`, posts one GitHub review per request. It tries a real "approve" or "request changes" review first. GitHub refuses both on your own PR, and NAP's agents run as the CEO's GitHub account, so the Reviewer then posts the same body once as a comment review whose first line is **Review: approve** or **Review: request changes**. The lane hook (decision 13) gets a third lane: the Reviewer can read and post its review, but can't edit files, commit, push, merge, close or write into the project from the shell.
+
+**Why.** Issue #16 asks for one review that approves or requests changes. While every agent shares one GitHub account, a real approval is impossible, so the verdict moves into the review's first line. A separate bot account for the Reviewer would allow real approvals; that can wait until the runner (step 12). The hook makes "the PR has no new commits and is not merged" hold even if the agent tries.
+
+**Update.** The Reviewer's own first real review (on PR #18) found that `gh api` could still merge a PR. Its `gh` rules are now an allowlist: only `gh pr view`, `diff`, `checks`, `review`, `list`, `gh issue view`, `list`, `gh repo view`, `gh auth status`, and `gh api` reads (no method other than GET, no fields, no GraphQL mutation). Any other `gh` command is blocked, including ones GitHub adds later. The hook still only sees commands, so the full fix is a GitHub account for the Reviewer that can review but not merge (roadmap step 12).

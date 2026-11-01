@@ -2,6 +2,7 @@
 // NAP lane rules, run before every file and shell tool call (PreToolUse).
 // - The Engineer never edits tests.
 // - The Test Engineer never reads implementation code, and writes test files only.
+// - The Reviewer is read-only: no edits, commits, pushes or merges. It may post its review.
 // Any other agent, and the main session, is never blocked.
 // Shell checks are best effort: they catch common commands, not every trick.
 
@@ -11,6 +12,7 @@ import { fileURLToPath } from "node:url";
 
 const ENGINEER = "nap:engineer";
 const TEST_ENGINEER = "nap:test-engineer";
+const REVIEWER = "nap:reviewer";
 
 const TEST_DIRS = new Set(["test", "tests", "__tests__", "spec", "specs"]);
 const TEST_NAMES = [
@@ -36,6 +38,55 @@ const RECURSIVE_SEARCH = /(^|[\s;&|(])(rg|ag|ack)(?=\s|$)|(^|[\s;&|(])grep\s+(-\
 const WRITERS =
   /(^|[\s;&|(])(rm|mv|cp|tee|truncate|sed\s+(-\S+\s+)*-i\S*|perl\s+-\S*i\S*|git\s+(checkout|restore|rm|mv)|Set-Content|Add-Content|Out-File|Remove-Item|Move-Item|Copy-Item|New-Item|Clear-Content)(?=\s|$)/i;
 const REDIRECT_TARGET = /\d?>{1,2}\s*("[^"]+"|'[^']+'|[^\s;&|]+)/g;
+const REVIEWER_CHANGES =
+  /(^|[\s;&|(])(git\s+(commit|push|merge|rebase|reset|revert|cherry-pick|am|apply|stash|checkout|switch|restore|rm|mv|add|tag))(?=\s|$)/i;
+
+// The only gh commands the Reviewer may run (an allowlist). gh api is checked separately: reads only.
+const REVIEWER_GH = new Set([
+  "pr view", "pr diff", "pr checks", "pr review", "pr list",
+  "issue view", "issue list", "repo view", "auth status",
+]);
+
+// Each gh call in a command, as its words (after any VAR=value prefixes).
+function ghCalls(cmd) {
+  return unquoted(cmd)
+    .split(/&&|\|\||[;|\n]/)
+    .map((seg) => seg.trim().split(/\s+/).filter(Boolean))
+    .map((words) => {
+      while (words.length && /^\w+=/.test(words[0])) words.shift();
+      return words;
+    })
+    .filter((words) => words.length && /(^|[\\/])gh(\.exe)?$/i.test(words[0]));
+}
+
+// gh api reads by default. It changes things with a method other than GET, with fields
+// (-f/-F/--input turn it into a POST), or with a GraphQL mutation.
+function ghApiChanges(words, rawCmd) {
+  const args = words.slice(2);
+  const endpoint = args.find((a) => !a.startsWith("-")) || "";
+  if (endpoint === "graphql") return /\bmutation\b/i.test(rawCmd);
+  const methodAt = args.findIndex((a) => /^(-X|--method)(=|$)/i.test(a));
+  const method = methodAt < 0 ? "" : (args[methodAt].split("=")[1] || args[methodAt + 1] || "").toUpperCase();
+  if (method) return method !== "GET";
+  return args.some((a) => /^(-f|-F|--field|--raw-field|--input)(=|$)/.test(a));
+}
+
+// Quoted text (such as a review body) can hold ">" without being a redirect.
+function unquoted(cmd) {
+  return cmd.replace(/"(?:\\.|[^"\\])*"|'[^']*'/g, '""');
+}
+
+function redirectTargets(cmd) {
+  return [...unquoted(cmd).matchAll(REDIRECT_TARGET)]
+    .map((m) => m[1].replace(/^["']|["']$/g, ""))
+    .filter((t) => t && !t.startsWith("&") && !/^(\/dev\/null|nul|\$null)$/i.test(t));
+}
+
+function insideProject(p, cwd) {
+  if (!cwd || !p) return false;
+  const r = path.relative(cwd, path.resolve(cwd, p));
+  return r === "" || (!r.startsWith("..") && !path.isAbsolute(r));
+}
 
 function rel(p, cwd) {
   if (!p) return "";
@@ -95,10 +146,9 @@ function engineer(tool, input, cwd) {
   }
   if (SHELL_TOOLS.has(tool)) {
     const cmd = input.command || "";
-    const redirected = [...cmd.matchAll(REDIRECT_TARGET)].map((m) => m[1].replace(/^["']|["']$/g, ""));
     const hit =
-      redirected.find((t) => isTestPath(t, cwd)) ||
-      (WRITERS.test(cmd) && tokens(cmd).find((t) => isTestPath(t, cwd)));
+      redirectTargets(cmd).find((t) => isTestPath(t, cwd)) ||
+      (WRITERS.test(unquoted(cmd)) && tokens(cmd).find((t) => isTestPath(t, cwd)));
     if (hit) {
       return block(
         `the Engineer never edits tests, including from the shell. This command changes ${rel(hit, cwd)}. If a test looks wrong, leave it and report it on the issue.`,
@@ -162,6 +212,42 @@ function testEngineer(tool, input, cwd) {
   return ALLOW;
 }
 
+function reviewer(tool, input, cwd) {
+  const readOnly = (what) =>
+    block(`the Reviewer is read-only. ${what} Put what needs to change in the review instead.`);
+
+  if (EDIT_TOOLS.has(tool)) {
+    return readOnly(`It never edits files, and ${rel(input.file_path || input.notebook_path, cwd)} would change.`);
+  }
+
+  if (SHELL_TOOLS.has(tool)) {
+    const cmd = input.command || "";
+    const bare = unquoted(cmd);
+    const change = bare.match(REVIEWER_CHANGES);
+    if (change) return readOnly(`It never commits, pushes, merges or closes, and \`${change[2].trim()}\` would.`);
+    for (const words of ghCalls(cmd)) {
+      const sub = words.slice(1, 3).join(" ");
+      if (words[1] === "api") {
+        if (ghApiChanges(words, cmd)) {
+          return readOnly("It may use `gh api` only to read, and this call would change something on GitHub.");
+        }
+      } else if (!REVIEWER_GH.has(sub)) {
+        return readOnly(
+          `It may use gh only to read PRs and issues and post its review, and \`gh ${sub}\` isn't one of those.`,
+        );
+      }
+    }
+    const intoProject = redirectTargets(cmd).find((t) => insideProject(t, cwd));
+    if (intoProject) return readOnly(`This command writes to ${rel(intoProject, cwd)}.`);
+    if (WRITERS.test(bare)) {
+      const target = tokens(bare).find((t) => /[./\\]/.test(t) && insideProject(t, cwd));
+      if (target) return readOnly(`This command changes ${rel(target, cwd)}.`);
+    }
+  }
+
+  return ALLOW;
+}
+
 // Decide one tool call. Returns { block, message }.
 export function decide(input) {
   const agent = input.agent_type || "";
@@ -170,6 +256,7 @@ export function decide(input) {
   const cwd = input.cwd || process.cwd();
   if (agent === ENGINEER) return engineer(tool, toolInput, cwd);
   if (agent === TEST_ENGINEER) return testEngineer(tool, toolInput, cwd);
+  if (agent === REVIEWER) return reviewer(tool, toolInput, cwd);
   return ALLOW;
 }
 
