@@ -39,7 +39,37 @@ const WRITERS =
   /(^|[\s;&|(])(rm|mv|cp|tee|truncate|sed\s+(-\S+\s+)*-i\S*|perl\s+-\S*i\S*|git\s+(checkout|restore|rm|mv)|Set-Content|Add-Content|Out-File|Remove-Item|Move-Item|Copy-Item|New-Item|Clear-Content)(?=\s|$)/i;
 const REDIRECT_TARGET = /\d?>{1,2}\s*("[^"]+"|'[^']+'|[^\s;&|]+)/g;
 const REVIEWER_CHANGES =
-  /(^|[\s;&|(])(git\s+(commit|push|merge|rebase|reset|revert|cherry-pick|am|apply|stash|checkout|switch|restore|rm|mv|add|tag)|gh\s+pr\s+(merge|close|reopen|edit|ready)|gh\s+issue\s+(close|reopen|edit))(?=\s|$)/i;
+  /(^|[\s;&|(])(git\s+(commit|push|merge|rebase|reset|revert|cherry-pick|am|apply|stash|checkout|switch|restore|rm|mv|add|tag))(?=\s|$)/i;
+
+// The only gh commands the Reviewer may run (an allowlist). gh api is checked separately: reads only.
+const REVIEWER_GH = new Set([
+  "pr view", "pr diff", "pr checks", "pr review", "pr list",
+  "issue view", "issue list", "repo view", "auth status",
+]);
+
+// Each gh call in a command, as its words (after any VAR=value prefixes).
+function ghCalls(cmd) {
+  return unquoted(cmd)
+    .split(/&&|\|\||[;|\n]/)
+    .map((seg) => seg.trim().split(/\s+/).filter(Boolean))
+    .map((words) => {
+      while (words.length && /^\w+=/.test(words[0])) words.shift();
+      return words;
+    })
+    .filter((words) => words.length && /(^|[\\/])gh(\.exe)?$/i.test(words[0]));
+}
+
+// gh api reads by default. It changes things with a method other than GET, with fields
+// (-f/-F/--input turn it into a POST), or with a GraphQL mutation.
+function ghApiChanges(words, rawCmd) {
+  const args = words.slice(2);
+  const endpoint = args.find((a) => !a.startsWith("-")) || "";
+  if (endpoint === "graphql") return /\bmutation\b/i.test(rawCmd);
+  const methodAt = args.findIndex((a) => /^(-X|--method)(=|$)/i.test(a));
+  const method = methodAt < 0 ? "" : (args[methodAt].split("=")[1] || args[methodAt + 1] || "").toUpperCase();
+  if (method) return method !== "GET";
+  return args.some((a) => /^(-f|-F|--field|--raw-field|--input)(=|$)/.test(a));
+}
 
 // Quoted text (such as a review body) can hold ">" without being a redirect.
 function unquoted(cmd) {
@@ -195,6 +225,18 @@ function reviewer(tool, input, cwd) {
     const bare = unquoted(cmd);
     const change = bare.match(REVIEWER_CHANGES);
     if (change) return readOnly(`It never commits, pushes, merges or closes, and \`${change[2].trim()}\` would.`);
+    for (const words of ghCalls(cmd)) {
+      const sub = words.slice(1, 3).join(" ");
+      if (words[1] === "api") {
+        if (ghApiChanges(words, cmd)) {
+          return readOnly("It may use `gh api` only to read, and this call would change something on GitHub.");
+        }
+      } else if (!REVIEWER_GH.has(sub)) {
+        return readOnly(
+          `It may use gh only to read PRs and issues and post its review, and \`gh ${sub}\` isn't one of those.`,
+        );
+      }
+    }
     const intoProject = redirectTargets(cmd).find((t) => insideProject(t, cwd));
     if (intoProject) return readOnly(`This command writes to ${rel(intoProject, cwd)}.`);
     if (WRITERS.test(bare)) {

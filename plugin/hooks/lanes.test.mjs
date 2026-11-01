@@ -153,15 +153,55 @@ test("R2 Reviewer commits, pushes, merges and closes are blocked", () => {
     "git push origin HEAD",
     "git checkout feature && git merge main",
     "git reset --hard HEAD~1",
-    "gh pr merge 5 --squash",
-    "gh pr close 5",
-    "gh pr edit 5 --title x",
-    "gh issue close 3",
   ]) {
     const r = call(REV, "Bash", { command });
     blocked(r);
     assert.match(r.message, /never commits, pushes, merges or closes/, command);
   }
+});
+
+test("R5 Reviewer gh commands outside the allowlist are blocked", () => {
+  for (const command of [
+    "gh pr merge 5 --squash",
+    "gh pr close 5",
+    "gh pr edit 5 --title x",
+    "gh pr ready 5",
+    "gh issue close 3",
+    "gh issue comment 3 --body x",
+    "gh repo delete AD-NAP/x --yes",
+    "gh workflow run ci.yml",
+    "gh release create v1",
+    "GH_TOKEN=abc gh pr merge 5",
+    "gh pr view 5 && gh pr merge 5",
+    "/usr/bin/gh pr merge 5",
+  ]) {
+    const r = call(REV, "Bash", { command });
+    blocked(r);
+    assert.match(r.message, /may use gh only to read PRs and issues/, command);
+  }
+});
+
+test("R6 Reviewer gh api calls that change things are blocked (the gap the Reviewer found)", () => {
+  for (const command of [
+    "gh api -X PUT repos/AD-NAP/x/pulls/5/merge",
+    "gh api --method=PUT repos/AD-NAP/x/pulls/5/merge",
+    "gh api --method DELETE repos/AD-NAP/x/git/refs/heads/main",
+    "gh api repos/AD-NAP/x/pulls/5/merge -f merge_method=squash",
+    "gh api repos/AD-NAP/x/issues/3/comments --input body.json",
+    "gh api graphql -f query='mutation { mergePullRequest(input: {pullRequestId: \"x\"}) { clientMutationId } }'",
+  ]) {
+    const r = call(REV, "Bash", { command });
+    blocked(r);
+    assert.match(r.message, /gh api` only to read/, command);
+  }
+});
+
+test("R7 Reviewer gh api reads are allowed", () => {
+  allowed(call(REV, "Bash", { command: "gh api repos/AD-NAP/x/pulls/5/reviews --jq '.[].state'" }));
+  allowed(call(REV, "Bash", { command: "gh api -X GET repos/AD-NAP/x/pulls -f state=open" }));
+  allowed(call(REV, "Bash", { command: "gh api graphql -f query='query { viewer { login } }'" }));
+  allowed(call(REV, "Bash", { command: "gh pr checks 5" }));
+  allowed(call(REV, "Bash", { command: "gh issue view 3 --json body" }));
 });
 
 test("R3 Reviewer shell writes into the project are blocked", () => {

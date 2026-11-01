@@ -17,7 +17,7 @@ The sprint loop comes before Sprint 0. The sprint loop is what turns plans into 
 | 9 | **Sprint 0: architecture** | The Architect: architecture doc, stack choice, ADRs, and checking feature designs that touch the architecture. | |
 | 10 | **Sprint 0: platform** | A setup skill: repo layout, standards, test framework, CI and the walking skeleton. The CI fails a PR that changes code without tests (#10). Package everything as one versioned plugin and use it on a second project from scratch. | |
 | 11 | **UX Designer** | User flows for projects with a UI. | |
-| 12 | **Chief of Staff and runner** | The runner in `runner/` runs the sprints, picks the next issue in code, and writes the Kopi Report. The user's gates move up to the CEO level. | |
+| 12 | **Chief of Staff and runner** | The runner in `runner/` runs the sprints, picks the next issue in code, and writes the Kopi Report. The user's gates move up to the CEO level. The Reviewer gets its own GitHub account that can review but not merge, so approvals are real and no command can merge (see [decision 14](decisions.md#14-the-reviewer-falls-back-to-a-comment-review-on-your-own-pr-2026-11-01)). | |
 | 13 | **Headcount** | More than one Engineer on separate issues at the same time. | |
 | 14 | **Office** | The pixel office in `office/`, reading the event log. | |
 | 15 | **CEO controls** | Brief, approve, set headcount and read the Kopi Report from inside the office. | |
