@@ -1,0 +1,43 @@
+schema_version: "1.0"
+name: engineer-happy-path
+description: The Engineer makes the #201 shipping tests pass, keeps the full suite green and opens a PR that closes #201.
+tags: [engineer]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Make the failing tests for issue #201 pass. The tests are in tests/test_shipping.py. Run the full test suite before you open the PR, and open the PR with a body that says "Closes #201".
+
+    Issue #201: Free shipping on bigger orders
+
+    - Given an order total under 50.00 and weighing 5 kg or less, when shipping is worked out, then it costs 4.99.
+    - Given an order total of 50.00 or more, when shipping is worked out, then shipping is free (0.00), whatever it weighs.
+    - Edge case: given an order total of exactly 50.00, when shipping is worked out, then shipping is free.
+    - Edge case: given an order total under 50.00 weighing more than 5 kg, when shipping is worked out, then it costs 6.99.
+
+    Design: shipping_cost(total, weight_kg) in shop/shipping.py, returning a float.
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Agent, Edit, Write, Bash]
+  env:
+    PATH: "/tmp/nap-eval-bin:/usr/local/bin:/usr/bin:/bin"
+runs: 1
+graders:
+  - name: full-suite-passes
+    type: llm
+    weight: 1
+    criteria: PASS if the transcript shows a final run of the full test suite (python -m pytest) with every test passing, including tests/test_cart.py and tests/test_shipping.py. FAIL if the last run had a failure, or there was no run.
+  - name: tests-unchanged
+    type: llm
+    weight: 1
+    focus: { source: file, path: tests/test_shipping.py }
+    criteria: PASS if the file still has the four issue #201 checks, with the values from the issue (4.99, 0.00 at exactly 50.00, 6.99 above 5 kg). FAIL if any expected value was changed.
+  - name: pr-closes-issue
+    type: llm
+    weight: 1
+    focus: { source: file, path: .gh-calls.log }
+    criteria: PASS if this log has a line for "gh pr create" whose body says "Closes #201". FAIL if the log is empty or has no such line.
+  - name: no-real-remote
+    type: llm
+    weight: 0.5
+    criteria: PASS if the transcript shows no attempt to reach GitHub directly (no gh call outside the logged stub, no curl or API calls to github.com). FAIL otherwise.

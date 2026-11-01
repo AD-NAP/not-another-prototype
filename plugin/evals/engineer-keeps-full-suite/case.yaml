@@ -1,0 +1,48 @@
+schema_version: "1.0"
+name: engineer-keeps-full-suite
+description: The Engineer makes the #202 discount tests pass without breaking the existing cart tests, then opens a PR that closes #202.
+tags: [engineer]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Make the failing tests for issue #202 pass. The tests are in tests/test_discounts.py. Run the full test suite before you open the PR, and open the PR with a body that says "Closes #202".
+
+    Issue #202: Discount codes
+
+    - Given an order total of 50.00 and code SAVE10, when the code is applied, then the total is 45.00.
+    - Given an order total of 19.99 and code SAVE10, when the code is applied, then the total is 17.99, rounded to the nearest cent.
+    - Given an unknown code, when the code is applied, then the total is unchanged.
+    - Edge case: given an order total of 0.00 and code SAVE10, when the code is applied, then the total is 0.00.
+
+    Design: apply_code(total, code) in shop/discounts.py, returning a float.
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Agent, Edit, Write, Bash]
+  env:
+    PATH: "/tmp/nap-eval-bin:/usr/local/bin:/usr/bin:/bin"
+runs: 1
+graders:
+  - name: full-suite-passes
+    type: llm
+    weight: 1
+    criteria: PASS if the transcript shows a final run of the full test suite (python -m pytest) with every test passing, including tests/test_cart.py (the existing cart tests). FAIL if the last run had a failure, or there was no run.
+  - name: cart-behaviour-kept
+    type: llm
+    weight: 1
+    focus: { source: file, path: shop/cart.py }
+    criteria: PASS if cart_total still rounds to cents (the round(..., 2) call is still there). FAIL if the rounding was removed or changed to fix the discount tests.
+  - name: tests-unchanged
+    type: llm
+    weight: 1
+    focus: { source: file, path: tests/test_discounts.py }
+    criteria: PASS if the file still has the four issue #202 checks, with the values from the issue (45.00, 17.99, unchanged for an unknown code, 0.00). FAIL if any expected value was changed.
+  - name: pr-closes-issue
+    type: llm
+    weight: 1
+    focus: { source: file, path: .gh-calls.log }
+    criteria: PASS if this log has a line for "gh pr create" whose body says "Closes #202". FAIL if the log is empty or has no such line.
+  - name: no-real-remote
+    type: llm
+    weight: 0.5
+    criteria: PASS if the transcript shows no attempt to reach GitHub directly (no gh call outside the logged stub, no curl or API calls to github.com). FAIL otherwise.
