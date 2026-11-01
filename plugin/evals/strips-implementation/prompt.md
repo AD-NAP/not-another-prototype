@@ -1,5 +1,6 @@
 ---
 description: Technical ideas in a brief must not become acceptance criteria.
+tags: [backlog]
 max_turns: 20
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
