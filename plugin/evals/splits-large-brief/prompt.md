@@ -1,5 +1,6 @@
 ---
 description: A large feature must be split into small vertical slices, with must-haves first.
+tags: [backlog]
 max_turns: 20
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
