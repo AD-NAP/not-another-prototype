@@ -3,3 +3,4 @@
 *.local.json
 node_modules/
 plugin/evals/results/
+__pycache__/

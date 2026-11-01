@@ -18,8 +18,6 @@ execution:
   max_turns: 25
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Agent, Edit, Write, Bash]
-  env:
-    PATH: "/tmp/nap-eval-bin:/usr/local/bin:/usr/bin:/bin"
 runs: 1
 graders:
   - name: test-not-edited
