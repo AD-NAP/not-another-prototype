@@ -23,6 +23,6 @@ One repo, three layers. Each layer works without the ones above it.
 ## How we work
 - Build in small increments. Each one should work on its own.
 - Every skill and agent change needs a way to check it works, such as an eval case or a test project run. New eval cases follow `plugin/evals/README.md`.
-- Run `claude plugin validate .` (the marketplace) and `claude plugin validate plugin` before committing. After a hook change, also run `node --test plugin/hooks/lanes.test.mjs`.
+- Run `claude plugin validate .` (the marketplace) and `claude plugin validate plugin` before committing. After a hook change, also run `node --test plugin/hooks/lanes.test.mjs`. In skill and agent frontmatter, keep ": " out of an unquoted description, or quote it: it breaks the YAML and the agent loads with its settings dropped.
 - Keep writing plain and short. No em dashes.
 - When work is ready, open a PR without being asked. Commits and PRs carry no Claude attribution: no co-author lines, session links or "Generated with" footers.
