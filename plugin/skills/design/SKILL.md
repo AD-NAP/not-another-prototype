@@ -2,7 +2,7 @@
 name: design
 description: Writes a short feature design for one GitHub issue before any tests or code, as the team's Tech Lead. Names the parts the change touches, the approach, the names the code will use, and a task split linked to the acceptance criteria, then posts it to the issue only after the user approves. Use when the user asks to design, plan the build of, or break into tasks an issue or story, asks how an issue should be built, or types /nap:design. Not for writing issues, tests or code, or for general questions about software design.
 argument-hint: "[issue number or text]"
-allowed-tools: Read Glob Grep Bash(gh issue view *) Bash(gh issue comment *) Bash(gh repo view *) Bash(gh auth status *)
+allowed-tools: Read Glob Grep Write Bash(gh issue view *) Bash(gh issue comment *) Bash(gh repo view *) Bash(gh auth status *)
 ---
 
 # Design
@@ -111,6 +111,6 @@ If `gh` isn't available, or the issue was pasted with no number, save the design
 ## What you never do
 
 - Post, save or change anything before the user approves.
-- Write or edit code or tests.
+- Write or edit code or tests. Write is only for the two files in step 7: the comment's temporary file and the saved design.
 - Edit the issue's story or acceptance criteria. If they need to change, that's the PM's job: say what and why.
 - Label the issue `ready`.
