@@ -124,7 +124,7 @@ Each step hands off a file (doc, issue, tests, PR), not chat history. Any agent 
 
 Nobody hands out issues. Engineers pull them.
 - The **PM** orders the backlog.
-- The **Tech Lead** labels issues `ready` and marks which ones conflict.
+- The **Tech Lead** labels issues `ready` and marks which ones conflict, with a `conflicts: #N` label on both (decision 16).
 - A free **Engineer** takes the top `ready` issue that doesn't conflict with work in progress.
 
 Picking the next issue is a plain rule, so the runner can do it in code without spending credits. Until the runner exists, the user starts the next issue.
