@@ -195,3 +195,18 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 **Why.** Issue #16 asks for one review that approves or requests changes. While every agent shares one GitHub account, a real approval is impossible, so the verdict moves into the review's first line. A separate bot account for the Reviewer would allow real approvals; that can wait until the runner (step 12). The hook makes "the PR has no new commits and is not merged" hold even if the agent tries.
 
 **Update.** The Reviewer's own first real review (on PR #18) found that `gh api` could still merge a PR. Its `gh` rules are now an allowlist: only `gh pr view`, `diff`, `checks`, `review`, `list`, `gh issue view`, `list`, `gh repo view`, `gh auth status`, and `gh api` reads (no method other than GET, no fields, no GraphQL mutation). Any other `gh` command is blocked, including ones GitHub adds later. The hook still only sees commands, so the full fix is a GitHub account for the Reviewer that can review but not merge (roadmap step 12).
+
+## 15. The event log is a JSON Lines file written by a hook (2026-11-08)
+
+**Decision.** One hook, `plugin/hooks/events.mjs`, writes the event log for every NAP role. The log is `.nap/events.jsonl` in the project, one JSON object per line, oldest first: `time`, `role`, `event` (`started`, `finished` or `failed`), `issue`, `pr`, `detail` and `session`. `NAP_EVENT_LOG` sets another path.
+
+- **Subagent roles** (any `nap:<name>` agent): started when the Agent tool is called, finished when the subagent stops, failed when the Agent call or the subagent fails. This works for agents in the background too.
+- **Skill roles** in the main session (any `nap:<name>` skill): started when the skill runs or its slash command is typed, finished when the turn ends, failed when the turn stops with an error. Entry skills (`failing-tests`, `make-tests-pass`, `review`) are skipped, because their agent logs itself. `backlog` logs as `pm` and `design` as `tech-lead`; any other skill logs under its own name.
+- **Numbers** come from the agent's prompt or the skill's arguments: `issue 21`, `#21`, `PR 26`, or an issue or pull URL. A bare number is an issue, except for the Reviewer, where it is a PR.
+- **Best effort.** The hook never blocks and always exits 0. If the log can't be written, the role carries on. A small state file next to the log links each start to its finish.
+- **Kept out of git.** When the hook creates `.nap/`, it adds a `.gitignore` there, so the log never lands in a PR.
+- **Unit tests, not evals,** as in decision 13.
+
+**Why.** Hooks fire whatever the agent does, so the log doesn't depend on the agent remembering to write it (rule 2 against drift), and no role's instructions change. JSON Lines is append-only, so entries stay in the order they happened, and any script reads it line by line with no library: `jq`, a few lines of Node, or the office later. A file in the project fits step 5 and needs no server; the runner (step 12) can point `NAP_EVENT_LOG` wherever it wants. A failed role can't log its own failure, so failures come from the `PostToolUseFailure` and `StopFailure` hook events. A live run on Claude Code 2.1 confirmed the events and fields.
+
+**Limits.** A skill role that asks the user a question logs "finished" when it hands the turn back, with the question as its detail. If the user answers, the rest of that role's work isn't logged again until the skill runs again. Two hooks writing at the same moment can race on the state file; the log itself is safe, because each entry is one append.

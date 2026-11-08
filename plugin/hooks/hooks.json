@@ -1,5 +1,5 @@
 {
-  "description": "NAP lane rules: the Engineer never edits tests, and the Test Engineer never reads or edits implementation code.",
+  "description": "NAP lane rules: the Engineer never edits tests, and the Test Engineer never reads or edits implementation code. NAP event log: each role's start, finish or failure on an issue or PR goes to .nap/events.jsonl.",
   "hooks": {
     "PreToolUse": [
       {
@@ -11,6 +11,55 @@
             "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/lanes.mjs"],
             "timeout": 10
           }
+        ]
+      },
+      {
+        "matcher": "Agent|Task|Skill",
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
+        ]
+      }
+    ],
+    "UserPromptExpansion": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/events.mjs"], "timeout": 5 }
         ]
       }
     ]
