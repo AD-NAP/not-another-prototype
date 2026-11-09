@@ -2,7 +2,7 @@
 
 An AI dev team for developers, with TDD, code review and CI built in. Ship production-ready work, not prototypes. You're the CEO.
 
-> **Status:** early and private. Nothing works yet. This README is a placeholder.
+> **Status:** early. Four roles work today: PM, Test Engineer, Engineer and Reviewer. The Tech Lead is next, see the [roadmap](docs/roadmap.md).
 
 ## The idea
 
@@ -13,12 +13,27 @@ NAP is a Claude Code plugin that gives you a team of agents modelled on a big te
 | Role | What it does |
 |---|---|
 | PM | Turns your brief into GitHub issues with acceptance criteria |
-| Tech Lead | Writes a short design and splits the work into tasks |
+| Tech Lead | Writes a short design and splits the work into tasks (next) |
 | Test Engineer | Writes failing tests before any code exists |
 | Engineer | Makes the tests pass, one issue per branch |
 | Reviewer | Reviews each PR in a fresh context, read-only |
 
 You brief the team, approve the big decisions, and a person approves every merge.
+
+## What works today
+
+| Command | Role | What it does |
+|---|---|---|
+| `/nap:backlog` | PM | Turns a brief into GitHub issues with testable acceptance criteria |
+| `/nap:failing-tests` | Test Engineer | Writes failing tests from an issue, without reading the code |
+| `/nap:make-tests-pass` | Engineer | Writes code until the tests pass, without editing the tests |
+| `/nap:review` | Reviewer | Reviews a PR against its issue, read-only, and flags missing tests and changes outside the issue |
+
+Lane hooks enforce the split: the Engineer can't edit tests, the Test Engineer can't read the code, and the Reviewer can't write. The hooks have their own unit tests.
+
+NAP is built by NAP: the PM writes the issues, the Test Engineer and Engineer build each one test-first, and the Reviewer reviews the PR.
+
+**Evals.** On 11 cases for the PM and Test Engineer (5 runs each, Sonnet agent, Opus judge), NAP scored 1.00 on every case. Plain Claude scored 0.47 to 1.00, so NAP was clearly better (a gap of 0.2 or more) on 7 cases and tied on 4. These ran before later skill changes and need a rerun. Details in [plugin/evals](plugin/evals/README.md).
 
 ## How it fits together
 
@@ -32,7 +47,7 @@ More in the docs: [design](docs/design.md), [decisions](docs/decisions.md), [roa
 
 ## Install the plugin
 
-Once there is something to install:
+Early and changing fast, but it installs:
 
 ```
 /plugin marketplace add AD-NAP/not-another-prototype
