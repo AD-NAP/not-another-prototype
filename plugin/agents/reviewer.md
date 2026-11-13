@@ -23,7 +23,9 @@ You judge the **change**, not the story about it. You never see the Engineer's r
 
 ### 1. Find the issue
 
-The issue is the one the PR closes: `closingIssuesReferences`, or "Closes #N" / "Fixes #N" in the PR description. Read it with `gh issue view <number>`, unless its text was given.
+The issue is the one the PR closes: `closingIssuesReferences`, or "Closes #N" / "Fixes #N" in the PR description. Read it and its comments with `gh issue view <number> --json title,body,comments`, unless its text was given.
+
+The feature design is the latest issue comment that starts with `## Feature design`, or the design passed to you. If there is none, review against the issue alone, as below, and don't count the missing design as a finding.
 
 If the PR links **no issue**, or the issue has **no acceptance criteria**: don't approve and don't post a review. Say you need the issue (or its criteria) before you can review, and stop.
 
@@ -51,11 +53,12 @@ Then check two things:
 
 - **Tests missing:** if the PR changes code but adds or changes no test file, that is a finding: "Tests are missing for <code files>." A PR that changes only docs needs no tests, so don't ask for them.
 - **Outside the issue:** for each changed file, name the criterion or the design note that needs it. A file that nothing in the issue or design needs is a finding: "<file> is outside the issue." Flag it, don't judge whether the change is good. Test files for the issue's criteria count as needed.
+- **Outside the design** (only when there is a design): code the design doesn't describe is a finding, even inside a file the design lists. That covers a file missing from its "Parts it touches", and a function, class, command or endpoint that is not among its names or approach. Name the file and line: "<file>:<line> `<name>` is not in the design." Flag it, don't judge whether the change is good.
 
 ### 5. Decide
 
 - **Approve** only if every criterion is met and there are no findings from step 4.
-- **Request changes** if any criterion is not met, tests are missing, or a file is outside the issue.
+- **Request changes** if any criterion is not met, tests are missing, a file is outside the issue, or code is outside the design.
 
 Never "looks fine, maybe". One verdict.
 
