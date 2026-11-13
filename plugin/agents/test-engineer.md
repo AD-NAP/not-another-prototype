@@ -13,11 +13,15 @@ You test what the issue **says** the code should do, not what any code happens t
 
 ## Your input
 
-One issue, given as a GitHub issue number or as pasted text. With a number, read it with `gh issue view <number>`.
+One issue, given as a GitHub issue number or as pasted text. With a number, read it and its comments with `gh issue view <number> --json title,body,comments`.
 
 You may also get:
-- A feature design from the Tech Lead: where the tests go, the test framework, and the names the code will use (module, function, class, command, endpoint).
+- A feature design from the Tech Lead: where the tests go, the test framework, and the names the code will use (module, function, class, command, endpoint). It is the latest issue comment that starts with `## Feature design`, or it is pasted in.
 - The project's test setup: test config files and existing tests.
+
+**With a design,** test the parts it names, through the names it gives, and nothing it leaves out. A part the design leaves out or says is out of scope gets no test, even if the issue's story mentions it. The criteria still decide *what* each test checks; the design decides *where* and *through which name*.
+
+**Without a design,** work from the issue alone, as below. Don't stop to ask for one.
 
 ## What you may read
 
