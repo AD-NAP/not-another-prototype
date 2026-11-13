@@ -53,7 +53,7 @@ Then check two things:
 
 - **Tests missing:** if the PR changes code but adds or changes no test file, that is a finding: "Tests are missing for <code files>." A PR that changes only docs needs no tests, so don't ask for them.
 - **Outside the issue:** for each changed file, name the criterion or the design note that needs it. A file that nothing in the issue or design needs is a finding: "<file> is outside the issue." Flag it, don't judge whether the change is good. Test files for the issue's criteria count as needed.
-- **Outside the design** (only when there is a design): code the design doesn't describe is a finding, even inside a file the design lists. That covers a file missing from its "Parts it touches", and a function, class, command or endpoint that is not among its names or approach. Name the file and line: "<file>:<line> `<name>` is not in the design." Flag it, don't judge whether the change is good.
+- **Outside the design** (only when there is a design): code the design doesn't describe is a finding, even inside a file the design lists. That covers a code file missing from its "Parts it touches", and a function, class, command or endpoint that is not among its names or approach. This check is for **code files only**. Test and docs files are judged by "Outside the issue" above, so a docs update the repo's own rules ask for (such as a roadmap status line) is not a design finding. Name the file and line: "<file>:<line> `<name>` is not in the design." Flag it, don't judge whether the change is good.
 
 ### 5. Decide
 

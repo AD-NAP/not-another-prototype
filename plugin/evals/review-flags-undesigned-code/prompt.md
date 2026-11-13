@@ -12,7 +12,7 @@ Please review PR #305. `gh` isn't set up in this folder, so here is everything.
 
 Closes #9
 
-Adds `shipping_cost`.
+Adds `shipping_cost`. Also ticks #9 off in `docs/roadmap.md`, which our `CLAUDE.md` asks for when an issue is done.
 
 **Issue #9:**
 
@@ -73,4 +73,11 @@ Adds `shipping_cost`.
 +
 +def test_c4_edge_case_under_50_and_over_5_kg_costs_6_99():
 +    assert shipping_cost(total=20.00, weight_kg=5.5) == 6.99
+--- a/docs/roadmap.md
++++ b/docs/roadmap.md
+@@ -3,3 +3,3 @@
+ | # | Issue | Status |
+ |---|---|---|
+-| 9 | Free shipping on bigger orders | |
++| 9 | Free shipping on bigger orders | Done |
 ```
