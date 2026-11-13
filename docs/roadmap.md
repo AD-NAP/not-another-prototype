@@ -2,6 +2,8 @@
 
 Start small. Each step works on its own and can be shown, so the project is never stuck half done.
 
+The phase-by-phase todo list for steps 6 to 11, with versions and the MVP, is in [todo.md](todo.md).
+
 The sprint loop comes before Sprint 0. The sprint loop is what turns plans into working software, and NAP can use it on itself right away, because NAP's own foundational docs already exist (this folder). Sprint 0 roles follow once the loop works.
 
 | # | Step | What it delivers | Status |
