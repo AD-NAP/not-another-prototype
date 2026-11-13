@@ -118,7 +118,7 @@ Sprint:    Planning -> Tech Lead (design, `ready`) -> Engineer pulls an issue
            Kopi Report after each window. Review and retro at the end of the week.
 ```
 
-Each step hands off a file (doc, issue, tests, PR), not chat history. Any agent or person can pick up where the last step stopped. Each role also writes to an event log, `.nap/events.jsonl`, which the office and the Kopi Report read (see [decision 15](decisions.md#15-the-event-log-is-a-json-lines-file-written-by-a-hook-2026-11-08)).
+Each step hands off a file (doc, issue, tests, PR), not chat history. Any agent or person can pick up where the last step stopped. Each role also writes to an event log, `.nap/events.jsonl`, which the office and the Kopi Report read (see [decision 17](decisions.md#17-the-event-log-is-a-json-lines-file-written-by-a-hook-2026-11-08)).
 
 ## Who works on what
 

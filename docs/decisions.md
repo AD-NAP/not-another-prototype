@@ -196,7 +196,13 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 
 **Update.** The Reviewer's own first real review (on PR #18) found that `gh api` could still merge a PR. Its `gh` rules are now an allowlist: only `gh pr view`, `diff`, `checks`, `review`, `list`, `gh issue view`, `list`, `gh repo view`, `gh auth status`, and `gh api` reads (no method other than GET, no fields, no GraphQL mutation). Any other `gh` command is blocked, including ones GitHub adds later. The hook still only sees commands, so the full fix is a GitHub account for the Reviewer that can review but not merge (roadmap step 12).
 
-## 15. The event log is a JSON Lines file written by a hook (2026-11-08)
+## 15. The Tech Lead posts the design as an issue comment (2026-11-07)
+
+**Decision.** The Tech Lead is the `/nap:design` skill, run in the main session (decision 1). It checks the issue has testable criteria, reads only the code the issue needs, and drafts a one-screen design: approach, files it touches, the names the code will use, tasks linked to criteria by number, and risks. After the user approves, it posts the design as a comment on the issue that starts with `## Feature design`. Without `gh`, it saves the design to `docs/designs/` instead. A design that changes how parts connect, the stack, data storage or a non-functional requirement is marked "Needs Architect review: Yes".
+
+**Why.** Issue #20 asks that anyone can open the design from the issue. A comment lives with the issue, needs no commit or branch, and the Test Engineer and Reviewer already read issues with `gh issue view`, so they can read the design the same way (issue #23). A file in the repo would need its own commit before the link works. "Names the code will use" is there so the Test Engineer can write tests without reading the code. The Architect doesn't exist yet (roadmap step 9), so for now the flag tells the user to check the design before it is built.
+
+## 17. The event log is a JSON Lines file written by a hook (2026-11-08)
 
 **Decision.** One hook, `plugin/hooks/events.mjs`, writes the event log for every NAP role. The log is `.nap/events.jsonl` in the project, one JSON object per line, oldest first: `time`, `role`, `event` (`started`, `finished` or `failed`), `issue`, `pr`, `detail` and `session`. `NAP_EVENT_LOG` sets another path.
 
