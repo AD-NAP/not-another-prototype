@@ -209,3 +209,18 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 **Why.** Issue #22 asks for conflicts marked by number, so picking the next issue is a plain rule. Labels show in the issue list, so the user sees at a glance what can run side by side, and the runner (step 12) can read them with one `gh issue list` call, with no comment to parse. The `conflicts: #N` name follows the `priority: high` style the PM already uses. Comparing whole file paths keeps the rule exact: a shared folder is not a conflict.
 
 **Cost.** One label per issue that has a conflict. Labels are not removed when an issue closes yet (out of scope for #22), so old ones pile up until that is built.
+
+## 17. The event log is a JSON Lines file written by a hook (2026-11-08)
+
+**Decision.** One hook, `plugin/hooks/events.mjs`, writes the event log for every NAP role. The log is `.nap/events.jsonl` in the project, one JSON object per line, oldest first: `time`, `role`, `event` (`started`, `finished` or `failed`), `issue`, `pr`, `detail` and `session`. `NAP_EVENT_LOG` sets another path.
+
+- **Subagent roles** (any `nap:<name>` agent): started when the Agent tool is called, finished when the subagent stops, failed when the Agent call or the subagent fails. This works for agents in the background too.
+- **Skill roles** in the main session (any `nap:<name>` skill): started when the skill runs or its slash command is typed, finished when the turn ends, failed when the turn stops with an error. Entry skills (`failing-tests`, `make-tests-pass`, `review`) are skipped, because their agent logs itself. `backlog` logs as `pm` and `design` as `tech-lead`; any other skill logs under its own name.
+- **Numbers** come from the agent's prompt or the skill's arguments: `issue 21`, `#21`, `PR 26`, or an issue or pull URL. A bare number is an issue, except for the Reviewer, where it is a PR.
+- **Best effort.** The hook never blocks and always exits 0. If the log can't be written, the role carries on. A small state file next to the log links each start to its finish.
+- **Kept out of git.** When the hook creates `.nap/`, it adds a `.gitignore` there, so the log never lands in a PR.
+- **Unit tests, not evals,** as in decision 13.
+
+**Why.** Hooks fire whatever the agent does, so the log doesn't depend on the agent remembering to write it (rule 2 against drift), and no role's instructions change. JSON Lines is append-only, so entries stay in the order they happened, and any script reads it line by line with no library: `jq`, a few lines of Node, or the office later. A file in the project fits step 5 and needs no server; the runner (step 12) can point `NAP_EVENT_LOG` wherever it wants. A failed role can't log its own failure, so failures come from the `PostToolUseFailure` and `StopFailure` hook events. A live run on Claude Code 2.1 confirmed the events and fields.
+
+**Limits.** A skill role that asks the user a question logs "finished" when it hands the turn back, with the question as its detail. If the user answers, the rest of that role's work isn't logged again until the skill runs again. Two hooks writing at the same moment can race on the state file; the log itself is safe, because each entry is one append.
