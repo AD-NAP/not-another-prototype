@@ -202,6 +202,14 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 
 **Why.** Issue #20 asks that anyone can open the design from the issue. A comment lives with the issue, needs no commit or branch, and the Test Engineer and Reviewer already read issues with `gh issue view`, so they can read the design the same way (issue #23). A file in the repo would need its own commit before the link works. "Names the code will use" is there so the Test Engineer can write tests without reading the code. The Architect doesn't exist yet (roadmap step 9), so for now the flag tells the user to check the design before it is built.
 
+## 16. Conflicts are labels, one per issue number (2026-11-07)
+
+**Decision.** `/nap:design` labels an issue `ready` once its design is approved, unless the design needs Architect review. It then compares the "Parts it touches" table of the issue's design with those of the other open `ready` issues. Two issues conflict when they share at least one file path, exactly (decision 5). Each conflict is marked on both issues with a label naming the other one: `conflicts: #290` on #301 and `conflicts: #301` on #290. The labels are shown with the design and added only after the user approves. Missing labels are created then too. The user can also ask to mark an issue with an existing design `ready`.
+
+**Why.** Issue #22 asks for conflicts marked by number, so picking the next issue is a plain rule. Labels show in the issue list, so the user sees at a glance what can run side by side, and the runner (step 12) can read them with one `gh issue list` call, with no comment to parse. The `conflicts: #N` name follows the `priority: high` style the PM already uses. Comparing whole file paths keeps the rule exact: a shared folder is not a conflict.
+
+**Cost.** One label per issue that has a conflict. Labels are not removed when an issue closes yet (out of scope for #22), so old ones pile up until that is built.
+
 ## 17. The event log is a JSON Lines file written by a hook (2026-11-08)
 
 **Decision.** One hook, `plugin/hooks/events.mjs`, writes the event log for every NAP role. The log is `.nap/events.jsonl` in the project, one JSON object per line, oldest first: `time`, `role`, `event` (`started`, `finished` or `failed`), `issue`, `pr`, `detail` and `session`. `NAP_EVENT_LOG` sets another path.
