@@ -6,6 +6,7 @@ A small AI dev team for developers, as plain Claude Code skills and agents. Four
 - `docs/design.md`: the roles and the loop.
 - `docs/decisions.md`: the decisions that hold today, and why. Keep it current: remove or rewrite an entry that stops being true.
 - `docs/roadmap.md`: what is next.
+- `docs/skill-writing.md`: how we write and refine skills and agents. Follow its checklists when editing one.
 - `docs/skill-research.md`: other people's skills worth learning from, per role.
 
 ## Layout
