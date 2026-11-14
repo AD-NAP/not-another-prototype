@@ -40,7 +40,7 @@ If the user says "your call", pick the plain option and note it as an assumption
 
 ## 3. Draft
 
-Use the templates in [doc-templates.md](doc-templates.md). Show one draft with:
+Use the templates in [doc-templates.md](doc-templates.md). It sits next to this file, in the base directory Claude Code gave when this skill loaded. Read it from there, not from `~/.claude/skills/`. Show one draft with:
 
 1. **The stack you recommend:** each part (language, framework, data store, hosting, tests) with one line on why, and one real alternative with when it would be the better pick.
 2. **`docs/ARCHITECTURE.md`:** goal, users, parts, how they connect, data, CI and deploy.
