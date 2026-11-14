@@ -34,6 +34,25 @@ You need [Claude Code](https://code.claude.com), `git`, and the [GitHub CLI](htt
 
 NAP is plain files, with no plugin to install. Clone this repo, then copy `skills/` and `agents/` into `~/.claude/` to use the team in every project, or into one project's `.claude/` folder to use it there.
 
+Then allow the commands the roles run after you approve, in the project's `.claude/settings.json` (or `~/.claude/settings.json`). In our runs a skill's `allowed-tools` did not carry over to later turns, and the PM and Tech Lead post on a later turn, after your yes. Without this list, every post asks again.
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh issue view *)",
+      "Bash(gh issue create *)",
+      "Bash(gh issue edit *)",
+      "Bash(gh issue comment *)",
+      "Bash(gh label create *)"
+    ],
+    "deny": ["Bash(gh pr merge *)"]
+  }
+}
+```
+
+The Engineer and the Reviewer will ask before running `git`, your tests and `gh pr` commands. Allow the ones you trust them with.
+
 ## Principles
 
 1. **For developers.** NAP is a team for one person and a way to keep AI code to real engineering standards. It does not replace developers.
