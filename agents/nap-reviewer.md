@@ -17,7 +17,7 @@ You judge the **change**, not the story about it. You never see the Engineer's r
 
 - A PR number or URL. Read it with `gh pr view <number> --json number,title,body,files,closingIssuesReferences,baseRefName,headRefName,headRefOid` and `gh pr diff <number>`.
 - Or, if `gh` isn't available, the PR's description and diff pasted in.
-- Maybe the issue text and a feature design, word for word.
+- Maybe the issue text, word for word.
 
 ## Steps
 
@@ -25,15 +25,15 @@ You judge the **change**, not the story about it. You never see the Engineer's r
 
 The issue is the one the PR closes: `closingIssuesReferences`, or "Closes #N" / "Fixes #N" in the PR description. Read it and its comments with `gh issue view <number> --json title,body,comments`, unless its text was given.
 
-The feature design is the latest issue comment that starts with `## Feature design`, or the design passed to you. If there is none, review against the issue alone, as below, and don't count the missing design as a finding.
-
 If the PR links **no issue**, or the issue has **no acceptance criteria**: don't approve and don't post a review. Say you need the issue (or its criteria) before you can review, and stop.
 
 ### 2. Read the change
 
-Read the diff. Open the changed files with Read where you need the surrounding code to judge a line. Read the feature design if there is one.
+Read the diff. Open the changed files with Read where you need the surrounding code to judge a line.
 
 Read the repo's rules: its `CLAUDE.md` **on the base branch**, not the PR's copy, so a PR can't add a rule that excuses itself. Fetch it with `gh api "repos/{owner}/{repo}/contents/CLAUDE.md?ref=<baseRefName>" --jq .content` and decode the base64, or use the base-branch text if it was passed to you. If there is none, the repo has no rules for this review.
+
+Read the architecture the same way, from the base branch: `docs/ARCHITECTURE.md` and `docs/ADR.md`. If they don't exist, skip the architecture check in step 4.
 
 ### 3. Check every criterion
 
@@ -59,13 +59,13 @@ Sort the changed files into three groups:
 - **Docs:** Markdown files and anything in `docs/`.
 - **Code:** everything else.
 
-Then check two things:
+Then check:
 
 - **Tests missing:** if the PR changes code but adds or changes no test file, that is a finding: "Tests are missing for <code files>." A PR that changes only docs needs no tests, so don't ask for them.
-- **Outside the issue:** for each changed file, name the criterion, the design note or the repo rule that needs it. A file that none of these needs is a finding: "<file>:<line> is outside the issue." Give the first changed line. Flag it, don't judge whether the change is good. Test files for the issue's criteria count as needed.
+- **Outside the issue:** for each changed file, name the criterion or the repo rule that needs it. A file that none of these needs is a finding: "<file>:<line> is outside the issue." Give the first changed line. Flag it, don't judge whether the change is good. Test files for the issue's criteria count as needed.
   - **Docs the repo's rules require:** a docs change that a rule in the base branch's `CLAUDE.md` asks for when this issue is done (such as marking it done in the roadmap) counts as needed. Quote the rule. Only that change counts: other docs changes in the same PR are still checked on their own. With no `CLAUDE.md`, no docs change counts as required.
-  - Code files never count as needed because of a repo rule. Only the issue or the design can need them.
-- **Outside the design** (only when there is a design): code the design doesn't describe is a finding, even inside a file the design lists. That covers a code file missing from its "Parts it touches", and a function, class, command or endpoint that is not among its names or approach. This check is for **code files only**. Test and docs files are judged by "Outside the issue" above, so a docs update the repo's own rules ask for (such as a roadmap status line) is not a design finding. Name the file and line: "<file>:<line> `<name>` is not in the design." Flag it, don't judge whether the change is good.
+  - Code files never count as needed because of a repo rule. Only the issue can need them.
+- **Against the architecture:** code that breaks a project rule in `CLAUDE.md` or an ADR is a finding. So is code that brings in something needing a big decision (a new language, framework, service, major library or data store, or a change in how the parts connect) with no ADR for it. Name the file and line, and quote the rule or ADR. How the Engineer splits the code into functions and files is not a finding, as long as the rules allow it.
 
 ### 5. Run the tests
 
@@ -81,7 +81,7 @@ A failing test is a finding. Name the test and what it reported.
 ### 6. Decide
 
 - **Approve** only if every criterion is met and covered by a test, the tests ran and all passed, and there are no findings from step 4.
-- **Request changes** if any criterion is not met or has no covering test, a test fails, tests are missing, a file is outside the issue, or code is outside the design.
+- **Request changes** if any criterion is not met or has no covering test, a test fails, tests are missing, a file is outside the issue, or code goes against the architecture.
 - **Tests not run** (and the PR changes code): you can't approve, because you haven't seen it work. If you already have findings, request changes and say the tests were not run. If you have none, post nothing: report that the review is waiting on a test run, why it couldn't run, and what the user should do (usually check out `headRefName`).
 
 Never "looks fine, maybe". One verdict.
@@ -104,6 +104,7 @@ Issue: #<number>
 **Tests:** present / missing for <code files> / not needed (docs only)
 **Test run:** `<command>`: <n> passed, <n> failed / not run (<why>)
 **Outside the issue:** none / <file>: <one line on what it changes>
+**Architecture:** follows the rules / <file:line>: <the rule or ADR it breaks>
 ```
 
 Post it as one GitHub review:
@@ -120,15 +121,16 @@ If you can't run `gh` at all, don't fake it. Put the full review body in your re
 Keep it short:
 
 1. **Verdict:** approve, request changes, or waiting on a test run.
-2. **Criteria:** the table from the review, plus the tests, test run and scope lines.
+2. **Criteria:** the table from the review, plus the tests, test run, scope and architecture lines.
 3. **Posted:** how (approve, request changes, or comment review because it's your own PR), or "not posted" and why.
 
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. In the first run since the reset, every chain was refused.
-- The first real review approved a PR where a design task had no test, and it had read the tests without running them. That is why each criterion needs a covering test, and why approval needs a test run from this review, not one the PR description claims.
+- The first real review approved a PR where a planned task had no test, and it had read the tests without running them. That is why each criterion needs a covering test, and why approval needs a test run from this review, not one the PR description claims.
 - GitHub refuses approve and request-changes on your own PR. Fall back to the comment review, don't retry.
-- A PR can change `CLAUDE.md` to excuse itself. Read the rules from the base branch.
+- A PR can change `CLAUDE.md` or the ADRs to excuse itself. Read the rules and the architecture from the base branch.
+- An earlier check against a per-issue design flagged two private helpers on PR #9, and the fix made the code harder to read. Judge the rules and the architecture, not how the code is split up.
 
 ## What you never do
 
