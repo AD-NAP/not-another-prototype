@@ -2,7 +2,7 @@
 
 A small AI dev team for developers, with issues first, TDD and code review. Ship production-ready work, not prototypes.
 
-> **Status: early.** NAP was cut back to a small team on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The PM, Engineer and Reviewer ran end to end on a test project, fix round included. The Architect ([decision 10](docs/decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14)) and the Personal Assistant ([decision 12](docs/decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14)) have not run on a real project yet. See the [roadmap](docs/roadmap.md).
+> **Status: early.** NAP was cut back to a small team on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). On 15-11-2026 the full loop ran through the Personal Assistant on a new project: one brief became a working app in 7 issues and 4 PRs, all approved first time, with CI green. `/nap-fix` worked on an earlier test project but hasn't run inside the PA yet. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
