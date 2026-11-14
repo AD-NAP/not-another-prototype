@@ -40,7 +40,7 @@ Not in the MVP: sprint ceremonies, the vision brief, PRD and story map, the Arch
 - [x] 0.4 Protect `main` (PR and CI required). Commit a deny rule for `gh pr merge` (S, CEO applies)
 - [x] 0.5 README refresh: true status, prerequisites, "for developers" wording, no claim without evidence (S)
 - [x] 0.6 Tidy docs: shorten the roadmap step 5 cell, private repo name, decision 13 count, remove `office/` placeholder, vault note (H)
-- [ ] 0.7 Issue hygiene through `/nap:backlog`: split #45 and #38, fold #39 to #42, fix #40, open the new issues (S)
+- [x] 0.7 Issue hygiene through `/nap:backlog`: split #45 and #38, fold #39 to #42, fix #40, open the new issues (S)
 - [x] 0.8 Spike A: `isolation: worktree` on Windows (S, CEO runs)
 - [x] 0.9 Spike B: `context: fork` with a plugin agent (S, CEO runs)
 - [x] 0.10 Spike C: project allow rules inside a NAP subagent (S, CEO runs)
