@@ -96,11 +96,24 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 **What we give up.** One build at a time, since there is one checkout. And the PA is one more file that can drift from the roles it runs, which is why it calls their skills instead of repeating them.
 
-## 13. The PM starts with a vision, one milestone at a time (2026-11-15)
+## 13. The PM starts with a PRD, one milestone at a time (2026-11-15)
 
-**Decision.** A new project starts with `/nap-vision`, the PM's second skill. It asks how big the project is first: Script, Personal tool, App, Product, Platform, or Unsure (then it asks two or three questions and suggests one). The scope decides how many questions follow: who and why, the end goal, what v0.1 and v1.0 must do, later phases, what is out of scope, and how we know it works. After approval it writes `docs/VISION.md` and a GitHub milestone per version. The Architect reads the vision and sizes the build to it, and commits it with its own docs on a new project. `/nap-backlog` then writes full stories for the current milestone only. The PA closes each milestone when its last issue is merged and asks before starting the next version.
+**Decision.** A new project starts with `/nap-vision`, the PM's second skill. It asks the scope first, then only the questions that scope needs. It agrees a docs plan, writes `docs/PRD.md`, and creates a GitHub milestone per version, all after the user approves. `/nap-backlog` then writes full stories for the current milestone only. The PA closes each milestone when its last issue is merged, and asks before starting the next version.
 
-**Why.** The user wanted the idea refined before anything is built: how big it should be, the end goal, the MVP and later versions. Nobody owned a vision or PRD before. Scope changes the architecture a lot, so it comes before the Architect. Full stories wait until their version is next, since what the user learns from v0.1 changes v1.0. It is a separate skill from `/nap-backlog` because it runs once per project, not for every feature.
+| Scope | Versions and milestones |
+|---|---|
+| Script | No PRD and no milestones. A summary only |
+| Personal tool | The user picks: start at v0.1 and grow, or go straight to v1.0 |
+| App | v0.1 and up to v1.0, the MVP |
+| Product, Platform | v0.1, v1.0 and later, each explored in depth. The user picks the MVP |
+| Unsure | Two or three questions, then a suggested scope |
 
-**What we give up.** One more approval at the start of a project, and on a new project the PM's file waits uncommitted until the Architect commits it.
+**The docs plan.** `skills/nap-vision/doc-plan.md` says, per scope, which documents are a must, which are good to have, and which to leave out, who writes each, and when. The PM proposes the plan in the PRD, and the user adjusts it. A document is written when what it describes is known, not before. An API spec, for example, waits until the version that builds the API. The Architect writes the documents due now. Each later one becomes a `type: docs` task in its version's milestone, labelled with who writes it. The Architect also writes the UX and operations documents until a real UX or Platform role exists.
 
+**Why.** The user wanted the idea refined before anything is built: how big it should be, the end goal, the MVP and later versions. The first PA run produced only architecture docs, with no PRD. Scope changes how much architecture and documentation a project needs: a Script needs a README, a Platform needs runbooks. Full stories and later documents wait until their version is next, because what the user learns from v0.1 changes v1.0.
+
+**How the PM asks.** The questions about the user's own view (who and why, the end goal, what they have used or tried) are open, with no suggested answer, so the PRD is the user's idea. A detailed idea is played back first. Anything the user didn't say is marked as the PM's suggestion. App and above also cover anti-goals (failure even if it works) and what the user has used or tried. For a Product or Platform, a fresh subagent reads the draft and lists what it would have to guess. The PM settles minor gaps itself, and asks the user about important ones before approval.
+
+**What we give up.** One more approval at the start of a project. On a new project, the PRD waits uncommitted until the Architect commits it, so the user merges one change instead of two. The reader check costs one more subagent run for a Product or Platform.
+
+**Adapted from** Superpowers' `brainstorming` skill and its builder check ([THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)).
