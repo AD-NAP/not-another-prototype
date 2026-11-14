@@ -15,8 +15,9 @@ NAP is a set of Claude Code skills and agents that gives you a team of agents mo
 | Command | Role | What it does |
 |---|---|---|
 | `/nap-pa` | Personal Assistant | Runs the whole loop for you from your plans and goals. Calls each role in order and stops only for your answers, approvals and merges. Say "merge it" to have it merge an approved PR, or "merged" or "continue" to pick up again. |
+| `/nap-vision` | PM | Once per project: asks how big it is, then refines the idea into versions (v0.1, v1.0 and later). Writes `docs/VISION.md` and a GitHub milestone per version after you approve. |
 | `/nap-architect` | Architect | Once per project: records the goal, recommends a stack, and writes the architecture, ADRs and project rules after you approve. Again for any big decision. |
-| `/nap-backlog` | PM | Turns the goal or a brief into GitHub issues with testable acceptance criteria |
+| `/nap-backlog` | PM | Turns one version's features, or a new idea, into GitHub issues with testable acceptance criteria, in that version's milestone |
 | `/nap-build` | Engineer | Builds one issue, or a few related ones, test-first in a fresh context and opens one PR |
 | `/nap-review` | Reviewer | Reviews a PR against its issue, the project rules and the ADRs in a fresh context, and runs the tests |
 | `/nap-fix` | Engineer | Fixes the findings from a review on the same PR, up to three rounds |
@@ -55,10 +56,13 @@ Then allow the commands the roles run after you approve, in the project's `.clau
       "Bash(gh pr list *)",
       "Bash(gh pr view *)",
       "Bash(gh pr checks *)",
+      "Bash(gh api repos/{owner}/{repo}/milestones *)",
+      "Bash(gh api -X PATCH repos/{owner}/{repo}/milestones/*)",
       "Bash(git status *)",
       "Bash(git pull *)",
       "Bash(git fetch *)",
       "Bash(git rev-parse *)",
+      "Skill(nap-vision)",
       "Skill(nap-architect)",
       "Skill(nap-backlog)",
       "Skill(nap-build)",

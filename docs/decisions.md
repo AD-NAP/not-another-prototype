@@ -95,3 +95,12 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 **Why.** Typing each command, switching branches before a review and passing PR numbers between roles was manual work the user didn't need to do. Merging as you go keeps every build on the real main branch, which matters because issues often build on each other. Grouping related issues ([decision 11](#11-related-issues-can-share-a-pr-2026-11-14)) keeps the number of merges down.
 
 **What we give up.** One build at a time, since there is one checkout. And the PA is one more file that can drift from the roles it runs, which is why it calls their skills instead of repeating them.
+
+## 13. The PM starts with a vision, one milestone at a time (2026-11-15)
+
+**Decision.** A new project starts with `/nap-vision`, the PM's second skill. It asks how big the project is first: Script, Personal tool, App, Product, Platform, or Unsure (then it asks two or three questions and suggests one). The scope decides how many questions follow: who and why, the end goal, what v0.1 and v1.0 must do, later phases, what is out of scope, and how we know it works. After approval it writes `docs/VISION.md` and a GitHub milestone per version. The Architect reads the vision and sizes the build to it, and commits it with its own docs on a new project. `/nap-backlog` then writes full stories for the current milestone only. The PA closes each milestone when its last issue is merged and asks before starting the next version.
+
+**Why.** The user wanted the idea refined before anything is built: how big it should be, the end goal, the MVP and later versions. Nobody owned a vision or PRD before. Scope changes the architecture a lot, so it comes before the Architect. Full stories wait until their version is next, since what the user learns from v0.1 changes v1.0. It is a separate skill from `/nap-backlog` because it runs once per project, not for every feature.
+
+**What we give up.** One more approval at the start of a project, and on a new project the PM's file waits uncommitted until the Architect commits it.
+
