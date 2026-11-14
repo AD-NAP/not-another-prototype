@@ -15,7 +15,7 @@ NAP is a set of Claude Code skills and agents that gives you a team of agents mo
 | Command | Role | What it does |
 |---|---|---|
 | `/nap-pa` | Personal Assistant | Runs the whole loop for you from your plans and goals. Calls each role in order and stops only for your answers, approvals and merges. Say "merge it" to have it merge an approved PR, or "merged" or "continue" to pick up again. |
-| `/nap-vision` | PM | Once per project: asks how big it is, then refines the idea into versions (v0.1, v1.0 and later). Writes `docs/VISION.md` and a GitHub milestone per version after you approve. |
+| `/nap-vision` | PM | Once per project: asks how big it is, then refines the idea into versions (v0.1, v1.0 and later) and agrees which documents the project needs and when. Writes `docs/PRD.md` and a GitHub milestone per version after you approve. |
 | `/nap-architect` | Architect | Once per project: records the goal, recommends a stack, and writes the architecture, ADRs and project rules after you approve. Again for any big decision. |
 | `/nap-backlog` | PM | Turns one version's features, or a new idea, into GitHub issues with testable acceptance criteria, in that version's milestone |
 | `/nap-build` | Engineer | Builds one issue, or a few related ones, test-first in a fresh context and opens one PR |

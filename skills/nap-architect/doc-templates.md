@@ -8,7 +8,7 @@ Templates for the Architect's files. Keep each one short: a reader should get th
 # Architecture
 
 ## Goal
-<Who it is for and what problem it solves, in one or two sentences, and the scope. Taken from `docs/VISION.md` when there is one.>
+<Who it is for and what problem it solves, in one or two sentences, and the scope. Taken from `docs/PRD.md` when there is one.>
 
 ## Users
 <Who signs in, and how: one person, many users, teams. "Nobody signs in" is fine.>
