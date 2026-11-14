@@ -4,7 +4,7 @@ How NAP's skills and agents get created and refined. Researched 2026-11-14 from 
 
 ## The approach
 
-Refine the four skills we have, by hand with Claude, driven by failures from real runs. Not from a blank page, and not through a full eval loop.
+Refine the skills we have, by hand with Claude, driven by failures from real runs. Not from a blank page, and not through a full eval loop.
 
 1. **Start from what exists.** The four skills and the open issues are our observed failures.
 2. **Edit by hand** against the checklist below.
@@ -88,7 +88,7 @@ Vague briefs were the main failure in Anthropic's own multi-agent system.
 | It is a quick change | Tool restrictions or a fresh perspective matter |
 
 - **Reviewer:** a strong fit. Fresh perspective and read-only tools are the textbook case.
-- **Engineer:** a weaker fit. Implementation shares context with planning, and Anthropic says coding suits multi-agent setups less than research does. NAP's answer is that the issue and the design are written down, so the hand-off is a file. The first real run should prove it.
+- **Engineer:** a weaker fit. Implementation shares context with planning, and Anthropic says coding suits multi-agent setups less than research does. NAP's answer is that the issue and the architecture docs are written down, so the hand-off is a file. The two runs on `nap-sprint-test` built well this way.
 
 Agents cost more. Anthropic measured about 4 times the tokens of chat for agents and about 15 times for multi-agent systems, in their research product.
 

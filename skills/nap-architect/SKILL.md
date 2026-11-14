@@ -65,7 +65,7 @@ Wait. Apply changes and show them again until the user approves with a clear yes
 ## 5. Write and open a PR (only after approval)
 
 1. Write the files. In an existing `CLAUDE.md`, add or update a `## Project rules` section and leave the rest as it is.
-2. If the repo has no commits yet, commit the files as the first commit on the main branch and push. You are done.
+2. If the repo has no commits yet, commit the files as the first commit on the main branch, and push if there is a remote. You are done.
 3. Otherwise: `git switch -c docs/architecture` (or `docs/adr-<number>` for one decision), commit, push, and open a PR with the body written to a file: `gh pr create --title "<title>" --body-file <path>`.
 4. Show the link. Say that the user should merge it before builds start, because the Engineer and Reviewer read these files from the main branch.
 
@@ -74,7 +74,7 @@ Then close with: "Run `/nap-backlog` next to turn the goal into issues?" For a s
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
-- Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval. The PA's first test run hit this.
+- Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval.
 - If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to do anything.
 
 ## What you never do

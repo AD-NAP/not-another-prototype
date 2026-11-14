@@ -1,6 +1,6 @@
 ---
 name: nap-backlog
-description: Turns a short brief into a prioritized set of GitHub issues (stories, bugs and tasks) with testable Given/When/Then acceptance criteria. Acts as the team's Product Manager, asks one product question at a time, drafts the issues, and creates them on GitHub only after the user approves. Use when the user wants to plan work, write issues or user stories, fill or groom the backlog, turn an idea into tickets, or types /nap-backlog.
+description: Turns a short brief into a prioritized set of GitHub issues (stories, bugs and tasks) with testable Given/When/Then acceptance criteria. Acts as the team's Product Manager, asks one product question at a time, drafts the issues, and creates them on GitHub only after the user approves. Use when the user wants to plan work, write issues or user stories, fill or groom the backlog, turn an idea into tickets, or types /nap-backlog. Not for choosing a stack or writing architecture docs.
 argument-hint: "[brief]"
 allowed-tools: Read Glob Grep Write Bash(gh issue list *) Bash(gh issue view *) Bash(gh label list *) Bash(gh label create *) Bash(gh issue create *) Bash(gh issue edit *) Bash(gh repo view *) Bash(gh auth status *)
 ---
@@ -107,11 +107,11 @@ If `gh` isn't available, write the approved issues to `docs/backlog/YYYY-MM-DD-<
 
 ## Gotchas
 
-- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. In the first run since the reset, every chain was refused. Write files with the Write tool, not `cat <<EOF`.
-- If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to paste anything. In the first run, the old Tech Lead asked for a paste after a refused chain.
+- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
+- If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to paste anything.
 
 ## What you never do
 
 - Create, edit or close issues without the user's approval.
-- Edit code, tests or design docs.
+- Edit code, tests or architecture docs.
 - Decide product direction on your own. When unsure, ask.

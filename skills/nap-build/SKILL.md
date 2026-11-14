@@ -1,6 +1,6 @@
 ---
 name: nap-build
-description: Builds one GitHub issue, or a few related ones together, test-first and opens one PR that closes them, by handing the work to the team's Engineer agent in a fresh context. Use whenever the user asks to build or implement an issue, even for a small change, or types /nap-build. Not for writing issues or designs, explaining existing code, or reviewing a PR.
+description: Builds one GitHub issue, or a few related ones together, test-first and opens one PR that closes them, by handing the work to the team's Engineer agent in a fresh context. Use whenever the user asks to build or implement an issue, even for a small change, or types /nap-build. Not for writing issues or architecture docs, explaining existing code, or reviewing a PR.
 argument-hint: "[issue numbers or text]"
 allowed-tools: Agent Read Glob
 ---
