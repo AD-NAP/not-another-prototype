@@ -294,3 +294,69 @@ A person approves every merge to `main` in both stages. That rule does not chang
 **Decision.** After an issue reaches a merge-ready PR, `/nap:run next` continues to the next one. It takes the top `ready` issue that neither conflicts with an open PR (the `conflicts: #N` labels, decision 16) nor is blocked by one ("blocked by" links that `/nap:backlog` records). Each issue branches from `main`. It stops when 3 PRs wait for the CEO, or when no issue qualifies, and reports what is ready and what is blocked. Stacked PRs, where an issue branches from an unmerged PR, wait for stage B of decision 21.
 
 **Why.** Independent issues need no stacking. A stacked PR needs a rebase whenever the PR under it changes or is squash-merged, and a change request at the bottom reaches every PR above it. In stage A the stack would also grow while the CEO is away. With a sprint branch as the shared base, PRs merge as they pass, so stacking fits there. The cap of 3 keeps the CEO's queue short and limits the work at risk if an early PR is sent back.
+
+## 23. MIT license (2026-11-14)
+
+**Decision.** NAP is MIT licensed. Sources under Apache-2.0 can be adapted into it if their notices are kept in `THIRD_PARTY_NOTICES.md`.
+
+**Why.** The repo is public and meant to be used and copied. Most of the work NAP adapts is MIT already ([skill-research.md](skill-research.md)), so MIT keeps the notices simple.
+
+## 24. Releases: semver, `nap--vX.Y.Z` tags and a changelog (2026-11-14)
+
+**Decision.**
+
+- `plugin.json` carries a semver version, bumped on every release. Phase 0 starts at 0.1.0. v1.0.0 is the MVP (decision 18).
+- Each release is tagged `nap--vX.Y.Z` with `claude plugin tag`, which checks that `plugin.json` and the marketplace entry agree.
+- `CHANGELOG.md` gets a dated entry per release.
+- A project pins NAP with a `ref` or `sha` on its marketplace entry, or `#nap--vX.Y.Z` on `claude plugin marketplace add`. Without a pin it follows the latest release.
+
+**Why.** Claude Code decides whether an update exists from `version`. A version that never changes means `claude plugin update` reports "already at the latest version" and users keep the old copy. Pinned tags give each project a known team standard, which is the point of NAP. The tag format is the one `claude plugin tag` makes.
+
+## 25. The office gets its own repo (2026-11-14)
+
+**Decision.** The office is a separate repo. The `office/` placeholder is removed from this one. The event log (decision 17) is the only link between them. This amends decision 3: the team and runner stay here, the office moves out.
+
+**Why.** Decision 3 named "the office having its own release cycle" as a reason to split. The office is a UI with its own stack and dependencies, built after the MVP, and it only reads the event log. Keeping it out keeps this repo small and keeps the plugin's CI free of UI tooling.
+
+## 26. Hooks stay minimal (2026-11-14)
+
+**Decision.** Hooks do two things: deny what is certain, and write the event log.
+
+- **Deny what is certain:** a file tool (Edit, Write, Read) aimed at a path outside the role's lane. Lanes stay as in decisions 13 and 14.
+- **Shell guesses are logged, not blocked.** A guess from words in a shell command (`cat`, `>`, `sed -i`) goes to the event log as a possible lane break. This narrows decision 13, which blocked common shell commands.
+- **Hooks never grant permissions.** Routine commands are allowed by rules in the project's own `.claude/settings.json`, documented in phase 1 and written by `/nap:setup`.
+- **Chaining roles is not a hook job.** It belongs to the Chief of Staff (decision 19).
+- **What must never happen is stopped outside the hooks.** A project deny rule stops `gh pr merge`, and branch protection stops pushes to `main` (decision 21).
+
+**Why.** A file tool aimed at a path is certain; words in a shell command are not. A review of `lanes.mjs` found the Engineer is denied a harmless chain such as `rm -rf dist && pytest tests/`, because a writer word and a test path both appear in it. Such denials stop a run for nothing, and the same review found the shell rules easy to get around (`bash -c`, `python -c`), so they protect little. Phase 0 spike C confirmed that project allow rules reach plugin subagents (decision 30), so a hook that auto-allows commands is not needed.
+
+## 27. Evals stay inside the plugin (2026-11-14)
+
+**Decision.** `plugin/evals/` stays where it is and ships with the plugin.
+
+**Why.** `claude plugin eval` reads cases from inside the plugin and has no exclude option. The cost to users is small: text files only, with `results/` gitignored. Fixtures stay tiny. They move out only if an official exclude appears.
+
+## 28. Superpowers is a source, not a dependency (2026-11-14)
+
+**Decision.** NAP does not install or require [Superpowers](https://github.com/obra/superpowers). It adapts parts of it into NAP's own words, with credit in `THIRD_PARTY_NOTICES.md` (decision 23): the result status contract, the review fix loop and the review format. This replaces decision 2.
+
+**Why.** Decision 2 named the risk to check: Superpowers skills trigger on their own and its TDD skill has one agent write both tests and code. Both proved true. Its session-start hook injects text that overrides NAP's routing, and its single-agent TDD fights the Test Engineer and Engineer split. Its useful parts are MIT and small enough to adapt.
+
+## 29. Velocity is size points per milestone (2026-11-14)
+
+**Decision.** A sprint is a GitHub milestone. Velocity is size points closed per sprint (S is 1, M is 2, L is 3), with the issue count shown beside it.
+
+**Why.** Milestones and the size labels from `/nap:backlog` already exist, need no extra token scope and work with plain `gh`. GitHub Projects would add setup and permissions for no gain at this size. `kopi` (decision 18) reads velocity this way.
+
+## 30. What the phase 0 spikes settled (2026-11-14)
+
+**Decision.** Four short spikes on Claude Code 2.1.316 on Windows tested what phase 1's design assumed. Phase 1 follows their results:
+
+| Spike | Result | What phase 1 does |
+|---|---|---|
+| A. `isolation: worktree` | Works on Windows with no denials. The worktree lands in `.claude/worktrees/`, branches from `origin/main` by default and from local HEAD with `worktree.baseRef: "head"`. A copied `.claude/settings.local.json` shows up untracked inside it. | `baseRef: "head"` goes in the project's committed settings. The Engineer stages files by name, never `git add -A`. |
+| B. `context: fork` with a plugin agent | Works. `agent: nap:<role>` runs the skill body in that agent, the skill's `allowed-tools` reaches the fork, and the caller gets the report back. But a fork **ignores** the agent's `isolation: worktree`. | The design of 1.6 and 1.7 picks one of: the forked Engineer makes its own worktree, or the entry skill uses the Agent tool and a hook stops the main session editing source. |
+| C. Project allow rules | Reach Agent-tool subagents and forks, but only if the project folder itself is trusted. A trusted parent folder does not count for `claude -p`. Rules passed with `--settings <file>` work without trust. A plugin's `permissions` are dropped. | Trusting the folder is a setup step. Scripts and smoke runs pass `--settings`. No hook auto-allow (decision 26). |
+| D. Eval results and traces | Under `--ablation none`, `with-only` graders count toward the score. The trace links each subagent tool call to its `Agent` call by `parent_tool_use_id`. Evals offer no Bash, so they never show a Bash denial. | Fix the evals README. Smoke runs count denials from the stream-JSON trace, not from `permission_denials`, which misses subagent denials. |
+
+**Why.** These four points were unverified, and phase 1's design leaned on each of them. Testing them first cost about an hour and a half, against redesigning phase 1 halfway through.
