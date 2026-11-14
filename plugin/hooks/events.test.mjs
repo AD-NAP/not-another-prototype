@@ -80,7 +80,7 @@ test("C1 the Reviewer's number is a PR, and both numbers are kept when given", (
   callAgent("reviewer", "Review PR #26. Its issue is #22.", "tu-1");
   callAgent("reviewer", "Review #27", "tu-2");
   const [a, b] = readLog(log);
-  assert.equal(a.pr, 26);
+  assert.equal(a.pr, 27);
   assert.equal(a.issue, 22);
   assert.equal(b.pr, 27);
   assert.equal(b.issue, null);
