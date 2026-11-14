@@ -30,6 +30,8 @@ Don't add review comments or opinions of your own.
 
 ## 3. Report back
 
-Relay the Reviewer's report: the verdict, the criteria table, and how the review was posted. Keep it short.
+Relay the Reviewer's report: the verdict, the criteria table, the test run, and how the review was posted. Keep it short.
 
 If the Reviewer said it needs the issue, say so and ask the user which issue the PR is for.
+
+If the review requests changes, say the next step: `/nap-fix <number>`. If the Reviewer is waiting on a test run, pass on why and what the user should do.

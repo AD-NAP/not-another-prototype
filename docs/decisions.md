@@ -25,7 +25,7 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 ## 3. Subagent roles get an entry skill (2026-10-31)
 
-**Decision.** Each subagent role has a thin skill that hands the work to it: `/nap-build` for the Engineer and `/nap-review` for the Reviewer. The procedure lives in the agent file.
+**Decision.** Each subagent role has a thin skill that hands the work to it: `/nap-build` and `/nap-fix` for the Engineer, and `/nap-review` for the Reviewer. The procedure lives in the agent file.
 
 **Why.** Without the skill, Claude did small tasks itself and the agent never ran. The skill also decides what the agent sees, so the Reviewer never gets the Engineer's notes.
 
@@ -60,3 +60,11 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 **Decision.** NAP is MIT licensed. It does not install or depend on other skill collections such as [Superpowers](https://github.com/obra/superpowers). It adapts their best parts into its own words, with credit in `THIRD_PARTY_NOTICES.md`. Apache-2.0 sources can be adapted if their notices are kept there.
 
 **Why.** The repo is public and meant to be copied, and most of the work worth adapting is MIT already ([skill-research.md](skill-research.md)). Superpowers triggers on its own and overrides NAP's routing when installed beside it, but its useful parts are small enough to adapt.
+
+## 9. Approval needs a test run, and fixes stay on the PR (2026-11-14)
+
+**Decision.** The Reviewer approves only after running the full test suite itself and seeing it pass, and only when each criterion has a test that would fail if it broke. It runs the tests only when the checkout is already on the PR's code, and never switches branches. `/nap-fix` hands a review's findings to the Engineer, who fixes them on the same branch and comments on the PR with what was fixed and what was not. After three rounds without an approval, the user rules on what is left.
+
+**Why.** In the first full loop run the Reviewer approved a PR where a design task had no test, and it had never run the tests. There was also no way to fix findings without a person patching by hand. The cap is three because a loop that long usually means the two roles disagree or the issue is unclear, and each round costs usage.
+
+**Adapted from** Superpowers' fix loop and its rule of evidence before claims ([skill-research.md](skill-research.md)).
