@@ -18,7 +18,7 @@ A team of agents, each with the skills its role needs. Plain skill and agent fil
 | PM | Skill, `/nap-backlog` | Turns a brief into issues with testable acceptance criteria | GitHub issues |
 | Tech Lead | Skill, `/nap-design` | Short design per issue: parts touched, approach, names, tasks. Also covers stack choices and ADRs. | Design comment on the issue |
 | Engineer | Subagent, `/nap-build` | Builds one issue test-first: failing tests, then code, then a PR | PR with tests and code |
-| Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue and design, without the Engineer's reasoning | One review |
+| Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue and design, without the Engineer's reasoning. Runs the tests. | One review |
 
 The PM and Tech Lead are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context.
 
@@ -26,6 +26,8 @@ The PM and Tech Lead are skills because they talk with the user. The Engineer an
 
 ```
 Brief -> PM (issues) -> Tech Lead (design) -> Engineer (tests, code, PR) -> Reviewer -> user merges
+                                              ^                              |
+                                              +---- /nap-fix, up to 3 rounds +
 ```
 
 Each step hands off something a person can read (issue, design, PR, review), not chat history.
@@ -35,7 +37,8 @@ Each step hands off something a person can read (issue, design, PR, review), not
 1. **The user approves** the issues, each design and every merge.
 2. **Tests come first.** The Engineer writes failing tests from the criteria before the code.
 3. **Fresh context for review.** The Reviewer judges the change, not the story about it.
-4. **Grow on need.** A new role, rule or tool is added only when a real project run shows it is missing.
+4. **Evidence before approval.** The Reviewer approves only after seeing the tests pass. Findings are fixed on the same PR with `/nap-fix` and reviewed again.
+5. **Grow on need.** A new role, rule or tool is added only when a real project run shows it is missing.
 
 ## Roles to add when needed
 

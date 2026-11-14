@@ -88,10 +88,9 @@ What theirs does that ours does not:
 What ours already does well: read-only, never sees the Engineer's reasoning, reads `CLAUDE.md` from the base branch so a PR cannot excuse itself, per-criterion table with file and line, flags code outside the issue and the design, flags missing tests, posts one review.
 
 What theirs does that ours does not:
-- **Runs the tests.** Ours reads them but never runs the suite (issue #43).
-- **Fix loop.** Ours has no way to fix findings on the same PR (issue #37). `fix-loop.md` is close to a spec for it.
+- **Runs the tests** and **a fix loop**: both added 2026-11-14 (issues #43, #37).
 - **Validate each finding** before reporting it.
-- **Test quality.** Ours only checks that test files exist. This matters more now that one agent writes both the tests and the code.
+- **Test quality.** Partly added 2026-11-14: each criterion needs a test that would fail if it broke. Theirs also rates how critical each gap is.
 - **Standards pass.** Ours checks criteria, tests, scope and design, but not code quality.
 - **Severity buckets.** Critical, Important, Minor.
 
@@ -120,8 +119,11 @@ Only when a real project needs them ([design.md](design.md#roles-to-add-when-nee
 
 Ordered by what the first loop run showed was missing.
 
-1. **Reviewer runs the tests and judges their quality.** Superpowers `verification-before-completion`, official `pr-test-analyzer`. The Reviewer wrongly approved a PR on its first real run.
-2. **A fix loop for review findings.** Superpowers `fix-loop.md` and `receiving-code-review`.
+1. **Reviewer runs the tests and judges their quality.** Done 2026-11-14, from Superpowers `verification-before-completion` and the official `pr-test-analyzer`. Not yet proven in a run.
+2. **A fix loop for review findings.** Done 2026-11-14 as `/nap-fix`, from Superpowers `fix-loop.md` and `receiving-code-review`. Not yet proven in a run.
+
+Items 3 to 5 wait until a real run shows they are needed.
+
 3. **Better tests from the Engineer.** mattpocock `tdd`: anti-patterns, mocking, independent expected values.
 4. **Seams in the design.** mattpocock `tdd` seams section.
 5. **Bounded PM questions and blocking edges.** spec-kit `clarify`, mattpocock `to-tickets`.

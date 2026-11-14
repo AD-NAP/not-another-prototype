@@ -2,7 +2,7 @@
 
 A small AI dev team for developers, with issues first, TDD and code review. Ship production-ready work, not prototypes.
 
-> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The slimmed loop has not run on a real project yet. See the [roadmap](docs/roadmap.md).
+> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The slimmed loop, and the test run and fix loop added since, have not run on a real project yet. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
@@ -17,14 +17,15 @@ NAP is a set of Claude Code skills and agents that gives you a team of agents mo
 | `/nap-backlog` | PM | Turns a brief into GitHub issues with testable acceptance criteria |
 | `/nap-design` | Tech Lead | Posts a short feature design on the issue after you approve it |
 | `/nap-build` | Engineer | Builds one issue test-first in a fresh context and opens a PR |
-| `/nap-review` | Reviewer | Reviews a PR against its issue and design in a fresh context |
+| `/nap-review` | Reviewer | Reviews a PR against its issue and design in a fresh context, and runs the tests |
+| `/nap-fix` | Engineer | Fixes the findings from a review on the same PR, up to three rounds |
 
 More roles (UX Designer, Platform, QA) get added when a real project needs them.
 
 ## Known limits
 
 - You run one command per role.
-- No command fixes review findings yet, and the Reviewer reads the tests but doesn't run them.
+- The Reviewer only runs the tests when your checkout is on the PR's branch. It never switches branches itself.
 - All agents use your GitHub account. GitHub won't let you approve your own PR, so the Reviewer posts its verdict as a comment review.
 
 ## Install
