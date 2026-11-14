@@ -16,7 +16,7 @@ NAP is a set of Claude Code skills and agents that gives you a team of agents mo
 |---|---|---|
 | `/nap-architect` | Architect | Once per project: records the goal, recommends a stack, and writes the architecture, ADRs and project rules after you approve. Again for any big decision. |
 | `/nap-backlog` | PM | Turns the goal or a brief into GitHub issues with testable acceptance criteria |
-| `/nap-build` | Engineer | Builds one issue test-first in a fresh context and opens a PR |
+| `/nap-build` | Engineer | Builds one issue, or a few related ones, test-first in a fresh context and opens one PR |
 | `/nap-review` | Reviewer | Reviews a PR against its issue, the project rules and the ADRs in a fresh context, and runs the tests |
 | `/nap-fix` | Engineer | Fixes the findings from a review on the same PR, up to three rounds |
 

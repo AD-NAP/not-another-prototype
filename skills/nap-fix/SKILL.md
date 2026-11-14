@@ -31,7 +31,7 @@ At round 4 or more, stop. Three rounds without an approval usually means the Eng
 Call the Agent tool with `subagent_type: "nap-engineer"`. In the prompt, give:
 
 - That this is a **fix round**, with its number, on PR #<number> and branch `<headRefName>`.
-- The issue number the PR closes.
+- The issue numbers the PR closes.
 - The latest review's body, word for word.
 - What to send back: for each finding, fixed or not fixed with the reason, plus the test run.
 - The boundary: only what the findings need. No new PR, no other changes.

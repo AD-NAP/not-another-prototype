@@ -17,7 +17,7 @@ A team of agents, each with the skills its role needs. Plain skill and agent fil
 |---|---|---|---|
 | Architect | Skill, `/nap-architect` | Once per project, and again for a big decision. Asks what shapes the build, recommends a stack, and writes the goal, architecture, ADRs and project rules. Asks whether CI and deploy are needed. | `docs/ARCHITECTURE.md`, `docs/ADR.md`, rules in `CLAUDE.md`, in a PR |
 | PM | Skill, `/nap-backlog` | Turns the goal or a brief into issues with testable acceptance criteria. Starts from the Architect's goal and asks deeper only where it is vague. Puts setup issues first on a new project. | GitHub issues |
-| Engineer | Subagent, `/nap-build` | Builds one issue test-first within the architecture: failing tests, then code, then a PR. Decides the UI when there is no mock-up. Stops for a big decision. | PR with tests and code |
+| Engineer | Subagent, `/nap-build` | Builds one issue, or a few related ones in one PR, test-first within the architecture: failing tests, then code, then a PR. Decides the UI when there is no mock-up. Stops for a big decision. | PR with tests and code |
 | Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue, the project rules and the ADRs, without the Engineer's reasoning. Runs the tests. | One review |
 
 The Architect and PM are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context. See [decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14) for why there is no per-issue design.
