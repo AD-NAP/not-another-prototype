@@ -38,7 +38,7 @@ Not in the MVP: sprint ceremonies, the vision brief, PRD and story map, the Arch
 - [x] 0.2 Add LICENSE (MIT), THIRD_PARTY_NOTICES.md, CHANGELOG.md. Add `license` and `homepage` to `plugin.json`. Set version 0.1.0 (H)
 - [x] 0.3 CI workflow: hook unit tests, and `claude plugin validate --strict` if the CLI runs in CI (S)
 - [x] 0.4 Protect `main` (PR and CI required). Commit a deny rule for `gh pr merge` (S, CEO applies)
-- [ ] 0.5 README refresh: true status, prerequisites, "for developers" wording, no claim without evidence (S)
+- [x] 0.5 README refresh: true status, prerequisites, "for developers" wording, no claim without evidence (S)
 - [ ] 0.6 Tidy docs: shorten the roadmap step 5 cell, private repo name, decision 13 count, remove `office/` placeholder, vault note (H)
 - [ ] 0.7 Issue hygiene through `/nap:backlog`: split #45 and #38, fold #39 to #42, fix #40, open the new issues (S)
 - [x] 0.8 Spike A: `isolation: worktree` on Windows (S, CEO runs)

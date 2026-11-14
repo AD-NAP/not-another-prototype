@@ -1,6 +1,6 @@
 {
   "name": "not-another-prototype",
-  "description": "NAP: Not Another Prototype. An AI dev team for developers, with TDD, code review and CI built in.",
+  "description": "NAP: Not Another Prototype. An AI dev team for developers, with issues first, TDD and code review.",
   "owner": {
     "name": "Mohd Shafik",
     "url": "https://github.com/AD-NAP"
