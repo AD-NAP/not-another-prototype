@@ -184,7 +184,7 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 - **Test Engineer:** no reads of source files (Read, Grep, and shell readers such as `cat`, `grep`, `rg`, `Get-Content`), and no edits to anything but test files. Tests, docs and config stay readable.
 - **Shell checks are best effort.** They catch the common commands. They can't catch everything (for example `python -c "open(...)"`), and the agent instructions still carry the rule.
 - **Node, not bash or Python.** It runs the same on Windows, Mac and Linux. If Node is missing the hook fails open: it doesn't block, so NAP still works with the instructions alone.
-- **Unit tests, not evals.** 16 `node:test` cases cover each rule and the exit code. They cost no usage.
+- **Unit tests, not evals.** `node:test` cases cover each rule and the exit code (16 at first, 24 once the Reviewer's lane was added in decision 14). They cost no usage, and CI runs them on every PR.
 
 **Why.** Instructions alone left the rules to the agents' goodwill. The hook docs confirm plugin hooks fire inside plugin subagents, with `agent_type` set to the plugin-scoped name (`nap:engineer`), so one shared hook can tell the roles apart. A real session confirmed the name and that the hook runs on Windows. Full shell enforcement would need a sandbox per role, which is out of reach for now (see decision 11), so the issue's note "say how much enforcement is enough" is answered here: common commands blocked, the rest left to instructions.
 
