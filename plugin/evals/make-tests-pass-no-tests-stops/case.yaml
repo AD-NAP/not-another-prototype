@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: make-tests-pass-no-tests-stops
-context:
-  scaffold_script: scaffold.sh
