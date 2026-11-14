@@ -8,7 +8,7 @@ An AI dev team for developers, working in agile sprints. Sprint 0 roles (PM, UX 
 - `docs/roadmap.md`: the build steps and which one is next. Update its status column when a step is done.
 
 ## Layout
-One repo, three layers. Each layer works without the ones above it.
+Three layers. The team and the runner live here. Each layer works without the ones above it.
 
 - `plugin/`: **the team.** A Claude Code plugin named `nap`, so commands read like `/nap:pm`.
   - `plugin/.claude-plugin/plugin.json`: the plugin manifest.
@@ -18,7 +18,7 @@ One repo, three layers. Each layer works without the ones above it.
   - `plugin/hooks/events.mjs`: writes the event log, `.nap/events.jsonl`, which the office and the Kopi Report read.
   - `plugin/evals/<case>/`: eval cases for `claude plugin eval plugin`. One folder per behaviour, with `prompt.md` and `graders/`. How to write and run them: `plugin/evals/README.md`.
 - `runner/`: **the runner.** Not started. A Claude Agent SDK app that loads the plugin and runs agents in the background.
-- `office/`: **the office.** Not started. The pixel-art web app the CEO uses.
+- **The office** is its own repo (not started). It reads `.nap/events.jsonl` only.
 - `.claude-plugin/marketplace.json`: makes the repo a marketplace, so people can install just the plugin.
 
 ## How we work

@@ -20,9 +20,9 @@ In one line: a disciplined dev team of agents, working in agile sprints, with a 
 |---|---|---|
 | **The team** | `plugin/` | A Claude Code plugin: skills, agents and hooks. Decides how each role works and the rules it follows. Works on its own in Claude Code. |
 | **The runner** | `runner/` | A Claude Agent SDK app. Loads the plugin, takes the brief, runs agents in the background and sends events to the office. |
-| **The office** | `office/` | A pixel-art web app. Agents at desks, plus the CEO's controls: brief, approve, headcount, reports. |
+| **The office** | its own repo | A pixel-art web app. Agents at desks, plus the CEO's controls: brief, approve, headcount, reports. It reads the event log, `.nap/events.jsonl`, and nothing else from this repo (see [decision 25](decisions.md#25-the-office-gets-its-own-repo-2026-11-14)). |
 
-Each layer works without the ones above it.
+Each layer works without the ones above it. The team and the runner live in this repo; the office lives in its own.
 
 ## Org chart
 
