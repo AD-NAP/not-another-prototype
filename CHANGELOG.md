@@ -2,7 +2,7 @@
 
 Each release of the `nap` plugin gets an entry here and a `nap--vX.Y.Z` tag ([decision 24](docs/decisions.md#24-releases-semver-nap--vxyz-tags-and-a-changelog-2026-11-14)). Versions follow semver. v1.0.0 is the MVP.
 
-## 0.1.0 (not released yet)
+## 0.1.0 (2026-11-14)
 
 The first versioned release: everything built in roadmap steps 1 to 5, plus the phase 0 baseline.
 
@@ -23,3 +23,9 @@ The first versioned release: everything built in roadmap steps 1 to 5, plus the 
 ### Baseline
 
 - MIT license, third-party notices and this changelog.
+- CI runs the hook unit tests on Ubuntu and Windows and validates the plugin. `main` is protected: a PR and green CI are required.
+- Agents can't run `gh pr merge` in this repo (a committed deny rule).
+
+### Known gaps
+
+The loop still needs hand steps. They are tracked as open issues for 0.2.0 (the loop runs without hand patches) and 0.3.0 (the loop is complete). See phases 1 and 2 in [docs/todo.md](docs/todo.md).
