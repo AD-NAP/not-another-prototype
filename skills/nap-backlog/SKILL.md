@@ -47,6 +47,7 @@ Ask product questions, in roughly this order:
 
 Rules:
 - Don't ask again what the architecture's Goal and Users already answer. Do ask deeper when they are vague, or a point needs clearing up for this brief ("The goal says creators. Does that include agencies managing several creators?").
+- If the brief goes against the architecture's Users section or an ADR (for example a login when the ADRs say nobody signs in), say which one before asking anything else, and suggest running `/nap-architect` first. Carry on only if the user wants to. Issues built on a decision that still stands get stopped by the Engineer later.
 - Offer a suggested answer when you can, so the user can reply "yes" ("I'd guess learners revising before the exam. Right?").
 - Stop asking once you can write good issues. Usually 2 to 5 questions. If the user says "your call", make a sensible choice and note it in the draft.
 - If the brief is vague ("make it better", "improve the app"), don't guess. Ask the first question in the order above that the brief and docs don't answer, on its own. Usually that is **who** it is for. The problem comes in the next message.
