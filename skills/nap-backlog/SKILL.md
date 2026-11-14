@@ -55,7 +55,7 @@ Rules:
 
 ## 3. Draft the issues
 
-Use the templates in [issue-templates.md](issue-templates.md). Every issue has a **type**: `story`, `bug` or `task`.
+Use the templates in [issue-templates.md](issue-templates.md). It sits next to this file, in the base directory Claude Code gave when this skill loaded. Read it from there, not from `~/.claude/skills/`. Every issue has a **type**: `story`, `bug` or `task`.
 
 Rules for every issue:
 - **Acceptance criteria are Given / When / Then by default.** A plain checklist is allowed only for a size S issue with one obvious outcome and no state. Every checklist item must still be something a test can check.
