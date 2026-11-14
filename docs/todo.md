@@ -45,7 +45,7 @@ Not in the MVP: sprint ceremonies, the vision brief, PRD and story map, the Arch
 - [x] 0.9 Spike B: `context: fork` with a plugin agent (S, CEO runs)
 - [x] 0.10 Spike C: project allow rules inside a NAP subagent (S, CEO runs)
 - [x] 0.11 Spike D: what the eval result and trace really record (H)
-- [ ] 0.12 Tag `nap--v0.1.0` and confirm the test project updates (H, CEO runs)
+- [x] 0.12 Tag `nap--v0.1.0` and confirm the test project updates (H, CEO runs)
 
 Do the four spikes first. They decide whether phase 1's design holds. Cap each at 30 minutes and write "unknown" if it is.
 

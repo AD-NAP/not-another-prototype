@@ -66,7 +66,7 @@ Weights:
 |---|---|---|
 | **Outcome**: what any good result needs (testable criteria, tests cover each criterion, tests not edited) | `1` (default) | This is what Δ should measure. |
 | **House style**: NAP's own format (Given/When/Then, sizes, "exactly one question", approval prompt) | `0.5` | Plain Claude can't know our format. Full weight would inflate Δ. |
-| **Plugin fired**: our skill or agent ran, or another of our skills did *not* | `arm: with-only` | Plain Claude can never pass these. They report but don't score. |
+| **Plugin fired**: our skill or agent ran, or another of our skills did *not* | `arm: with-only` | Plain Claude can never pass these. With a baseline (`--ablation with-without`) they report but don't score. In a check (`--ablation none`) there is no baseline, so they **do** score: a run where our agent never started fails the case. |
 
 Rules for rubrics (`llm` graders):
 - Say exactly what PASS and FAIL look like, with the values from the prompt.
@@ -74,9 +74,10 @@ Rules for rubrics (`llm` graders):
 - One idea per grader. Two ideas in one rubric make failures hard to read.
 
 Traps we hit:
-- **`tool_used` misses a subagent's calls.** It counts only the main conversation. To check that an agent didn't edit a file, check the file's contents with `regex` or `llm`.
+- **`tool_used` counts a subagent's calls too** (checked on Claude Code 2.1.316). It can't tell the main session from the agent, so "the main session wrote no code" can't be a `tool_used` check. Use `engineer-fired` and the file's contents instead.
 - **A `focus` or `target` file that doesn't exist crashes the grader**, and the run scores it as a fail. If the role may stop before writing a file, have the scaffold create a starting version.
 - **Without a shell, `gh` and `git` are refused.** For a PR or issue comment, judge what the agent tried or said (`focus: trace`), and say so in the rubric.
+- **A subagent's first shell command is visible.** The agent still sends the `Bash` call, which is refused with "Bash is disabled". A `tool_used` grader on `Bash` with `input_match` sees that first command in full, so it can check its shape (one command, the right path). Most agents stop trying after the refusal, so later commands, such as `gh pr create`, never show. Check those in a smoke run on a real project.
 
 ### What each role needs
 
@@ -133,6 +134,10 @@ This uses a lot of usage (the Engineer's 4 cases cost about $4.50 per run with t
 ## Hooks are tested with unit tests
 
 Hooks are code, so they get unit tests, not evals: `node --test plugin/hooks/lanes.test.mjs`. They are free and exact. Evals still load the hooks, so a role's eval checks also run with its lane rules on.
+
+## What an eval can't check
+
+Shell behaviour past the first command: committing and pushing tests (#33), opening a PR with `--body-file` (#56), permission denials (#57, #58), and stopping when git fails (#60). These are checked in the loop smoke run on the test project, which runs the real plugin with a real shell.
 
 ## No shell
 
