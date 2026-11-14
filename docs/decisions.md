@@ -78,3 +78,11 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 **Why the Architect and PM stay apart.** They run at different times (once per project, against every feature idea), and they judge different things (how it is built, against what the user needs). Kept apart, the PM's "what, never how" rule keeps stories free of the solution, and each skill stays small.
 
 **What we give up.** A checked plan of names and files before each build. The Engineer picks them within the rules, and the Reviewer checks the rules, not the split into functions.
+
+## 11. Related issues can share a PR (2026-11-14)
+
+**Decision.** `/nap-build` takes one issue or several. The Engineer builds related issues (the same feature or the same code) on one branch and opens one PR with a `Closes #N` line for each. It leaves out any issue that isn't related, and keeps the PR to about 12 criteria. The Reviewer checks the criteria of every issue the PR closes, numbered by issue. The PM still writes each issue small enough for one PR on its own.
+
+**Why.** A new project can start with 30 issues. One PR each means 30 builds, 30 reviews and 30 merges, and related issues often change the same code twice.
+
+**What we give up.** Smaller PRs. A grouped PR takes longer to review, and one failing issue holds back the others until it is fixed. The cap keeps that bounded.
