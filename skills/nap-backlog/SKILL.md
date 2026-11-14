@@ -2,7 +2,7 @@
 name: nap-backlog
 description: Turns a short brief into a prioritized set of GitHub issues (stories, bugs and tasks) with testable Given/When/Then acceptance criteria. Acts as the team's Product Manager, asks one product question at a time, drafts the issues, and creates them on GitHub only after the user approves. Use when the user wants to plan work, write issues or user stories, fill or groom the backlog, turn an idea into tickets, or types /nap-backlog.
 argument-hint: "[brief]"
-allowed-tools: Read Glob Grep Bash(gh issue list *) Bash(gh label list *) Bash(gh repo view *) Bash(gh auth status *)
+allowed-tools: Read Glob Grep Write Bash(gh issue list *) Bash(gh issue view *) Bash(gh label list *) Bash(gh label create *) Bash(gh issue create *) Bash(gh issue edit *) Bash(gh repo view *) Bash(gh auth status *)
 ---
 
 # Backlog
@@ -98,6 +98,11 @@ Then wait. Apply the user's changes and show the changed issues again. Repeat un
 4. Show a final table with each issue's number, title, priority and link.
 
 If `gh` isn't available, write the approved issues to `docs/backlog/YYYY-MM-DD-<short-goal>.md`, in the same format, and tell the user where the file is.
+
+## Gotchas
+
+- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. In the first run since the reset, every chain was refused. Write files with the Write tool, not `cat <<EOF`.
+- If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to paste anything. In the first run, the Tech Lead asked for a paste after a refused chain.
 
 ## What you never do
 

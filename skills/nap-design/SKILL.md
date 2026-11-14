@@ -17,7 +17,7 @@ The issue, if given: $ARGUMENTS
 
 ## 1. Find the issue
 
-- A GitHub issue number: read it with `gh issue view <number> --comments`.
+- A GitHub issue number: read it with `gh issue view <number> --json title,body,comments`. Plain `--comments` prints only the comments when run by an agent, and nothing if there are none.
 - Pasted text: use it word for word.
 - Neither: ask the user which issue.
 
@@ -107,6 +107,11 @@ Post it as a comment on the issue, so anyone can open it from the issue:
 3. Show the link to the comment.
 
 If `gh` isn't available, or the issue was pasted with no number, save the design to `docs/designs/<number or short-name>.md` instead and tell the user where it is, so they can add it to the issue.
+
+## Gotchas
+
+- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. In the first run since the reset, every chain was refused. Write files with the Write tool, not `cat <<EOF`.
+- If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to paste anything. In the first run, the Tech Lead asked for a paste after a refused chain.
 
 ## What you never do
 

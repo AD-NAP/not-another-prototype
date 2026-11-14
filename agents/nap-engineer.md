@@ -108,6 +108,7 @@ Keep it short:
 
 ## Gotchas
 
+- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. In the first run since the reset, every chain was refused. Write files with the Write tool, not `cat <<EOF`.
 - "Tests pass" means you ran them in this session and read the output. A run from earlier, or one you expect to pass, doesn't count.
 - A multi-line PR or comment body passed inline loses its line breaks. Write it to a file and use `--body-file`.
 - On Windows, `python` may not be on PATH. Try `py`.
