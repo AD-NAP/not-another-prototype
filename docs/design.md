@@ -15,8 +15,8 @@ A team of agents, each with the skills its role needs. Plain skill and agent fil
 
 | Role | Runs as | What it does | Hands off |
 |---|---|---|---|
-| Architect | Skill, `/nap-architect` | Once per project, and again for a big decision. Reads the vision, asks what shapes the build, recommends a stack sized to the scope, and writes the goal, architecture, ADRs and project rules. Asks whether CI and deploy are needed. | `docs/ARCHITECTURE.md`, `docs/ADR.md`, rules in `CLAUDE.md`, in a PR |
-| PM | Skills, `/nap-vision` and `/nap-backlog` | First, once per project: asks how big it is (Script, Personal tool, App, Product, Platform) and refines the idea into versions. Then, one version at a time: turns that version's features into issues with testable acceptance criteria, setup issues first. | `docs/VISION.md` and a GitHub milestone per version, then GitHub issues in that milestone |
+| Architect | Skill, `/nap-architect` | Once per project, and again for a big decision. Reads the PRD, asks what shapes the build, recommends a stack sized to the scope, and writes the goal, architecture, ADRs and project rules. Asks whether CI and deploy are needed. | `docs/ARCHITECTURE.md`, `docs/ADR.md`, rules in `CLAUDE.md`, in a PR |
+| PM | Skills, `/nap-vision` and `/nap-backlog` | First, once per project: asks how big it is (Script, Personal tool, App, Product, Platform), refines the idea into versions, and agrees a docs plan. Then, one version at a time: turns that version's features into issues with testable acceptance criteria, setup issues first, plus a docs task for each document due. | `docs/PRD.md` and a GitHub milestone per version, then GitHub issues in that milestone |
 | Engineer | Subagent, `/nap-build` | Builds one issue, or a few related ones in one PR, test-first within the architecture: failing tests, then code, then a PR. Decides the UI when there is no mock-up. Stops for a big decision. | PR with tests and code |
 | Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue, the project rules and the ADRs, without the Engineer's reasoning. Runs the tests. | One review |
 
@@ -27,7 +27,7 @@ The Architect and PM are skills because they talk with the user. The Engineer an
 ## The loop
 
 ```
-Idea -> PM (vision, milestones) -> Architect (docs, stack, rules) -> PM (issues for one milestone) -> Engineer (tests, code, PR) -> Reviewer -> user merges
+Idea -> PM (PRD, milestones) -> Architect (docs, stack, rules) -> PM (issues for one milestone) -> Engineer (tests, code, PR) -> Reviewer -> user merges
             ^                                              ^                              |
             |                                              +---- /nap-fix, up to 3 rounds +
             +------------ big decision found mid-build (Engineer stops) ------------------+
@@ -37,7 +37,7 @@ Each step hands off something a person can read (docs, issue, PR, review), not c
 
 ## Rules
 
-1. **The user approves** the vision, the architecture, each batch of issues, every big decision and every merge, and decides when to start the next version.
+1. **The user approves** the PRD, the architecture, each batch of issues, every big decision and every merge, and decides when to start the next version.
 2. **Tests come first.** The Engineer writes failing tests from the criteria before the code.
 3. **Fresh context for review.** The Reviewer judges the change, not the story about it.
 4. **Evidence before approval.** The Reviewer approves only after seeing the tests pass. Findings are fixed on the same PR with `/nap-fix` and reviewed again.
