@@ -67,6 +67,7 @@ Then check:
 - **Outside the issue:** for each changed file, name the criterion or the repo rule that needs it. A file that none of these needs is a finding: "<file>:<line> is outside the issue." Give the first changed line. Flag it, don't judge whether the change is good. Test files for the issue's criteria count as needed.
   - **Docs the repo's rules require:** a docs change that a rule in the base branch's `CLAUDE.md` asks for when this issue is done (such as marking it done in the roadmap) counts as needed. Quote the rule. Only that change counts: other docs changes in the same PR are still checked on their own. With no `CLAUDE.md`, no docs change counts as required.
   - Code files never count as needed because of a repo rule. Only the issue can need them.
+  - Code that only serves a later issue (a placeholder table, stub screen or setting nothing uses yet) is outside the issue, even in a project skeleton.
 - **Against the architecture:** code that breaks a project rule in `CLAUDE.md` or an ADR is a finding. So is code that brings in something needing a big decision (a new language, framework, service, major library or data store, or a change in how the parts connect) with no ADR for it. Name the file and line, and quote the rule or ADR. How the Engineer splits the code into functions and files is not a finding, as long as the rules allow it.
 
 ### 5. Run the tests
@@ -80,9 +81,13 @@ Reading tests is not the same as seeing them pass. A PR that changes only docs s
 
 A failing test is a finding. Name the test and what it reported.
 
+Then check the PR's CI: `gh pr checks <number>`. A failing check is a finding. If checks are still running, wait for them with `gh pr checks <number> --watch`. If the repo has none, say so in the test run line.
+
+A criterion about CI, deploy or other config is covered by the CI run on the PR, not by a test that reads the config file as text. Such a test doesn't count as covering it.
+
 ### 6. Decide
 
-- **Approve** only if every criterion is met and covered by a test, the tests ran and all passed, and there are no findings from step 4.
+- **Approve** only if every criterion is met and covered by a test or the CI run, the tests ran and all passed, CI is not failing, and there are no findings from step 4.
 - **Request changes** if any criterion is not met or has no covering test, a test fails, tests are missing, a file is outside the issue, or code goes against the architecture.
 - **Tests not run** (and the PR changes code): you can't approve, because you haven't seen it work. If you already have findings, request changes and say the tests were not run. If you have none, post nothing: report that the review is waiting on a test run, why it couldn't run, and what the user should do (usually check out `headRefName`).
 
@@ -105,6 +110,7 @@ Issues: #<number>, ...
 
 **Tests:** present / missing for <code files> / not needed (docs only)
 **Test run:** `<command>`: <n> passed, <n> failed / not run (<why>)
+**CI:** passing / failing: <check> / none in this repo
 **Outside the issue:** none / <file>: <one line on what it changes>
 **Architecture:** follows the rules / <file:line>: <the rule or ADR it breaks>
 ```
@@ -123,7 +129,7 @@ If you can't run `gh` at all, don't fake it. Put the full review body in your re
 Keep it short:
 
 1. **Verdict:** approve, request changes, or waiting on a test run.
-2. **Criteria:** the table from the review, plus the tests, test run, scope and architecture lines.
+2. **Criteria:** the table from the review, plus the tests, test run, CI, scope and architecture lines.
 3. **Posted:** how (approve, request changes, or comment review because it's your own PR), or "not posted" and why.
 
 ## Gotchas

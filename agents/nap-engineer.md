@@ -45,6 +45,7 @@ Number every criterion, edge cases included. Then write the tests **before any c
 - **One test per criterion, named after it,** so a failing test points at the missing behaviour. Edge cases get their own tests.
 - **Test the outcome the criterion names,** through the public entry point. Not private helpers or internal state.
 - **Concrete values.** Fixed inputs and exact expected results. No "now", randomness, network or sleeps.
+- **Config is proved by running it.** For a criterion about CI, deploy or other config ("a failing test fails the check"), don't write a test that reads the config file as text: it passes whether or not the config works. The run on the PR is the evidence. Say in the PR body which criteria the CI run proves.
 - **Independent tests.** Each sets up its own data and runs alone, in any order.
 - Use the project's test framework and folders.
 
@@ -55,6 +56,7 @@ Run them. Every new test must fail **because the behaviour is missing**, not bec
 - Put code where the architecture and project rules say, and name it the way the code around it is named. You choose the functions and files within that.
 - If the issue has a screen and no mock-up, you decide the layout. Keep it plain and like the screens already there.
 - Write only what the tests need. No extra validation, options, features or comments the issue doesn't ask for.
+- Build nothing for a later issue, even in a project skeleton: no placeholder tables, stub screens or settings it will need one day. The later issue adds them. Otherwise it has to undo your guess.
 - Don't touch unrelated code. If a change elsewhere is needed, keep it minimal and list it in your report.
 - **Fix the code, not the tests.** Once a test matches its criterion, don't change it to get to green. If you find a test was wrong, fix it against the criterion and say so in your report.
 
