@@ -360,3 +360,20 @@ A person approves every merge to `main` in both stages. That rule does not chang
 | D. Eval results and traces | Under `--ablation none`, `with-only` graders count toward the score. The trace links each subagent tool call to its `Agent` call by `parent_tool_use_id`. Evals offer no Bash, so they never show a Bash denial. | Fix the evals README. Smoke runs count denials from the stream-JSON trace, not from `permission_denials`, which misses subagent denials. |
 
 **Why.** These four points were unverified, and phase 1's design leaned on each of them. Testing them first cost about an hour and a half, against redesigning phase 1 halfway through.
+
+## 31. Back to a simple team of four (2026-11-14)
+
+**Decision.** NAP is a team of four roles, each with the skills it needs: PM, Tech Lead, Engineer, Reviewer. Everything else is removed until a real project run shows it is needed.
+
+Removed:
+- The lane hooks and the event log (`plugin/hooks/`).
+- The eval cases (`plugin/evals/`) and the rule that every change needs an eval first.
+- The Test Engineer. The Engineer now writes the failing tests first, then the code.
+- The runner placeholder, the phased todo list, and the plans for sprints, ceremonies, a Chief of Staff and an office.
+- The Engineer's git worktree. It works on a branch.
+
+**Why.** The goal was a team of agents with the right skills. The guardrails grew faster than the team: five roles came with 30 decisions, dozens of eval cases, about 1,000 lines of hooks and a 10-phase plan, and the loop still needed hand patches. Most open gaps came from the guardrails, not the roles. The split between Test Engineer and Engineer caused the test hand-off bug, the worktree problems and the need for lane hooks.
+
+**What we give up.** Tests written blind to the code, and tool-enforced lanes. The Reviewer checking tests against the criteria covers part of it.
+
+**Retires** decisions 3 to 7, 9, 11 to 13, 17 to 22, 24 to 27, 29 and 30. Their text stays above as history. Decisions 1, 8, 10, 14 to 16, 23 and 28 still hold, reading "Engineer" where they say "Test Engineer". Decision 2 was already replaced by 28.

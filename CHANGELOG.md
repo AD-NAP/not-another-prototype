@@ -1,6 +1,15 @@
 # Changelog
 
-Each release of the `nap` plugin gets an entry here and a `nap--vX.Y.Z` tag ([decision 24](docs/decisions.md#24-releases-semver-nap--vxyz-tags-and-a-changelog-2026-11-14)). Versions follow semver. v1.0.0 is the MVP.
+Changes to the `nap` plugin, newest first.
+
+## Unreleased
+
+Cut back to a simple team of four ([decision 31](docs/decisions.md#31-back-to-a-simple-team-of-four-2026-11-14)).
+
+- Removed the lane hooks, the event log, the eval cases and the runner placeholder.
+- Removed the Test Engineer and `/nap:failing-tests`. The Engineer now builds test-first.
+- Renamed `/nap:make-tests-pass` to `/nap:build`.
+- CI only validates the plugin.
 
 ## 0.1.0 (2026-11-14)
 
@@ -28,4 +37,4 @@ The first versioned release: everything built in roadmap steps 1 to 5, plus the 
 
 ### Known gaps
 
-The loop still needs hand steps. They are tracked as open issues for 0.2.0 (the loop runs without hand patches) and 0.3.0 (the loop is complete). See phases 1 and 2 in [docs/todo.md](docs/todo.md).
+The loop still needs hand steps. They were tracked as open issues at the time.
