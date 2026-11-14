@@ -34,8 +34,8 @@ Not in the MVP: sprint ceremonies, the vision brief, PRD and story map, the Arch
 
 ## Phase 0: baseline (v0.1.0)
 
-- [ ] 0.1 Record the other decisions of 2026-11-14 (decisions 18 to 22 were approved that day) in `docs/decisions.md`: MIT license, release policy (semver, `nap--vX.Y.Z` tags, CHANGELOG), the office moves to its own repo, hooks stay minimal, evals stay inside the plugin, Superpowers is a source and not a dependency (O drafts, CEO approves)
-- [ ] 0.2 Add LICENSE (MIT), THIRD_PARTY_NOTICES.md, CHANGELOG.md. Add `license` and `homepage` to `plugin.json`. Set version 0.1.0 (H)
+- [x] 0.1 Record the other decisions of 2026-11-14 (decisions 18 to 22 were approved that day) in `docs/decisions.md`: MIT license, release policy (semver, `nap--vX.Y.Z` tags, CHANGELOG), the office moves to its own repo, hooks stay minimal, evals stay inside the plugin, Superpowers is a source and not a dependency (O drafts, CEO approves)
+- [x] 0.2 Add LICENSE (MIT), THIRD_PARTY_NOTICES.md, CHANGELOG.md. Add `license` and `homepage` to `plugin.json`. Set version 0.1.0 (H)
 - [ ] 0.3 CI workflow: hook unit tests, and `claude plugin validate --strict` if the CLI runs in CI (S)
 - [ ] 0.4 Protect `main` (PR and CI required). Commit a deny rule for `gh pr merge` (S, CEO applies)
 - [ ] 0.5 README refresh: true status, prerequisites, "for developers" wording, no claim without evidence (S)
