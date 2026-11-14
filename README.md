@@ -2,7 +2,7 @@
 
 A small AI dev team for developers, with issues first, TDD and code review. Ship production-ready work, not prototypes.
 
-> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 31](docs/decisions.md#31-back-to-a-simple-team-of-four-2026-11-14)). The slimmed loop has not run on a real project yet. See the [roadmap](docs/roadmap.md).
+> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The slimmed loop has not run on a real project yet. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
@@ -46,7 +46,7 @@ NAP is plain files, with no plugin to install. Clone this repo, then copy `skill
 - [Decisions](docs/decisions.md): what was decided and why.
 - [Roadmap](docs/roadmap.md): what is next.
 - [Skill research](docs/skill-research.md): other people's skills worth learning from.
-- [Changelog](CHANGELOG.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
+- [Third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## License
 

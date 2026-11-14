@@ -2,7 +2,7 @@
 
 How NAP works. Decisions and their reasons are in [decisions.md](decisions.md). What comes next is in [roadmap.md](roadmap.md).
 
-The first design (sprints, a runner, a pixel office, hooks, an event log, evals) is in git history at tag `nap--v0.1.0`. It was cut back in [decision 31](decisions.md#31-back-to-a-simple-team-of-four-2026-11-14).
+The first design (sprints, a runner, a pixel office, hooks, an event log, evals) is in git history at tag `nap--v0.1.0`. It was cut back in [decision 1](decisions.md#1-a-simple-team-of-four-2026-11-14).
 
 ## Problem
 

@@ -124,7 +124,7 @@ Then add the labels the user approved, as in step 3 of [Ready and conflicts](#re
 
 ## Ready and conflicts
 
-`ready` means "an Engineer can start this". A conflict means "these two can't be built at the same time" (decision 5).
+`ready` means "an Engineer can start this". A conflict means "these two can't be built at the same time".
 
 ### 1. Can the issue be `ready`?
 
