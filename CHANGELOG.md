@@ -1,6 +1,6 @@
 # Changelog
 
-Changes to the `nap` plugin, newest first.
+Changes to NAP, newest first.
 
 ## Unreleased
 
@@ -8,8 +8,7 @@ Cut back to a simple team of four ([decision 31](docs/decisions.md#31-back-to-a-
 
 - Removed the lane hooks, the event log, the eval cases and the runner placeholder.
 - Removed the Test Engineer and `/nap:failing-tests`. The Engineer now builds test-first.
-- Renamed `/nap:make-tests-pass` to `/nap:build`.
-- CI only validates the plugin.
+- Removed the plugin packaging and the CI. Skills and agents are plain files in `skills/` and `agents/`, named with a `nap-` prefix: `/nap-backlog`, `/nap-design`, `/nap-build` (was `/nap:make-tests-pass`), `/nap-review`.
 
 ## 0.1.0 (2026-11-14)
 

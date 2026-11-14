@@ -1,6 +1,6 @@
 ---
-name: backlog
-description: Turns a short brief into a prioritized set of GitHub issues (stories, bugs and tasks) with testable Given/When/Then acceptance criteria. Acts as the team's Product Manager, asks one product question at a time, drafts the issues, and creates them on GitHub only after the user approves. Use when the user wants to plan work, write issues or user stories, fill or groom the backlog, turn an idea into tickets, or types /nap:backlog.
+name: nap-backlog
+description: Turns a short brief into a prioritized set of GitHub issues (stories, bugs and tasks) with testable Given/When/Then acceptance criteria. Acts as the team's Product Manager, asks one product question at a time, drafts the issues, and creates them on GitHub only after the user approves. Use when the user wants to plan work, write issues or user stories, fill or groom the backlog, turn an idea into tickets, or types /nap-backlog.
 argument-hint: "[brief]"
 allowed-tools: Read Glob Grep Bash(gh issue list *) Bash(gh label list *) Bash(gh repo view *) Bash(gh auth status *)
 ---

@@ -1,6 +1,6 @@
 ---
-name: review
-description: Reviews one pull request against its GitHub issue's acceptance criteria, by handing it to the team's Reviewer agent in a fresh context, and posts one review that approves or requests changes. Use whenever the user asks to review a pull request or PR, or to check one against its issue, even when the PR description and diff are pasted in, or types /nap:review. Always hand the review to the Reviewer instead of reviewing inline. Not for general questions about code review, or for writing or fixing code.
+name: nap-review
+description: Reviews one pull request against its GitHub issue's acceptance criteria, by handing it to the team's Reviewer agent in a fresh context, and posts one review that approves or requests changes. Use whenever the user asks to review a pull request or PR, or to check one against its issue, even when the PR description and diff are pasted in, or types /nap-review. Always hand the review to the Reviewer instead of reviewing inline. Not for general questions about code review, or for writing or fixing code.
 argument-hint: "[PR number or URL]"
 allowed-tools: Agent Read Glob
 ---
@@ -19,7 +19,7 @@ The PR, if given: $ARGUMENTS
 
 ## 2. Hand it to the Reviewer
 
-Call the Agent tool with `subagent_type: "nap:reviewer"`. In the prompt, give:
+Call the Agent tool with `subagent_type: "nap-reviewer"`. In the prompt, give:
 
 - The PR number or URL, or the pasted PR description and diff, word for word.
 - The issue text and any feature design, if the user gave them, word for word.

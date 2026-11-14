@@ -8,16 +8,16 @@ A small AI dev team for developers, with issues first, TDD and code review. Ship
 
 AI makes it faster to build, but without a shared process the quality drifts: one person installs a skill, another doesn't, and every project ends up different.
 
-NAP is a Claude Code plugin that gives you a team of agents modelled on a real dev team, each with the skills its role needs. You brief the team, approve the design, and merge every PR yourself.
+NAP is a set of Claude Code skills and agents that gives you a team of agents modelled on a real dev team, each with the skills its role needs. You brief the team, approve the design, and merge every PR yourself.
 
 ## The team
 
 | Command | Role | What it does |
 |---|---|---|
-| `/nap:backlog` | PM | Turns a brief into GitHub issues with testable acceptance criteria |
-| `/nap:design` | Tech Lead | Posts a short feature design on the issue after you approve it |
-| `/nap:build` | Engineer | Builds one issue test-first in a fresh context and opens a PR |
-| `/nap:review` | Reviewer | Reviews a PR against its issue and design in a fresh context |
+| `/nap-backlog` | PM | Turns a brief into GitHub issues with testable acceptance criteria |
+| `/nap-design` | Tech Lead | Posts a short feature design on the issue after you approve it |
+| `/nap-build` | Engineer | Builds one issue test-first in a fresh context and opens a PR |
+| `/nap-review` | Reviewer | Reviews a PR against its issue and design in a fresh context |
 
 More roles (UX Designer, Platform, QA) get added when a real project needs them.
 
@@ -31,12 +31,7 @@ More roles (UX Designer, Platform, QA) get added when a real project needs them.
 
 You need [Claude Code](https://code.claude.com), `git`, and the [GitHub CLI](https://cli.github.com) (`gh`) signed in to your account.
 
-Then, in Claude Code:
-
-```
-/plugin marketplace add AD-NAP/not-another-prototype
-/plugin install nap@not-another-prototype
-```
+NAP is plain files, with no plugin to install. Clone this repo, then copy `skills/` and `agents/` into `~/.claude/` to use the team in every project, or into one project's `.claude/` folder to use it there.
 
 ## Principles
 

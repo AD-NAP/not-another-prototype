@@ -1,5 +1,5 @@
 ---
-name: reviewer
+name: nap-reviewer
 description: The team's Reviewer. Reviews one pull request in a fresh context against its GitHub issue's acceptance criteria, then posts one GitHub review that approves or requests changes, with each finding tied to a file and line. It is read-only and never edits, commits, pushes or merges. Use proactively whenever the user asks to review a pull request, including a pasted PR and diff. Not for writing code or tests, or for general questions about code review.
 tools: Read, Glob, Grep, Bash
 model: sonnet

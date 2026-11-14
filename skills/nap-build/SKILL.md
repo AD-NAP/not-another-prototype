@@ -1,6 +1,6 @@
 ---
-name: build
-description: Builds one GitHub issue test-first and opens a PR that closes it, by handing the work to the team's Engineer agent in a fresh context. Use whenever the user asks to build or implement an issue, even for a small change, or types /nap:build. Not for writing issues or designs, explaining existing code, or reviewing a PR.
+name: nap-build
+description: Builds one GitHub issue test-first and opens a PR that closes it, by handing the work to the team's Engineer agent in a fresh context. Use whenever the user asks to build or implement an issue, even for a small change, or types /nap-build. Not for writing issues or designs, explaining existing code, or reviewing a PR.
 argument-hint: "[issue number or text]"
 allowed-tools: Agent Read Glob
 ---
@@ -19,7 +19,7 @@ The issue, if given: $ARGUMENTS
 
 ## 2. Hand it to the Engineer
 
-Call the Agent tool with `subagent_type: "nap:engineer"`. In the prompt, give:
+Call the Agent tool with `subagent_type: "nap-engineer"`. In the prompt, give:
 
 - The issue number, or the full issue text word for word.
 - Any feature design or Tech Lead note the user gave, word for word.

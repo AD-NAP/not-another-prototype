@@ -1,6 +1,6 @@
 ---
-name: design
-description: Writes a short feature design for one GitHub issue before any tests or code, as the team's Tech Lead. Names the parts the change touches, the approach, the names the code will use, and a task split linked to the acceptance criteria, then posts it to the issue only after the user approves. Once a design is approved it labels the issue ready and marks ready issues that touch the same files as conflicting. Use when the user asks to design, plan the build of, or break into tasks an issue or story, asks how an issue should be built, asks to mark an issue ready or which ready issues conflict, or types /nap:design. Not for writing issues, tests or code, or for general questions about software design.
+name: nap-design
+description: Writes a short feature design for one GitHub issue before any tests or code, as the team's Tech Lead. Names the parts the change touches, the approach, the names the code will use, and a task split linked to the acceptance criteria, then posts it to the issue only after the user approves. Once a design is approved it labels the issue ready and marks ready issues that touch the same files as conflicting. Use when the user asks to design, plan the build of, or break into tasks an issue or story, asks how an issue should be built, asks to mark an issue ready or which ready issues conflict, or types /nap-design. Not for writing issues, tests or code, or for general questions about software design.
 argument-hint: "[issue number or text]"
 allowed-tools: Read Glob Grep Write Bash(gh issue view *) Bash(gh issue comment *) Bash(gh issue list *) Bash(gh issue edit *) Bash(gh label create *) Bash(gh repo view *) Bash(gh auth status *)
 ---
@@ -34,7 +34,7 @@ A design needs acceptance criteria a test can check. **Stop and write no design*
 - no acceptance criteria, or
 - a criterion no test could check (a vague word such as "fast", "easy", "nice" or "user-friendly" with no measure, or no observable result).
 
-Then tell the user, in a short list, what the PM needs to fix: quote each problem and say what is missing. Suggest running `/nap:backlog` to fix the issue. Don't guess the missing criteria and design anyway.
+Then tell the user, in a short list, what the PM needs to fix: quote each problem and say what is missing. Suggest running `/nap-backlog` to fix the issue. Don't guess the missing criteria and design anyway.
 
 ## 3. Read the code
 

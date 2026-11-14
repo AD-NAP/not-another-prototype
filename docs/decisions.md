@@ -371,9 +371,10 @@ Removed:
 - The Test Engineer. The Engineer now writes the failing tests first, then the code.
 - The runner placeholder, the phased todo list, and the plans for sprints, ceremonies, a Chief of Staff and an office.
 - The Engineer's git worktree. It works on a branch.
+- The plugin packaging (manifests, marketplace, version tags) and the CI on this repo. Skills and agents are plain files with a `nap-` prefix. Packaging came before there was much to package.
 
 **Why.** The goal was a team of agents with the right skills. The guardrails grew faster than the team: five roles came with 30 decisions, dozens of eval cases, about 1,000 lines of hooks and a 10-phase plan, and the loop still needed hand patches. Most open gaps came from the guardrails, not the roles. The split between Test Engineer and Engineer caused the test hand-off bug, the worktree problems and the need for lane hooks.
 
 **What we give up.** Tests written blind to the code, and tool-enforced lanes. The Reviewer checking tests against the criteria covers part of it.
 
-**Retires** decisions 3 to 7, 9, 11 to 13, 17 to 22, 24 to 27, 29 and 30. Their text stays above as history. Decisions 1, 8, 10, 14 to 16, 23 and 28 still hold, reading "Engineer" where they say "Test Engineer". Decision 2 was already replaced by 28.
+**Retires** decisions 3 to 7, 9, 11 to 13, 17 to 22, 24 to 27, 29 and 30. Without CI, the "PR and green CI" part of decision 21 no longer applies; the user still merges every PR. Their text stays above as history. Decisions 1, 8, 10, 14 to 16, 23 and 28 still hold, reading "Engineer" where they say "Test Engineer". Decision 2 was already replaced by 28.

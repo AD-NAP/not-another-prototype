@@ -11,14 +11,14 @@ The first design (sprints, a runner, a pixel office, hooks, an event log, evals)
 
 ## The team
 
-A team of agents, each with the skills its role needs. The user briefs the team and makes the calls.
+A team of agents, each with the skills its role needs. Plain skill and agent files, no plugin. The user briefs the team and makes the calls.
 
 | Role | Runs as | What it does | Hands off |
 |---|---|---|---|
-| PM | Skill, `/nap:backlog` | Turns a brief into issues with testable acceptance criteria | GitHub issues |
-| Tech Lead | Skill, `/nap:design` | Short design per issue: parts touched, approach, names, tasks. Also covers stack choices and ADRs. | Design comment on the issue |
-| Engineer | Subagent, `/nap:build` | Builds one issue test-first: failing tests, then code, then a PR | PR with tests and code |
-| Reviewer | Subagent, `/nap:review` | Reviews the PR against the issue and design, without the Engineer's reasoning | One review |
+| PM | Skill, `/nap-backlog` | Turns a brief into issues with testable acceptance criteria | GitHub issues |
+| Tech Lead | Skill, `/nap-design` | Short design per issue: parts touched, approach, names, tasks. Also covers stack choices and ADRs. | Design comment on the issue |
+| Engineer | Subagent, `/nap-build` | Builds one issue test-first: failing tests, then code, then a PR | PR with tests and code |
+| Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue and design, without the Engineer's reasoning | One review |
 
 The PM and Tech Lead are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context.
 
