@@ -54,6 +54,7 @@ Then allow the commands the roles run after you approve, in the project's `.clau
       "Bash(gh issue list *)",
       "Bash(gh pr list *)",
       "Bash(gh pr view *)",
+      "Bash(gh pr checks *)",
       "Bash(git status *)",
       "Bash(git pull *)",
       "Bash(git fetch *)",
