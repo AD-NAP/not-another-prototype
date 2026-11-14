@@ -127,7 +127,7 @@ Nobody hands out issues. Engineers pull them.
 - The **Tech Lead** labels issues `ready` and marks which ones conflict, with a `conflicts: #N` label on both (decision 16).
 - A free **Engineer** takes the top `ready` issue that doesn't conflict with work in progress.
 
-Picking the next issue is a plain rule, so the runner can do it in code without spending credits. Until the runner exists, the user starts the next issue.
+Picking the next issue is a plain rule, so the runner can do it in code without spending credits. Until the runner exists, the Chief of Staff skill, `/nap:run next`, applies the rule in the main session (see [decision 19](decisions.md#19-the-chief-of-staff-starts-as-a-skill-2026-11-14)).
 
 ## The CEO's gates
 

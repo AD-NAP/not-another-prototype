@@ -224,3 +224,73 @@ Rule of thumb: roles that talk to the user run as skills in the main session. Ro
 **Why.** Hooks fire whatever the agent does, so the log doesn't depend on the agent remembering to write it (rule 2 against drift), and no role's instructions change. JSON Lines is append-only, so entries stay in the order they happened, and any script reads it line by line with no library: `jq`, a few lines of Node, or the office later. A file in the project fits step 5 and needs no server; the runner (step 12) can point `NAP_EVENT_LOG` wherever it wants. A failed role can't log its own failure, so failures come from the `PostToolUseFailure` and `StopFailure` hook events. A live run on Claude Code 2.1 confirmed the events and fields.
 
 **Limits.** A skill role that asks the user a question logs "finished" when it hands the turn back, with the question as its detail. If the user answers, the rest of that role's work isn't logged again until the skill runs again. Two hooks writing at the same moment can race on the state file; the log itself is safe, because each entry is one append.
+
+## 18. The MVP is the loop, setup, a Chief of Staff skill and proof (2026-11-14)
+
+**Decision.** v1.0.0, the MVP of decision 12, is four things: the sprint loop made reliable, `/nap:setup` with the CI gate, a Chief of Staff skill that chains the loop (decision 19), and measured proof on a second project. Sprint ceremonies, the Sprint 0 product and architecture roles, the UX Designer, the role template and event log contract v1 move to after the MVP. The roadmap steps are renumbered to match:
+
+| Old step | New step |
+|---|---|
+| 6 Sprint ceremonies | 10 |
+| 7 Proof | 9 |
+| 8 Sprint 0: product | 11 |
+| 9 Sprint 0: architecture | 12 |
+| 10 Sprint 0: platform | 7 |
+| 11 UX Designer | 13 |
+| 12 Chief of Staff and runner | 8 (the skill) and 14 (the runner) |
+| 13 to 15 Headcount, office, CEO controls | 15 to 17 |
+
+Step numbers in decisions 1 to 17 are the old ones.
+
+The proof project is `kopi`: a small TypeScript CLI that reads a repo's issues, milestones and PRs through `gh`, plus `.nap/events.jsonl`, and prints velocity, time from `ready` to merge, review rounds and what is blocked. NAP builds it from an empty folder.
+
+**Why.** The first milestone 1 plan had 88 todos in 10 phases for one person on a Pro plan, and usage limits had already stopped eval runs (decision 12). It also ended with the CEO typing about six commands per issue, which is not the product in [design.md](design.md). What sets NAP apart from other agent teams is one standard set up the same way in every project and enforced by CI, so that part moves forward. The reduced list is about 59 todos.
+
+**Why `kopi`.** It is useful, since the research found no tool that reads velocity from GitHub ([skill-research.md](skill-research.md)). It is mostly pure functions over JSON, so criteria turn into tests cleanly. It needs no cloud, accounts or UI. It measures the sprints that build it, and it later becomes the engine behind the Kopi Report (step 10).
+
+**Costs accepted.** `kopi` is close to NAP's own tooling, so the proof is weaker than one on an unrelated product. It has no UI or database. A second proof on a product with both waits for steps 12 and 13.
+
+## 19. The Chief of Staff starts as a skill (2026-11-14)
+
+**Decision.** The Chief of Staff's first form is a skill in the main session, `/nap:run`. It needs no runner.
+
+- `/nap:run <issue>` runs the Tech Lead's design and waits for the CEO's approval, then starts the Test Engineer, the Engineer and the Reviewer in turn, then fix rounds up to 3. It ends with a short report.
+- It reads the next step from GitHub, not from the conversation: the design comment, the `ready` label, the test branch, the open PR and the latest review. A fresh session that runs the same command resumes where the last one stopped.
+- It continues or stops on each agent's result status. BLOCKED and NEEDS_CONTEXT stop the run and go to the CEO.
+- It never merges.
+
+The runner (step 14) later does the same job in the background, in code. This narrows decision 1, which listed the Chief of Staff as a main-session agent, and it replaces the earlier plan to leave all chaining to the runner.
+
+**Why.** It turns six commands per issue into one command and two decisions (approve the design, merge the PR), without building the runner first. Reading the state from GitHub fits the rule that each step hands off a file, and it survives a usage limit in the middle of a run, which is normal on a Pro plan.
+
+**Risks.** Unproven: one session may not hold five handoffs in its context, and one issue may not fit a 5-hour window. If so, each role runs in its own session and only the next-step table is shared. Claude has already done the Engineer's work inline once instead of starting the agent (issue #36), so the skill gets an eval that fails when code appears without the Engineer.
+
+## 20. The Reviewer posts its review without a CEO step (2026-11-14)
+
+**Decision.** The Reviewer posts its review as soon as it finishes. The project's allow rules include `gh pr review`.
+
+**Why.** The plugin never asked before posting. In the first full loop run (#24), the CEO held the posting back by blocking `gh pr review` and allowing it by hand. `/nap:run` cannot continue to the fix rounds if a person must release each review. The review is a comment (decision 14): it changes no code and merges nothing, and the CEO still merges every PR (decision 21). A wrong review costs a fix round, not a bad merge.
+
+## 21. The CEO merges every PR now, and a sprint branch later (2026-11-14)
+
+**Decision.** Two stages.
+
+- **Now (stage A).** A person merges every PR. Branch protection requires a PR and green CI, and a project deny rule stops agents running `gh pr merge`.
+- **Later (stage B), with the runner (step 14).** PRs that the Reviewer approved and CI passed merge into a `sprint-N` branch without the CEO. The CEO reviews and merges that branch into `main` once, at the sprint review.
+
+Stage B starts only when all three hold:
+1. Across two measured sprints, the CEO overruled the Reviewer on fewer than 1 in 10 PRs. Step 9 counts this.
+2. CI runs on the project.
+3. The Reviewer has its own GitHub account, so its approval is real and branch protection can require it (decision 14).
+
+A person approves every merge to `main` in both stages. That rule does not change.
+
+**Why.** In stage A the CEO is the bottleneck: work stops at every PR until a person arrives, which blocks unattended runs and headcount. But in the only full loop run so far the Reviewer approved a PR with a design task missing, and the CEO caught it. The Reviewer has to earn the change with numbers. Stage B matches the later CEO gates already in [design.md](design.md#the-ceos-gates): the CEO accepts work at the sprint review.
+
+**Cost.** In stage B a bad PR can sit in the sprint branch while later PRs build on it. The sprint review is the backstop.
+
+## 22. `/nap:run next` takes independent issues only (2026-11-14)
+
+**Decision.** After an issue reaches a merge-ready PR, `/nap:run next` continues to the next one. It takes the top `ready` issue that neither conflicts with an open PR (the `conflicts: #N` labels, decision 16) nor is blocked by one ("blocked by" links that `/nap:backlog` records). Each issue branches from `main`. It stops when 3 PRs wait for the CEO, or when no issue qualifies, and reports what is ready and what is blocked. Stacked PRs, where an issue branches from an unmerged PR, wait for stage B of decision 21.
+
+**Why.** Independent issues need no stacking. A stacked PR needs a rebase whenever the PR under it changes or is squash-merged, and a change request at the bottom reaches every PR above it. In stage A the stack would also grow while the CEO is away. With a sprint branch as the shared base, PRs merge as they pass, so stacking fits there. The cap of 3 keeps the CEO's queue short and limits the work at risk if an early PR is sent back.
