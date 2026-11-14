@@ -14,6 +14,7 @@ NAP is a set of Claude Code skills and agents that gives you a team of agents mo
 
 | Command | Role | What it does |
 |---|---|---|
+| `/nap-pa` | Personal Assistant | Runs the whole loop for you from your plans and goals. Calls each role in order and stops only for your answers, approvals and merges. Say "merged" or "continue" to pick up again. |
 | `/nap-architect` | Architect | Once per project: records the goal, recommends a stack, and writes the architecture, ADRs and project rules after you approve. Again for any big decision. |
 | `/nap-backlog` | PM | Turns the goal or a brief into GitHub issues with testable acceptance criteria |
 | `/nap-build` | Engineer | Builds one issue, or a few related ones, test-first in a fresh context and opens one PR |
@@ -24,7 +25,7 @@ More roles (UX Designer, Platform, QA) get added when a real project needs them.
 
 ## Known limits
 
-- You run one command per role.
+- `/nap-pa` runs one build at a time, and waits for you to merge each PR before the next.
 - The Reviewer only runs the tests when your checkout is on the PR's branch. It never switches branches itself.
 - All agents use your GitHub account. GitHub won't let you approve your own PR, so the Reviewer posts its verdict as a comment review.
 
@@ -49,14 +50,28 @@ Then allow the commands the roles run after you approve, in the project's `.clau
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git push *)",
-      "Bash(gh pr create *)"
+      "Bash(gh pr create *)",
+      "Bash(gh issue list *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(git status *)",
+      "Bash(git pull *)",
+      "Bash(git fetch *)",
+      "Bash(git rev-parse *)",
+      "Skill(nap-architect)",
+      "Skill(nap-backlog)",
+      "Skill(nap-build)",
+      "Skill(nap-review)",
+      "Skill(nap-fix)"
     ],
     "deny": ["Bash(gh pr merge *)"]
   }
 }
 ```
 
-The `git` and `gh pr create` lines let the Architect open its docs PR, and the Engineer use them too. The Engineer and the Reviewer will still ask before running your tests and reviewing. Allow the ones you trust them with.
+The `git` and `gh pr` lines let the Architect open its docs PR and the PA move between branches, and the Engineer use them too. The `Skill` lines let the PA start each role on a later turn, such as after you say "merged", without asking.
+
+Claude Code only uses a project's allow rules once you have trusted the folder: open Claude Code there interactively once and accept the trust dialog. Trusting a parent folder doesn't count, and `claude -p` never shows the dialog, so in an untrusted folder it skips the rules with a warning. The Engineer and the Reviewer will still ask before running your tests and reviewing. Allow the ones you trust them with.
 
 ## Principles
 

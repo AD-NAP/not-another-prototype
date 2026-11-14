@@ -74,6 +74,7 @@ Then close with: "Run `/nap-backlog` next to turn the goal into issues?" For a s
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
+- Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval. The PA's first test run hit this.
 - If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to do anything.
 
 ## What you never do

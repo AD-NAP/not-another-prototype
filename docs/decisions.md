@@ -22,6 +22,7 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 | PM | Skill | Needs a back-and-forth with the user to turn a brief into issues |
 | Engineer | Subagent | Own context and branch per issue |
 | Reviewer | Subagent | Sees only the change, the issue and the project's rules, never the Engineer's reasoning |
+| Personal Assistant | Skill | Talks with the user, and starts the Engineer and Reviewer. Subagents can't start subagents. |
 
 ## 3. Subagent roles get an entry skill (2026-10-31)
 
@@ -86,3 +87,11 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 **Why.** A new project can start with 30 issues. One PR each means 30 builds, 30 reviews and 30 merges, and related issues often change the same code twice.
 
 **What we give up.** Smaller PRs. A grouped PR takes longer to review, and one failing issue holds back the others until it is fixed. The cap keeps that bounded.
+
+## 12. A Personal Assistant runs the loop (2026-11-14)
+
+**Decision.** `/nap-pa` takes the user's plans and goals and runs the whole loop: the Architect when there is no architecture or a plan goes against an ADR, the PM for new plans, then for each group of related issues the build, review and fix rounds. It runs each role through its own skill with the Skill tool, so every role's instructions stay in one file. It keeps no state of its own: it reads the architecture docs, open issues and open PRs from GitHub at the start of each turn. It stops only for the user: a role's questions and approvals, a PR to merge, a big decision, findings still open after three rounds, and changes in the checkout it didn't make. The user merges each PR as it is approved, and the PA waits for that before the next build.
+
+**Why.** Typing each command, switching branches before a review and passing PR numbers between roles was manual work the user didn't need to do. Merging as you go keeps every build on the real main branch, which matters because issues often build on each other. Grouping related issues ([decision 11](#11-related-issues-can-share-a-pr-2026-11-14)) keeps the number of merges down.
+
+**What we give up.** One build at a time, since there is one checkout. And the PA is one more file that can drift from the roles it runs, which is why it calls their skills instead of repeating them.
