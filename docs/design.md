@@ -15,35 +15,37 @@ A team of agents, each with the skills its role needs. Plain skill and agent fil
 
 | Role | Runs as | What it does | Hands off |
 |---|---|---|---|
-| PM | Skill, `/nap-backlog` | Turns a brief into issues with testable acceptance criteria | GitHub issues |
-| Tech Lead | Skill, `/nap-design` | Short design per issue: parts touched, approach, names, tasks. Also covers stack choices and ADRs. | Design comment on the issue |
-| Engineer | Subagent, `/nap-build` | Builds one issue test-first: failing tests, then code, then a PR | PR with tests and code |
-| Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue and design, without the Engineer's reasoning. Runs the tests. | One review |
+| Architect | Skill, `/nap-architect` | Once per project, and again for a big decision. Asks what shapes the build, recommends a stack, and writes the goal, architecture, ADRs and project rules. Asks whether CI and deploy are needed. | `docs/ARCHITECTURE.md`, `docs/ADR.md`, rules in `CLAUDE.md`, in a PR |
+| PM | Skill, `/nap-backlog` | Turns the goal or a brief into issues with testable acceptance criteria. Starts from the Architect's goal and asks deeper only where it is vague. Puts setup issues first on a new project. | GitHub issues |
+| Engineer | Subagent, `/nap-build` | Builds one issue test-first within the architecture: failing tests, then code, then a PR. Decides the UI when there is no mock-up. Stops for a big decision. | PR with tests and code |
+| Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue, the project rules and the ADRs, without the Engineer's reasoning. Runs the tests. | One review |
 
-The PM and Tech Lead are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context.
+The Architect and PM are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context. See [decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14) for why there is no per-issue design.
 
 ## The loop
 
 ```
-Brief -> PM (issues) -> Tech Lead (design) -> Engineer (tests, code, PR) -> Reviewer -> user merges
-                                              ^                              |
-                                              +---- /nap-fix, up to 3 rounds +
+Brief -> Architect (docs, stack, rules) -> PM (issues) -> Engineer (tests, code, PR) -> Reviewer -> user merges
+            ^                                              ^                              |
+            |                                              +---- /nap-fix, up to 3 rounds +
+            +------------ big decision found mid-build (Engineer stops) ------------------+
 ```
 
-Each step hands off something a person can read (issue, design, PR, review), not chat history.
+Each step hands off something a person can read (docs, issue, PR, review), not chat history.
 
 ## Rules
 
-1. **The user approves** the issues, each design and every merge.
+1. **The user approves** the architecture, each batch of issues, every big decision and every merge.
 2. **Tests come first.** The Engineer writes failing tests from the criteria before the code.
 3. **Fresh context for review.** The Reviewer judges the change, not the story about it.
 4. **Evidence before approval.** The Reviewer approves only after seeing the tests pass. Findings are fixed on the same PR with `/nap-fix` and reviewed again.
-5. **Grow on need.** A new role, rule or tool is added only when a real project run shows it is missing.
+5. **Big decisions go through the Architect.** A new language, framework, service, major library or data store needs an ADR first.
+6. **Grow on need.** A new role, rule or tool is added only when a real project run shows it is missing.
 
 ## Roles to add when needed
 
 | Role | Trigger |
 |---|---|
-| UX Designer | First project with a real UI |
-| Platform | First project that needs CI, Docker or a deploy |
+| UX Designer | The Engineer's UI choices keep needing rework. Until then the Engineer decides the UI. |
+| Platform | CI or deploy setup is more than the Architect's docs and a setup issue can cover |
 | QA | Unit tests pass but the app is broken end to end |

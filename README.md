@@ -2,22 +2,22 @@
 
 A small AI dev team for developers, with issues first, TDD and code review. Ship production-ready work, not prototypes.
 
-> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The slimmed loop, and the test run and fix loop added since, have not run on a real project yet. See the [roadmap](docs/roadmap.md).
+> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The loop ran end to end on a test project, fix round included. The Architect, which replaced the Tech Lead ([decision 10](docs/decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14)), has not run on a real project yet. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
 AI makes it faster to build, but without a shared process the quality drifts: one person installs a skill, another doesn't, and every project ends up different.
 
-NAP is a set of Claude Code skills and agents that gives you a team of agents modelled on a real dev team, each with the skills its role needs. You brief the team, approve the design, and merge every PR yourself.
+NAP is a set of Claude Code skills and agents that gives you a team of agents modelled on a real dev team, each with the skills its role needs. You brief the team, approve the architecture and the issues, and merge every PR yourself.
 
 ## The team
 
 | Command | Role | What it does |
 |---|---|---|
-| `/nap-backlog` | PM | Turns a brief into GitHub issues with testable acceptance criteria |
-| `/nap-design` | Tech Lead | Posts a short feature design on the issue after you approve it |
+| `/nap-architect` | Architect | Once per project: records the goal, recommends a stack, and writes the architecture, ADRs and project rules after you approve. Again for any big decision. |
+| `/nap-backlog` | PM | Turns the goal or a brief into GitHub issues with testable acceptance criteria |
 | `/nap-build` | Engineer | Builds one issue test-first in a fresh context and opens a PR |
-| `/nap-review` | Reviewer | Reviews a PR against its issue and design in a fresh context, and runs the tests |
+| `/nap-review` | Reviewer | Reviews a PR against its issue, the project rules and the ADRs in a fresh context, and runs the tests |
 | `/nap-fix` | Engineer | Fixes the findings from a review on the same PR, up to three rounds |
 
 More roles (UX Designer, Platform, QA) get added when a real project needs them.
@@ -34,7 +34,7 @@ You need [Claude Code](https://code.claude.com), `git`, and the [GitHub CLI](htt
 
 NAP is plain files, with no plugin to install. Clone this repo, then copy `skills/` and `agents/` into `~/.claude/` to use the team in every project, or into one project's `.claude/` folder to use it there.
 
-Then allow the commands the roles run after you approve, in the project's `.claude/settings.json` (or `~/.claude/settings.json`). In our runs a skill's `allowed-tools` did not carry over to later turns, and the PM and Tech Lead post on a later turn, after your yes. Without this list, every post asks again.
+Then allow the commands the roles run after you approve, in the project's `.claude/settings.json` (or `~/.claude/settings.json`). In our runs a skill's `allowed-tools` did not carry over to later turns, and the Architect and PM write on a later turn, after your yes. Without this list, every post asks again.
 
 ```json
 {
@@ -44,14 +44,19 @@ Then allow the commands the roles run after you approve, in the project's `.clau
       "Bash(gh issue create *)",
       "Bash(gh issue edit *)",
       "Bash(gh issue comment *)",
-      "Bash(gh label create *)"
+      "Bash(gh label create *)",
+      "Bash(git switch *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh pr create *)"
     ],
     "deny": ["Bash(gh pr merge *)"]
   }
 }
 ```
 
-The Engineer and the Reviewer will ask before running `git`, your tests and `gh pr` commands. Allow the ones you trust them with.
+The `git` and `gh pr create` lines let the Architect open its docs PR, and the Engineer use them too. The Engineer and the Reviewer will still ask before running your tests and reviewing. Allow the ones you trust them with.
 
 ## Principles
 

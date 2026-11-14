@@ -32,7 +32,9 @@ What theirs does that ours does not:
 
 ---
 
-## Tech Lead (`/nap-design`)
+## Tech Lead (`/nap-design`), now the Architect
+
+The Tech Lead was replaced by the Architect in [decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14). The ADR sources below apply to the Architect. The per-issue ideas (seams, plans) have no role to go in for now.
 
 | Candidate | What it does | License |
 |---|---|---|

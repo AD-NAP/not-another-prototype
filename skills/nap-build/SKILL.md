@@ -22,7 +22,6 @@ The issue, if given: $ARGUMENTS
 Call the Agent tool with `subagent_type: "nap-engineer"`. In the prompt, give:
 
 - The issue number, or the full issue text word for word.
-- Any feature design or Tech Lead note the user gave, word for word.
 
 Don't add requirements, hints or code of your own. The issue is the spec.
 
@@ -31,3 +30,5 @@ Don't add requirements, hints or code of your own. The issue is the spec.
 Relay the Engineer's report: the result, criteria and tests, files changed, test run, PR link and notes. Keep it short.
 
 If the Engineer stopped because the issue isn't ready, say plainly what is missing. Don't build it anyway.
+
+If it stopped for a big decision, name the decision and suggest `/nap-architect <the decision>`. Don't decide it yourself.

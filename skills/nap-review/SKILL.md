@@ -22,7 +22,7 @@ The PR, if given: $ARGUMENTS
 Call the Agent tool with `subagent_type: "nap-reviewer"`. In the prompt, give:
 
 - The PR number or URL, or the pasted PR description and diff, word for word.
-- The issue text and any feature design, if the user gave them, word for word.
+- The issue text, if the user gave it, word for word.
 
 **Never pass the Engineer's reasoning.** If the user pasted the Engineer's report, notes or claims ("all criteria pass", "I tested it"), leave them out. Write only "The Engineer's notes are left out on purpose." The Reviewer judges the change itself.
 

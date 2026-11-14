@@ -122,7 +122,7 @@ Why it's good: each criterion names a starting situation, one action and a resul
 | Mistake | Better |
 |---|---|
 | "The quiz should be fast." | "Given 10 questions, when the learner opens the quiz, then the first question shows within 1 second." |
-| "Store answers in a Redis cache." | Leave the storage choice to the Tech Lead. If the user required Redis, list it under Constraints. |
+| "Store answers in a Redis cache." | Leave the storage choice to the Architect. If the user or `docs/ADR.md` already chose Redis, list it under Constraints. |
 | "Build the quiz feature." (size L) | Split into: generate questions, mark answers, show the final score. |
 | "As a developer, I want CI." | Use the task template: "Why: PRs can be merged with failing tests today." |
 | "Then the Engineer writes only the minimal code." | Can't be tested. Move the intent to Notes, or test something checkable: "then the full test suite passes, not only the new tests." |

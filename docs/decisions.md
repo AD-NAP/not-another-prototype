@@ -6,7 +6,7 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 ## 1. A simple team of four (2026-11-14)
 
-**Decision.** NAP is four roles, each with the skills it needs: PM, Tech Lead, Engineer, Reviewer. It is plain skill and agent files, named with a `nap-` prefix. There is no plugin, no hooks, no event log, no evals and no CI. A role, rule or tool is added only when a real project run shows it is needed.
+**Decision.** NAP is four roles, each with the skills it needs: Architect, PM, Engineer, Reviewer. The Architect replaced the Tech Lead in [decision 10](#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14). It is plain skill and agent files, named with a `nap-` prefix. There is no plugin, no hooks, no event log, no evals and no CI. A role, rule or tool is added only when a real project run shows it is needed.
 
 **Why.** The goal was a team of agents with the right skills. The guardrails grew faster than the team: five roles came with 30 decisions, dozens of eval cases, about 1,000 lines of hooks and a 10-phase plan, and the loop still needed hand patches. Most open gaps came from the guardrails, not the roles. Packaging as a plugin also came before there was much to package.
 
@@ -18,10 +18,10 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 | Role | Runs as | Why |
 |---|---|---|
+| Architect | Skill | Asks the user what shapes the build, and gets the stack approved live |
 | PM | Skill | Needs a back-and-forth with the user to turn a brief into issues |
-| Tech Lead | Skill | The user approves the design live |
 | Engineer | Subagent | Own context and branch per issue |
-| Reviewer | Subagent | Sees only the change, the issue and the design, never the Engineer's reasoning |
+| Reviewer | Subagent | Sees only the change, the issue and the project's rules, never the Engineer's reasoning |
 
 ## 3. Subagent roles get an entry skill (2026-10-31)
 
@@ -39,9 +39,9 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 ## 5. Work lives in GitHub issues (2026-10-30)
 
-**Decision.** The PM writes GitHub issues with testable acceptance criteria and a priority label. Nothing is created until the user approves the draft. The Tech Lead posts the design as a comment on the issue that starts with `## Feature design`, after the user approves it.
+**Decision.** The PM writes GitHub issues with testable acceptance criteria and a priority label. Nothing is created until the user approves the draft.
 
-**Why.** Issues are visible, a PR can close one, and every role can read the issue and its design the same way with `gh issue view`. A comment needs no commit or branch.
+**Why.** Issues are visible, a PR can close one, and every role can read the issue the same way with `gh issue view`.
 
 ## 6. The Reviewer posts a comment review on your own PR (2026-11-01)
 
@@ -68,3 +68,13 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 **Why.** In the first full loop run the Reviewer approved a PR where a design task had no test, and it had never run the tests. There was also no way to fix findings without a person patching by hand. The cap is three because a loop that long usually means the two roles disagree or the issue is unclear, and each round costs usage.
 
 **Adapted from** Superpowers' fix loop and its rule of evidence before claims ([skill-research.md](skill-research.md)).
+
+## 10. An Architect instead of a per-issue Tech Lead (2026-11-14)
+
+**Decision.** The Tech Lead and `/nap-design` are removed. The Architect (`/nap-architect`) runs once per project and again for a big decision. It records the goal and recommends a stack, then writes `docs/ARCHITECTURE.md`, `docs/ADR.md` and the project rules in `CLAUDE.md`, in a PR the user merges. On the first run it asks whether CI and deploy are needed. The PM starts from the Architect's goal and asks deeper only where it is vague. The Engineer builds within the architecture, decides the UI when there is no mock-up, and stops when an issue needs a big decision. The Reviewer checks the change against the project rules and ADRs instead of a per-issue design.
+
+**Why.** Approving a design for every issue was too much work for the user, most of all on a new project with many issues, and on small issues the design repeated what the Engineer works out anyway. Meanwhile nobody owned the stack, the architecture or the ADRs. The step 3 run also showed the per-issue design check penalising private helpers (PR #9 on `nap-sprint-test`).
+
+**Why the Architect and PM stay apart.** They run at different times (once per project, against every feature idea), and they judge different things (how it is built, against what the user needs). Kept apart, the PM's "what, never how" rule keeps stories free of the solution, and each skill stays small.
+
+**What we give up.** A checked plan of names and files before each build. The Engineer picks them within the rules, and the Reviewer checks the rules, not the split into functions.
