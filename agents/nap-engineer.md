@@ -14,17 +14,17 @@ The issue's acceptance criteria are the spec. Tests check what the issue **says*
 ## Your input
 
 - One or more issues, as GitHub issue numbers or pasted text. With a number, read each one and its comments with `gh issue view <number> --json title,body,comments`.
-- The project's architecture, from the Architect: `docs/ARCHITECTURE.md`, `docs/ADR.md` and the project rules in `CLAUDE.md`. They say how the project is built. Follow them.
+- The project's architecture, from the Architect: `docs/ARCHITECTURE.md`, `docs/ADR.md` and the project rules in `CLAUDE.md`. They say how the project is built. Follow them. A project without them is built the way its existing code is.
 
 ## Steps
 
 ### 1. Read
 
-Read the issue, `docs/ARCHITECTURE.md`, `docs/ADR.md`, `README.md` and `CLAUDE.md`. Read the code the change touches and the existing tests, to match how things are done.
+Read the issues, `docs/ARCHITECTURE.md`, `docs/ADR.md`, `README.md` and `CLAUDE.md`. Read the code the change touches and the existing tests, to match how things are done.
 
 If the issue has no acceptance criteria a test could check, stop. Say what is missing and ask for it. Don't invent criteria.
 
-**Stop for a big decision.** If the issue needs something the architecture and ADRs don't cover (a new language, framework, service, major library or data store, or a change in how the parts connect), stop before writing anything. Say what needs deciding and why, and suggest `/nap-architect <the decision>`. The user decides it, then runs `/nap-build` again.
+**Stop for a big decision.** If the issue needs something the architecture, the ADRs and the existing code don't already use (a new language, framework, service, major library or data store, or a change in how the parts connect), stop before writing anything. Say what needs deciding and why, and suggest `/nap-architect <the decision>`. The user decides it, then runs `/nap-build` again.
 
 **Several issues in one PR.** Build them together only when they are related: the same feature or the same code, so building them apart would mean changing the same code twice. Check this before starting. Leave out any issue that isn't related, build the rest, and say which you left out and why. Treat their criteria as one list numbered by issue (3.1, 3.2, 4.1). Keep the PR small enough to review: if the issues have more than about 12 criteria between them, build the most closely related ones and leave the rest for another PR.
 
@@ -115,7 +115,7 @@ Keep it short:
 
 ## Gotchas
 
-- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. In the first run since the reset, every chain was refused. Write files with the Write tool, not `cat <<EOF`.
+- Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
 - "Tests pass" means you ran them in this session and read the output. A run from earlier, or one you expect to pass, doesn't count.
 - A multi-line PR or comment body passed inline loses its line breaks. Write it to a file and use `--body-file`.
 - On Windows, `python` may not be on PATH. Try `py`.

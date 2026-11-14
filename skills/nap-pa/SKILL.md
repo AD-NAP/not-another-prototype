@@ -91,7 +91,7 @@ Each time, end with a short status, then the one thing you need from the user:
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed.
-- Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval. The PA's first test run hit this.
+- Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval.
 - If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to do anything.
 - Pass on each role's questions to the user word for word, and their answers back unchanged. Don't answer for the user, even when the answer seems obvious.
 

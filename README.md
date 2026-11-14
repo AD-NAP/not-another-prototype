@@ -2,7 +2,7 @@
 
 A small AI dev team for developers, with issues first, TDD and code review. Ship production-ready work, not prototypes.
 
-> **Status: early, being simplified.** NAP was cut back to four roles on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The loop ran end to end on a test project, fix round included. The Architect, which replaced the Tech Lead ([decision 10](docs/decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14)), has not run on a real project yet. See the [roadmap](docs/roadmap.md).
+> **Status: early.** NAP was cut back to a small team on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). The PM, Engineer and Reviewer ran end to end on a test project, fix round included. The Architect ([decision 10](docs/decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14)) and the Personal Assistant ([decision 12](docs/decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14)) have not run on a real project yet. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
@@ -35,7 +35,7 @@ You need [Claude Code](https://code.claude.com), `git`, and the [GitHub CLI](htt
 
 NAP is plain files, with no plugin to install. Clone this repo, then copy `skills/` and `agents/` into `~/.claude/` to use the team in every project, or into one project's `.claude/` folder to use it there.
 
-Then allow the commands the roles run after you approve, in the project's `.claude/settings.json` (or `~/.claude/settings.json`). In our runs a skill's `allowed-tools` did not carry over to later turns, and the Architect and PM write on a later turn, after your yes. Without this list, every post asks again.
+Then allow the commands the roles run after you approve, in the project's `.claude/settings.json` (or `~/.claude/settings.json`). A skill's `allowed-tools` only lasts for the turn it starts in, and the Architect, PM and PA act on a later turn, after your yes. Without this list, every post asks again.
 
 ```json
 {
