@@ -1,6 +1,6 @@
 # NAP: Not Another Prototype
 
-A small AI dev team for developers, as plain Claude Code skills and agents. Four roles: Architect, PM, Engineer, Reviewer. Issues first, TDD, review. The user merges every PR.
+A small AI dev team for developers, as plain Claude Code skills and agents. Four roles: Architect, PM, Engineer, Reviewer, plus a Personal Assistant that runs the loop. Issues first, TDD, review. The user merges every PR.
 
 ## Start here
 - `docs/design.md`: the roles and the loop.
