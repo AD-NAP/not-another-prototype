@@ -25,6 +25,7 @@ Each entry uses this format:
 - What NAP adapted: ideas, rewritten in NAP's own words, no text copied.
   - `agents/nap-reviewer.md` (approval needs a fresh test run) from `skills/verification-before-completion/SKILL.md`.
   - `skills/nap-fix/SKILL.md` and the "Fixing review findings" section of `agents/nap-engineer.md` (findings passed word for word, a cap on rounds, a per-finding result, checking a finding before acting on it) from `skills/subagent-driven-development/references/fix-loop.md` and `skills/receiving-code-review/SKILL.md`.
+  - `skills/nap-vision/SKILL.md` and `skills/nap-vision/reader-check.md` (open questions before suggestions, playing a detailed idea back, marking what the user didn't say, anti-goals, asking what the user has used or tried, and a fresh reader listing the gaps it would have to guess) from `skills/brainstorming/SKILL.md` and `skills/brainstorming/builder-check-prompt.md`.
 
 ```
 MIT License

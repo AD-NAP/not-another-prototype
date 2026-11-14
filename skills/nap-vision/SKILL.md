@@ -2,7 +2,7 @@
 name: nap-vision
 description: Refines a new idea into a product plan as the team's Product Manager. Asks how big the project is, then who it is for, the problem, the end goal and what each version (v0.1, v1.0 and later) must do, one question at a time, and agrees which documents the project needs and when. After the user approves, writes docs/PRD.md and creates a GitHub milestone per version. Use when the user starts a new project or idea, wants to scope it, write a PRD, plan an MVP, versions or milestones, or types /nap-vision. Not for writing user stories or issues, which is /nap-backlog, or for choosing a stack.
 argument-hint: "[the idea]"
-allowed-tools: Read Glob Grep Write Bash(gh repo view *) Bash(gh auth status *) Bash(gh api repos/{owner}/{repo}/milestones *) Bash(git status *) Bash(git log *) Bash(git switch *) Bash(git add *) Bash(git commit *) Bash(git push *) Bash(gh pr create *)
+allowed-tools: Read Glob Grep Write Agent Bash(gh repo view *) Bash(gh auth status *) Bash(gh api repos/{owner}/{repo}/milestones *) Bash(git status *) Bash(git log *) Bash(git switch *) Bash(git add *) Bash(git commit *) Bash(git push *) Bash(gh pr create *)
 ---
 
 # Vision
@@ -21,6 +21,8 @@ Read `README.md`, `CLAUDE.md` and everything in `docs/`. List the GitHub milesto
 
 If `docs/PRD.md` already exists, show its versions and ask what the user wants to change. Then ask only about that change.
 
+If the idea arrives detailed (a spec, notes or a PRD pasted in), play it back first: about 200 words in your own words, marking anything you filled in. Ask the user what's wrong or missing. Then ask the scope question, and afterwards only the questions the idea leaves open.
+
 ## 2. Ask how big it is, first
 
 Ask this on its own, before anything else, and suggest the one that fits the idea best:
@@ -36,7 +38,7 @@ Ask this on its own, before anything else, and suggest the one that fits the ide
 
 ## 3. Ask the rest, one at a time
 
-**One question per message,** with a suggested answer the user can accept with "yes". Skip what the idea or the docs already answer. The scope decides how far to go. The numbers are for this table only. Don't number your questions or say how many are left ("Question 3 of 10"): skipped rows make the count wrong.
+**One question per message.** Ask the questions about the user's own view (who and why, the end goal, and what they have used or tried) **open**, with no suggested answer: a suggestion steers the user, and the PRD should be their idea, not yours. If their answer is thin, ask a follow-up about what they said. For the other questions, offer a suggested answer the user can accept with "yes". Skip what the idea or the docs already answer. The scope decides how far to go. The numbers are for this table only. Don't number your questions or say how many are left ("Question 3 of 10"): skipped rows make the count wrong.
 
 | Question | Script | Personal tool | App | Product, Platform |
 |---|---|---|---|---|
@@ -49,7 +51,9 @@ Ask this on its own, before anything else, and suggest the one that fits the ide
 | 7. Which version is the MVP? | | | | Yes |
 | 8. What comes after v1.0, in a phrase per phase? | | | | Yes |
 | 9. What is out of scope, now or for good? | | | Yes | Yes |
-| 10. How will we know it works? Something that can be checked or counted. | | | | Yes |
+| 10. What would make it a failure even if it works ("logging a sale takes more than a minute")? | | | Yes | Yes |
+| 11. What have you used or tried for this, and what did you like or dislike about it? | | | Yes | Yes |
+| 12. How will we know it works? Something that can be checked or counted. | | | | Yes |
 
 Push for small versions: v0.1 should be the least that is still worth using. Move anything that can wait to a later version, and say so.
 
@@ -90,6 +94,12 @@ The user can add, drop or move any of them. This is part of the draft, not a sep
 ## Out of scope
 - <what we are not doing, and whether it is "not yet" or "never">
 
+## Anti-goals
+- <what would count as failure even if it works>
+
+## What we learned from what exists
+- <what the user liked or disliked in what they have used or tried>
+
 ## How we know it works
 - <a measure>
 
@@ -99,9 +109,15 @@ The user can add, drop or move any of them. This is part of the draft, not a sep
 | README | Must | Engineer | With the project skeleton |
 ```
 
-Leave out the sections whose questions this scope skips, rather than filling them in yourself. Features are one line each. Full user stories with acceptance criteria come later, from `/nap-backlog`, one version at a time.
+Leave out the sections whose questions this scope skips, rather than filling them in yourself. **Mark what the user didn't say.** Anything you added (a feature, a version split, an out-of-scope item, a docs timing) ends with "*(suggested: <why>)*", so the user can see what is theirs and correct the rest. Features are one line each. Full user stories with acceptance criteria come later, from `/nap-backlog`, one version at a time.
 
-Check before showing: every version has a goal and features, the first version is small, nothing names a technology, later versions don't repeat earlier ones, and every must document in [doc-plan.md](doc-plan.md) for this scope is in the plan with a "when". Close with: "Approve, and I'll write `docs/PRD.md` and create the milestones on GitHub. Or tell me what to change."
+Check before showing: every version has a goal and features, the first version is small, nothing names a technology, later versions don't repeat earlier ones, and every must document in [doc-plan.md](doc-plan.md) for this scope is in the plan with a "when". **Reader check (Product and Platform only).** Before showing the draft, write it to a temporary file and have a fresh reader look for gaps. Use [reader-check.md](reader-check.md), next to this file: fill in its placeholders and pass it to the Agent tool with `subagent_type: "general-purpose"`. Sort what comes back:
+- **Already answered** in the draft: drop it.
+- **Minor:** decide it yourself, put it in the draft, and mark it *(suggested: <why>)*.
+- **For the Architect:** where it runs, how data is stored, sign-in, hosting, CI. The Architect asks these next: drop them.
+- **Important:** put these questions to the user together, under the draft, as "Before you approve". Their answers go into the draft before it is written.
+
+Close with: "Approve, and I'll write `docs/PRD.md` and create the milestones on GitHub. Or tell me what to change."
 
 Wait. Apply changes and show them again until the user approves with a clear yes.
 

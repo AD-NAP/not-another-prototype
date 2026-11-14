@@ -112,4 +112,8 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 **Why.** The user wanted the idea refined before anything is built: how big it should be, the end goal, the MVP and later versions. The first PA run produced only architecture docs, with no PRD. Scope changes how much architecture and documentation a project needs: a Script needs a README, a Platform needs runbooks. Full stories and later documents wait until their version is next, because what the user learns from v0.1 changes v1.0.
 
-**What we give up.** One more approval at the start of a project. On a new project, the PRD waits uncommitted until the Architect commits it, so the user merges one change instead of two.
+**How the PM asks.** The questions about the user's own view (who and why, the end goal, what they have used or tried) are open, with no suggested answer, so the PRD is the user's idea. A detailed idea is played back first. Anything the user didn't say is marked as the PM's suggestion. App and above also cover anti-goals (failure even if it works) and what the user has used or tried. For a Product or Platform, a fresh subagent reads the draft and lists what it would have to guess. The PM settles minor gaps itself, and asks the user about important ones before approval.
+
+**What we give up.** One more approval at the start of a project. On a new project, the PRD waits uncommitted until the Architect commits it, so the user merges one change instead of two. The reader check costs one more subagent run for a Product or Platform.
+
+**Adapted from** Superpowers' `brainstorming` skill and its builder check ([THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)).
