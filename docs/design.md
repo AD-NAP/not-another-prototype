@@ -20,7 +20,7 @@ A team of agents, each with the skills its role needs. Plain skill and agent fil
 | Engineer | Subagent, `/nap-build` | Builds one issue, or a few related ones in one PR, test-first within the architecture: failing tests, then code, then a PR. Decides the UI when there is no mock-up. Stops for a big decision. | PR with tests and code |
 | Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue, the project rules and the ADRs, without the Engineer's reasoning. Runs the tests. | One review |
 
-**The Personal Assistant** (`/nap-pa`, a skill) runs the whole loop for the user: it calls each role's skill in order, groups related issues into builds, switches the checkout for reviews, and stops only for the user's questions, approvals and merges. Each role can still be run on its own. See [decision 12](decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14).
+**The Personal Assistant** (`/nap-pa`, a skill) runs the whole loop for the user: it calls each role's skill in order, groups related issues into builds, switches the checkout for reviews, and stops only for the user's questions, approvals and merges. It merges a PR only when the user says "merge it" for it. Each role can still be run on its own. See [decision 12](decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14).
 
 The Architect and PM are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context. See [decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14) for why there is no per-issue design.
 

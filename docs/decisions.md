@@ -50,11 +50,11 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 **Why.** Every agent runs as the user's GitHub account, so a real approval is impossible.
 
-## 7. A person merges every PR (2026-11-14)
+## 7. A person decides every merge (2026-11-14, updated 2026-11-15)
 
-**Decision.** Agents never merge. This repo's `.claude/settings.json` denies `gh pr merge`.
+**Decision.** Agents never merge on their own. The user merges on GitHub, or tells the PA to merge one PR ("merge it"), and the PA then runs `gh pr merge` for that PR only, after checking it is approved and has no conflicts. The README's settings put `gh pr merge` under `ask`, so Claude Code asks the user to confirm every merge, whatever allow rules are added later. This repo's own `.claude/settings.json` still denies `gh pr merge`, since NAP's own PRs are merged by hand.
 
-**Why.** AI can't be accountable for what ships, so a person owns it.
+**Why.** AI can't be accountable for what ships, so a person owns it. Saying "merge it" after reading the review keeps that decision with the person, and saves a trip to GitHub for every PR, which the first PA run asked for. The `ask` rule is a check the model can't skip, unlike a line in a skill.
 
 ## 8. MIT license, and other projects are sources (2026-11-14)
 
@@ -90,7 +90,7 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 ## 12. A Personal Assistant runs the loop (2026-11-14)
 
-**Decision.** `/nap-pa` takes the user's plans and goals and runs the whole loop: the Architect when there is no architecture or a plan goes against an ADR, the PM for new plans, then for each group of related issues the build, review and fix rounds. It runs each role through its own skill with the Skill tool, so every role's instructions stay in one file. It keeps no state of its own: it reads the architecture docs, open issues and open PRs from GitHub at the start of each turn. It stops only for the user: a role's questions and approvals, a PR to merge, a big decision, findings still open after three rounds, and changes in the checkout it didn't make. The user merges each PR as it is approved, and the PA waits for that before the next build.
+**Decision.** `/nap-pa` takes the user's plans and goals and runs the whole loop: the Architect when there is no architecture or a plan goes against an ADR, the PM for new plans, then for each group of related issues the build, review and fix rounds. It runs each role through its own skill with the Skill tool, so every role's instructions stay in one file. It keeps no state of its own: it reads the architecture docs, open issues and open PRs from GitHub at the start of each turn. It stops only for the user: a role's questions and approvals, a PR to merge, a big decision, findings still open after three rounds, and changes in the checkout it didn't make. Each PR is merged as it is approved, by the user or by the PA on the user's "merge it" ([decision 7](#7-a-person-decides-every-merge-2026-11-14-updated-2026-11-15)), and the PA waits for that before the next build.
 
 **Why.** Typing each command, switching branches before a review and passing PR numbers between roles was manual work the user didn't need to do. Merging as you go keeps every build on the real main branch, which matters because issues often build on each other. Grouping related issues ([decision 11](#11-related-issues-can-share-a-pr-2026-11-14)) keeps the number of merges down.
 

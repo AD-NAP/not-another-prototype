@@ -1,6 +1,6 @@
 ---
 name: nap-pa
-description: Runs the whole NAP loop for the user as their Personal Assistant. Takes plans and goals, then calls the Architect, the PM, and for each group of related issues the Engineer, the Reviewer and the fix rounds, in order. Stops only for the user's approvals and merges, and picks up where it left off when the user comes back. Use when the user wants the team to take an idea or goal all the way to merged PRs, says "run the team", "take this from idea to PRs", "continue" or "merged" during a run, or types /nap-pa. Not for running one role on its own.
+description: Runs the whole NAP loop for the user as their Personal Assistant. Takes plans and goals, then calls the Architect, the PM, and for each group of related issues the Engineer, the Reviewer and the fix rounds, in order. Stops only for the user's approvals and merges, merges a PR when the user explicitly says to, and picks up where it left off when the user comes back. Use when the user wants the team to take an idea or goal all the way to merged PRs, says "run the team", "take this from idea to PRs", "continue" or "merged" during a run, or types /nap-pa. Not for running one role on its own.
 argument-hint: "[plans and goals, or continue]"
 allowed-tools: Read Glob Grep Skill Agent Bash(gh repo view *) Bash(gh issue list *) Bash(gh issue view *) Bash(gh pr list *) Bash(gh pr view *) Bash(git status *) Bash(git switch *) Bash(git pull *) Bash(git fetch *) Bash(git rev-parse *)
 ---
@@ -36,7 +36,7 @@ Then carry on from the first step below that isn't done.
 
 If there is no `docs/ARCHITECTURE.md`, run `nap-architect` with the user's plans and goals. If the plans go against an existing ADR, run it with that decision. Otherwise skip this step.
 
-The Architect asks the user its questions and waits for their approval. When it opens its docs PR, stop and ask the user to merge it: the Engineer and Reviewer read these docs from the main branch.
+The Architect asks the user its questions and waits for their approval. When it opens its docs PR, stop and ask the user to merge it, or to say "merge it" (see [Merging](#merging)): the Engineer and Reviewer read these docs from the main branch.
 
 ## 2. Issues
 
@@ -66,9 +66,18 @@ For each build, one at a time:
 3. **Check out the PR:** `git fetch`, then `git switch <headRefName>`, then `git pull`. The Reviewer runs the tests only when the checkout is on the PR's code.
 4. **Review:** run `nap-review` with the PR number.
 5. **Fix if needed:** if the review requests changes, run `nap-fix`, then `git pull` on the branch, then `nap-review` again. `nap-fix` stops after three rounds. Then show the user the open findings and wait for their ruling.
-6. **Merge:** when the review approves, stop and ask the user to merge. You never merge.
+6. **Merge:** when the review approves, stop. Ask the user to merge it on GitHub, or to say "merge it" here.
 
-When the user says it's merged, check it with `gh pr view <number> --json state`. Then go back to 1 for the next build.
+When the user says it's merged, check it with `gh pr view <number> --json state`. When they say "merge it", follow [Merging](#merging). Then go back to 1 for the next build.
+
+## Merging
+
+The user decides every merge. You only run it, and only when they tell you to.
+
+1. **Only on an explicit instruction for one PR:** "merge it", "merge #13" or similar, right after you showed them that PR. "Looks good", "ok", "yes" or "continue" are not a merge instruction. If it's unclear which PR they mean, ask.
+2. **Check first:** `gh pr view <number> --json state,mergeable,reviews`. The PR must be open, `mergeable` must be `MERGEABLE`, and the latest review must start with `**Review: approve**` (an Architect docs PR has no review, so skip that part for it). If any check fails, say which and don't merge.
+3. **Merge:** `gh pr merge <number> --merge --delete-branch`. Claude Code asks the user to confirm, which is meant: it is the user's last check.
+4. **Carry on:** `git switch <main branch>`, then `git pull`, then start the next build in the same turn.
 
 ## When you stop
 
@@ -84,7 +93,7 @@ Each time, end with a short status, then the one thing you need from the user:
 
 ```markdown
 **Done:** #3, #4 (PR #12, merged)
-**Waiting on you:** merge PR #13 (#5, #6), then say "merged"
+**Waiting on you:** PR #13 (#5, #6). Say "merge it", or merge on GitHub and say "merged"
 **Next:** #7 and #8 together, then #9
 ```
 
@@ -97,7 +106,8 @@ Each time, end with a short status, then the one thing you need from the user:
 
 ## What you never do
 
-- Merge a PR, or approve anything for the user: issues, architecture, a big decision or a ruling on findings.
+- Merge a PR without the user's explicit instruction for that PR, or merge several at once.
+- Approve anything for the user: issues, architecture, a big decision or a ruling on findings.
 - Do a role's work yourself: write issues, docs, code, tests or reviews.
 - Run two builds at once. There is one checkout, and builds would clash in it.
 - Pass the Engineer's report or reasoning to the Reviewer. `nap-review` keeps them apart, so always go through it.
