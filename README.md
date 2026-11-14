@@ -26,7 +26,6 @@ More roles (UX Designer, Platform, QA) get added when a real project needs them.
 ## Known limits
 
 - `/nap-pa` runs one build at a time, and waits for you to merge each PR before the next.
-- When the PA calls a role on a later turn, Claude Code may ask before running that role's skill. In headless tests, a `Skill` allow rule in `settings.json` did not stop this, but `--allowedTools "Skill(nap-build)"` and the like did.
 - The Reviewer only runs the tests when your checkout is on the PR's branch. It never switches branches itself.
 - All agents use your GitHub account. GitHub won't let you approve your own PR, so the Reviewer posts its verdict as a comment review.
 
@@ -58,14 +57,21 @@ Then allow the commands the roles run after you approve, in the project's `.clau
       "Bash(git status *)",
       "Bash(git pull *)",
       "Bash(git fetch *)",
-      "Bash(git rev-parse *)"
+      "Bash(git rev-parse *)",
+      "Skill(nap-architect)",
+      "Skill(nap-backlog)",
+      "Skill(nap-build)",
+      "Skill(nap-review)",
+      "Skill(nap-fix)"
     ],
     "deny": ["Bash(gh pr merge *)"]
   }
 }
 ```
 
-The `git` and `gh pr` lines let the Architect open its docs PR and the PA move between branches, and the Engineer use them too. The Engineer and the Reviewer will still ask before running your tests and reviewing. Allow the ones you trust them with.
+The `git` and `gh pr` lines let the Architect open its docs PR and the PA move between branches, and the Engineer use them too. The `Skill` lines let the PA start each role on a later turn, such as after you say "merged", without asking.
+
+Claude Code only uses a project's allow rules once you have trusted the folder: open Claude Code there interactively once and accept the trust dialog. Trusting a parent folder doesn't count, and `claude -p` never shows the dialog, so in an untrusted folder it skips the rules with a warning. The Engineer and the Reviewer will still ask before running your tests and reviewing. Allow the ones you trust them with.
 
 ## Principles
 
