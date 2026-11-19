@@ -10,7 +10,11 @@ Start small. Add only what a real project run shows is missing. The earlier 17-s
 | 4 | **Fix blockers** | Fix what step 3 found, one at a time. Add a role only if a blocker needs one. The Tech Lead was replaced by the Architect ([decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14)). | Done 14-11-2026 |
 | 5 | **Personal Assistant** | A `/nap-pa` skill that runs the whole loop from your plans and goals: Architect, PM, then build, review and fix for each group of related issues. It stops for your approvals: the architecture, each issue batch, big decisions and each merge. Chosen 14-11-2026: you merge as you go, and the PA waits for each merge before the next build. | Built 14-11-2026 ([decision 12](decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14)). Checked: it hands off to the Architect and keeps the Architect's questions going across turns. |
 | 6 | **New project** | Run a brand-new project through the PA, from brief to merged PRs. Check whether CI, deploy and UI need their own roles, whether grouped builds work, and whether the README's allow list stops permission prompts in an interactive session. | Done 15-11-2026 on `nap-test-v1`: 7 issues in 4 PRs, all approved first time, CI green, one permission prompt |
-| 7 | **PRD and milestones** | `/nap-vision` asks the scope first, refines the idea into versions (each a GitHub milestone) and agrees a docs plan with timings in `docs/PRD.md`. The PM writes stories one milestone at a time, and the PA stops at the end of each ([decision 13](decisions.md#13-the-pm-starts-with-a-prd-one-milestone-at-a-time-2026-11-15)). | Built 15-11-2026, not run |
+| 7 | **PRD and milestones** | `/nap-vision` asks the scope first, refines the idea into versions (each a GitHub milestone) and agrees a docs plan with timings in `docs/PRD.md`. The PM writes stories one milestone at a time, and the PA stops at the end of each ([decision 13](decisions.md#13-the-pm-starts-with-a-prd-one-milestone-at-a-time-2026-11-15)). | Run 19-11-2026 on `nap-test-v2` through v0.1: 7 issues, 5 PRs, milestone closed. Planning passed; the build half hit nine blockers (below) |
+| 8 | **New direction** | NAP plans and enforces the finish line. Building is pluggable, and the build roles are frozen ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). | Decided 19-11-2026 |
+| 9 | **Finish line per scope** | What "done" means for each scope and version: Script (tests, README), Personal tool, App (adds CI required on `main` and a working deploy), Product (adds security and monitoring), Platform. The Architect writes each version's gates into the PRD and its milestone. | Next |
+| 10 | **Enforce the gates** | A setup step for the project (branch protection with required checks, `.gitignore` for `.claude/`) and a gate check the PA runs at the end of each milestone. A failing gate keeps the milestone open and lists what is missing. The check is a script with its own tests, not a prompt. | Not started |
+| 11 | **Cheap proof** | Run the planning half on two or three different briefs, about 20 minutes each with no code written. Test the gate check against a repo that is broken on purpose. No more multi-hour full runs. | Not started |
 
 ## Blockers from the step 3 run
 
@@ -35,3 +39,24 @@ From the 13-11-2026 run, checked in step 3: `/nap-fix` and the Reviewer's test r
 - **The Architect read its template from `~/.claude/skills/`.** Fixed in #78.
 - **Open, small:** no schema migrations (delete the local database after a change), the local Python version differed from the project rules, and one test uses a fixed 2030 date.
 - **Not yet run:** `/nap-fix` in a PA run, and "merge it" (#79).
+
+## From the step 7 run
+
+`nap-test-v2` (`lent`, a lending tracker CLI), 19-11-2026, through `/nap-pa` in auto mode. v0.1 went from idea to a closed milestone: 7 issues, 5 PRs (#8 to #12), all merged by "merge it". `/nap-vision`, the Architect's first commit, milestones, `/nap-fix` (two rounds on PR #8) and the milestone end all passed. Not tested: docs tasks as issues (none came up), and permission prompts (auto mode).
+
+Every blocker came from the build half. Under [decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19), the ones that belong to building leave NAP's scope, and the rest move into steps 9 and 10.
+
+**Belong to whatever builds the code (not fixed in NAP):**
+- **Engineer commits carried a `Co-Authored-By` trailer.** The auto mode classifier denied one, and the run stalled 42 minutes until "Retry the Engineer". A Claude Code attribution setting or a `commit-msg` hook fixes this in any project, whoever builds.
+- **The Reviewer tried `--approve` and `--request-changes` first.** GitHub refuses both on your own PR, so all 9 reviews failed once before going up as a comment.
+- **Windows backslash paths broke in Bash.** A venv landed at the repo root, `--body-file` failed twice, and a PR body was written into `.claude/`.
+- **Project rules said `pytest`, which isn't on PATH.** Every agent fell back to `py -m pytest`.
+- **The Reviewer flagged `.gitignore` as outside a skeleton issue,** which needed the user's ruling and a third review.
+- **A second session in the same checkout** built #3, reviewed PR #10 and moved the branch. The PA noticed and stopped.
+
+**Move into the finish line (steps 9 and 10):**
+- **`.claude/` wasn't ignored**, so `git add .` would commit the skills. The setup step adds it.
+- **PR #10 merged with no CI.** Its branch was cut before the CI PR merged, and nothing noticed. Branch protection with required, up-to-date checks stops this.
+- **PRs aren't put in milestones,** only issues. The gate check can report them.
+
+**Open from step 6:** schema migrations. `store.py` only uses `CREATE TABLE IF NOT EXISTS`, and v1.0 needs a new column. This becomes a question for the finish line of an App or larger: does a version that changes stored data need a migration?

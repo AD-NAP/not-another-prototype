@@ -4,6 +4,8 @@ How NAP works. Decisions and their reasons are in [decisions.md](decisions.md). 
 
 The first design (sprints, a runner, a pixel office, hooks, an event log, evals) is in git history at tag `nap--v0.1.0`. It was cut back in [decision 1](decisions.md#1-a-simple-team-of-four-2026-11-14).
 
+On 19-11-2026 NAP narrowed to planning and the finish line of each version ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). The Engineer and Reviewer below are one optional way to build, and are frozen.
+
 ## Problem
 
 - AI speeds up coding, but without a shared setup the work drifts. Code quality ends up very different across projects and people.
