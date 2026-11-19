@@ -1,6 +1,6 @@
 # Finish line
 
-> **Agreed 20-11-2026 for [roadmap](roadmap.md) step 9.** Nothing here is built yet. Step 10 builds the check for Personal tool and App. The Product and Platform rows are sketches until a real project needs them.
+> **Built 20-11-2026 for Personal tool and App** in `skills/nap-finish-line/` ([roadmap](roadmap.md) step 10). The Product and Platform rows are sketches until a real project needs them. Script has no milestones, so it has no check yet.
 
 A version is done when it passes its finish line: a list of gates set by the project's scope. NAP checks the gates at the end of each milestone and keeps the milestone open until they pass ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). It does not matter who built the code.
 
@@ -26,7 +26,7 @@ A version is done when it passes its finish line: a list of gates set by the pro
 | `ci-on-prs` | A CI workflow runs the tests on pull requests | C: a workflow in `.github/workflows/` with a `pull_request` trigger | | ✓ | | | |
 | `prs-checked` | Every PR merged in this milestone had passing checks | C: each issue's closing PRs (`closedByPullRequestsReferences`), then each PR's `statusCheckRollup` is non-empty and all passed | | ✓ | | | |
 | `ignore-nap` | `.gitignore` covers `.claude/skills/`, `.claude/agents/` and `.claude/settings.local.json` | C: `git check-ignore` | | ✓ | | | |
-| `docs-due` | Every doc the PRD's docs plan puts in this version exists | C: every `type: docs` issue in the milestone is closed and its file exists | | ✓ | | | |
+| `docs-due` | Every doc the PRD's docs plan puts in this version exists | C: every `type: docs` issue in the milestone is closed, and the file its **File:** line names exists | | ✓ | | | |
 | `arch-docs` | `docs/ARCHITECTURE.md` and `docs/ADR.md` exist | C: files | | | ✓ | | |
 | `changelog` | The changelog has an entry for this version | C: the version appears as a heading in `CHANGELOG.md` | | | ✓ | | |
 | `deploy` | This version is deployed and works | C when there is a deploy workflow: its latest run on `main` passed after the milestone's last merge. S otherwise | | | ✓ | | |
@@ -66,25 +66,27 @@ The Architect writes `docs/finish-line.json` with the architecture, and adds eac
 - **GitHub refuses branch protection on private repos** on the free plan. `gh api .../branches/main/protection` on `nap-test-v2` returned "Upgrade to GitHub Pro or make this repository public". So the finish line can't rely on protection being on. `prs-checked` checks every merged PR after the fact instead, which works on any plan. When protection is available, the setup step should still turn it on, since it blocks the bad merge before it happens.
 - **PRs can be found from their issues.** `gh issue view N --json closedByPullRequestsReferences` gives the closing PRs, so the check doesn't need PRs to be in milestones (step 7 blocker 9).
 
-## First test: `nap-test-v2` v0.1
+## First run: `nap-test-v2` v0.1
 
-Personal tool scope, milestone 1, already closed. Checked by hand on 19-11-2026. This is what the check should report:
+Personal tool scope, milestone 1, already closed. Run on 20-11-2026 with the config outside the repo (`--config`):
 
-| Gate | Expected | Why |
+| Gate | Result | Detail |
 |---|---|---|
-| `readme` | Pass | README exists (content not checked by hand) |
-| `tests-pass` | Pass | Last 3 runs of `tests` on `main` succeeded |
-| `issues-closed` | Pass | 7 closed, 0 open |
-| `ci-on-prs` | Pass | `.github/workflows/tests.yml` has a `pull_request` trigger |
-| `prs-checked` | **Fail** | PR #10 (closes #3) merged with no checks. PRs #9 and #11 passed |
-| `ignore-nap` | **Fail** | `.gitignore` doesn't mention `.claude/` |
-| `docs-due` | Pass | No docs issues were due in v0.1 |
+| `readme` | Pass | Has an "Install" section |
+| `tests-pass` | Pass | `tests` passed on main's latest commit |
+| `issues-closed` | Pass | All 7 closed |
+| `ci-on-prs` | Pass | `.github/workflows/tests.yml` runs on pull requests |
+| `prs-checked` | **Fail** | PR #10 (closes #3) and PR #8 (closes #1) merged with no checks |
+| `ignore-nap` | **Fail** | `.gitignore` doesn't cover `.claude/skills/` or `.claude/agents/` |
+| `docs-due` | Pass | No docs due |
 
-Both failures are real step 7 blockers, so a check that reports exactly these two is working.
+The two predicted failures, plus PR #8, which the hand check missed. PR #8 was the skeleton, merged one PR before CI existed, so it really was unchecked. Past PRs can't be fixed: for this version the way past is an ADR that removes `prs-checked`. For new projects, `/nap-backlog` now puts CI into the skeleton task, because a PR that adds a `pull_request` workflow runs it on itself (PR #9 on `nap-test-v2` did).
+
+`setup` on the same repo added the three ignores and reported "Branch protection on main: not available on this plan". With that edit uncommitted, `check` refused to run (exit 2), as it should.
 
 ## Decided 20-11-2026
 
 1. **Gates:** as in the table. Step 10 builds Personal tool and App only.
-2. **Stale branches:** stay on the free plan. `prs-checked` catches a PR merged with no or failing checks at the milestone end. No up-to-date check after the fact: it is harder to check and catches a rarer case. If a project gets branch protection (a public repo, Pro, or a work organisation), the setup step turns it on with strict checks.
+2. **Stale branches:** stay on the free plan. `prs-checked` catches a PR merged with no or failing checks at the milestone end. No up-to-date check after the fact: it is harder to check and catches a rarer case. If a project has branch protection (a public repo, Pro, or a work organisation), `setup` reports whether it is on. Turning it on is left to the user until a real project with protection shows what the setup step should do.
 3. **Signed answers** live in `docs/finish-line.json`, so they travel with the repo and the script reads them directly.
 4. **A failing version blocks the next one.** The PA won't plan the next version until the current one passes, or a gate is removed with an ADR.

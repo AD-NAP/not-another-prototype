@@ -79,3 +79,32 @@ Every rule is something a reviewer can check by reading the code. "Write clean c
 
 **Alternative.** PostgreSQL on RDS, if reports start to need joins across creators, such as an agency view.
 ```
+
+## docs/finish-line.json
+
+For a Personal tool or App. The `nap-finish-line` check reads it at the end of each milestone. What each gate checks is in NAP's `docs/finish-line.md`.
+
+Default gates by scope:
+- **Personal tool:** `readme`, `tests-pass`, `issues-closed`, `ci-on-prs`, `prs-checked`, `ignore-nap`, `docs-due`
+- **App:** the Personal tool gates, plus `arch-docs`, `changelog`, `deploy`, `data-migration`
+
+`deploy_workflow` is the name of the GitHub Actions workflow that deploys, when there is one; leave it out and `deploy` becomes a sign-off. `removed` maps a default gate to the ADR that drops it for that version. `signed` is filled in later by `nap-finish-line`.
+
+```json
+{
+  "scope": "App",
+  "test_command": "py -m pytest",
+  "deploy_workflow": "deploy",
+  "versions": {
+    "v0.1": {
+      "milestone": 1,
+      "gates": ["readme", "tests-pass", "issues-closed", "ci-on-prs", "prs-checked", "ignore-nap", "docs-due", "arch-docs", "changelog", "data-migration"],
+      "removed": { "deploy": "ADR 0004: v0.1 runs only on my machine" }
+    },
+    "v1.0": {
+      "milestone": 2,
+      "gates": ["readme", "tests-pass", "issues-closed", "ci-on-prs", "prs-checked", "ignore-nap", "docs-due", "arch-docs", "changelog", "deploy", "data-migration"]
+    }
+  }
+}
+```

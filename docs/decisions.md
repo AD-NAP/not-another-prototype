@@ -98,7 +98,7 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 ## 13. The PM starts with a PRD, one milestone at a time (2026-11-15)
 
-**Decision.** A new project starts with `/nap-vision`, the PM's second skill. It asks the scope first, then only the questions that scope needs. It agrees a docs plan, writes `docs/PRD.md`, and creates a GitHub milestone per version, all after the user approves. `/nap-backlog` then writes full stories for the current milestone only. The PA closes each milestone when its last issue is merged, and asks before starting the next version.
+**Decision.** A new project starts with `/nap-vision`, the PM's second skill. It asks the scope first, then only the questions that scope needs. It agrees a docs plan, writes `docs/PRD.md`, and creates a GitHub milestone per version, all after the user approves. `/nap-backlog` then writes full stories for the current milestone only. The PA closes each milestone when its last issue is merged and its finish line passes ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)), and asks before starting the next version.
 
 | Scope | Versions and milestones |
 |---|---|

@@ -19,6 +19,7 @@ You don't do any role's work yourself. Each role has its own skill, and you run 
 | Build | Engineer | `nap-build` |
 | Review | Reviewer | `nap-review` |
 | Fix | Engineer | `nap-fix` |
+| End of a milestone | Finish line check | `nap-finish-line` |
 
 The plans and goals, if given: $ARGUMENTS
 
@@ -83,9 +84,11 @@ When the user says it's merged, check it with `gh pr view <number> --json state`
 
 When every issue in the current milestone is closed:
 
-1. Close the milestone: `gh api -X PATCH repos/{owner}/{repo}/milestones/<number> -f state=closed`.
-2. Stop and report what the version delivered: its goal from the PRD, the PRs, and anything the roles flagged along the way.
-3. Ask what's next: plan the next version (step 3 for the next milestone), change the PRD first (`nap-vision`), or stop here. Name any documents the docs plan has due in the next version. Don't start the next version without the user's yes: what they learned from this one may change it.
+1. **Check the finish line:** `git switch <main branch>`, `git pull`, then run `nap-finish-line` with "check <milestone title>". A Script has no milestones and no finish line yet: skip to item 3.
+2. **If it didn't pass,** the version isn't done. Leave the milestone open, and stop. `nap-finish-line` asks the user any sign-off questions and opens a PR with their answers. For each failing gate it says what would fix it: offer `nap-backlog` for an issue in this milestone, `nap-finish-line` with "setup", or `nap-architect` for an ADR that removes a gate, which only the user can decide. Run the check again after each fix is merged. Never plan the next version while this one fails.
+3. **Once it passes,** close the milestone: `gh api -X PATCH repos/{owner}/{repo}/milestones/<number> -f state=closed`.
+4. Stop and report what the version delivered: its goal from the PRD, the PRs, the finish line, and anything the roles flagged along the way.
+5. Ask what's next: plan the next version (step 3 for the next milestone), change the PRD first (`nap-vision`), or stop here. Name any documents the docs plan has due in the next version. Don't start the next version without the user's yes: what they learned from this one may change it.
 
 ## Merging
 
@@ -102,7 +105,7 @@ You stop for these, and only these:
 
 - A role asking the user a question, or waiting for their approval (Architect, PM).
 - A PR to merge (the PRD or architecture docs, or an approved build).
-- The end of a milestone.
+- The end of a milestone, and a finish line that didn't pass.
 - A big decision, an issue that isn't ready, or findings still open after three fix rounds.
 - Changes in the checkout you didn't make.
 
