@@ -24,6 +24,7 @@ Then pick the case:
 - **Existing project, no architecture docs:** the stack is already chosen. Ask only about the goal and CI and deploy. Record the stack you find as ADRs, with "Already in use" as the reason.
 - **A big decision:** `docs/ARCHITECTURE.md` exists and the user, or the Engineer, named a decision. Ask only about that decision. Add one ADR and update the parts of `ARCHITECTURE.md` it changes.
 - **A docs task:** an issue labelled `type: docs` whose body starts with "Written by: Architect". Write that one document to meet the issue's criteria, from the PRD, the architecture and the code as they are now. Ask only what they don't answer. Show the draft, and after approval open a PR on `docs/issue-<number>` whose body says `Closes #<number>`.
+- **A finish line:** `docs/ARCHITECTURE.md` exists, and `docs/finish-line.json` is missing or has no entry for a version (`nap-finish-line` sent you, or the user asked). Write or extend `docs/finish-line.json` (step 3, item 6) for every version in the PRD, and add NAP's ignores to `.gitignore` (step 5). Ask only what changes the gates, such as the deploy workflow's name. To leave a default gate out, the user must agree, and you add an ADR in the same PR. Open a PR on `docs/finish-line`.
 
 ## 2. Ask one question at a time
 
@@ -81,6 +82,7 @@ Then close with: "Run `/nap-backlog` next to turn the first version into issues?
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
+- Use forward slashes in any path you pass to a command, such as `--body-file C:/Users/me/.../body.md`. Bash drops backslashes, so the command fails or writes to the wrong place.
 - Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval.
 - If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to do anything.
 

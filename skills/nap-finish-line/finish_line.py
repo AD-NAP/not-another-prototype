@@ -17,6 +17,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from dataclasses import asdict, dataclass
 
 SCOPES = ["Script", "Personal tool", "App", "Product", "Platform"]
@@ -80,6 +81,19 @@ def rollup_conclusions(rollup: list[dict]) -> list[str]:
         else:
             out.append((c.get("status") or "").upper())
     return out
+
+
+def wait_for_runs(fetch, sleep=time.sleep, clock=time.monotonic, timeout=600, interval=10, appear=60):
+    """Fetch CI runs until all have finished. Right after a merge, give runs `appear` seconds to start."""
+    start = clock()
+    while True:
+        runs = fetch()
+        elapsed = clock() - start
+        if runs and all(r["status"] == "completed" for r in runs):
+            return runs
+        if elapsed >= timeout or (not runs and elapsed >= appear):
+            return runs
+        sleep(interval)
 
 
 # Gates. Each takes the facts and the context, and returns (status, detail).
@@ -287,10 +301,12 @@ def _run(args, cwd, ok_codes=(0,)):
 
 
 class GitHubFacts:
-    def __init__(self, root: str, main_branch: str):
+    def __init__(self, root: str, main_branch: str, wait: int = 600):
         self.root = root
         self.main_branch = main_branch
+        self.wait = wait
         self._issues = {}
+        self._runs = None
 
     def _gh_json(self, args):
         return json.loads(_run(["gh", *args], self.root).stdout or "null")
@@ -336,11 +352,21 @@ class GitHubFacts:
         return {"state": data["state"], "checks": rollup_conclusions(data["statusCheckRollup"] or [])}
 
     def main_runs(self):
-        sha = _run(["git", "rev-parse", f"origin/{self.main_branch}"], self.root).stdout.strip()
-        runs = self._gh_json(["run", "list", "--commit", sha, "--limit", "50",
-                              "--json", "workflowName,status,conclusion"])
-        return [{"workflow": r["workflowName"], "status": r["status"], "conclusion": r["conclusion"]}
-                for r in runs]
+        if self._runs is None:
+            sha = _run(["git", "rev-parse", f"origin/{self.main_branch}"], self.root).stdout.strip()
+
+            def fetch():
+                runs = self._gh_json(["run", "list", "--commit", sha, "--limit", "50",
+                                      "--json", "workflowName,status,conclusion"])
+                return [{"workflow": r["workflowName"], "status": r["status"], "conclusion": r["conclusion"]}
+                        for r in runs]
+
+            first = fetch()
+            if not first or any(r["status"] != "completed" for r in first):
+                print(f"Waiting up to {self.wait}s for CI on {self.main_branch} to finish...", file=sys.stderr)
+            self._runs = first if first and all(r["status"] == "completed" for r in first) \
+                else wait_for_runs(fetch, timeout=self.wait)
+        return self._runs
 
 
 def _main_branch(root):
@@ -373,7 +399,7 @@ def cmd_check(args):
         problem = _ready_to_check(root, branch)
         if problem:
             raise ConfigError(problem)
-        results = check(config, args.version, GitHubFacts(root, branch))
+        results = check(config, args.version, GitHubFacts(root, branch, wait=args.wait))
     except (OSError, ValueError, ConfigError, FactError) as e:
         print(f"Can't check {args.version}: {e}", file=sys.stderr)
         return 2
@@ -442,6 +468,7 @@ def main(argv=None):
     c.add_argument("version")
     c.add_argument("--json", action="store_true")
     c.add_argument("--config", help="path to finish-line.json (default: docs/finish-line.json)")
+    c.add_argument("--wait", type=int, default=600, help="seconds to wait for CI on main to finish (default 600)")
     sub.add_parser("setup", help="add NAP's ignores and report branch protection")
     args = parser.parse_args(argv)
     return cmd_check(args) if args.command == "check" else cmd_setup(args)

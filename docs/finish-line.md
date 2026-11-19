@@ -13,6 +13,7 @@ A version is done when it passes its finish line: a list of gates set by the pro
    - **Checked:** a script decides from files, `gh` or `git`. No model judgement.
    - **Signed:** the gate needs judgement. The PA asks the user and records the answer under `signed` in `docs/finish-line.json`, in a small PR that closes the milestone (with the changelog entry when the version has one).
    - A checked gate that can't run (no network, `gh` signed out) **fails**. It never passes by default.
+   - Right after a merge, CI on main is often still running. The check waits up to 10 minutes for it (`--wait` changes this), so it judges the finished run.
 
 ## Gates
 

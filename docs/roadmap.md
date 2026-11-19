@@ -60,3 +60,37 @@ Every blocker came from the build half. Under [decision 14](decisions.md#14-nap-
 - **PRs aren't put in milestones,** only issues. The gate check can report them.
 
 **Open from step 6:** schema migrations. `store.py` only uses `CREATE TABLE IF NOT EXISTS`, and v1.0 needs a new column. This becomes a question for the finish line of an App or larger: does a version that changes stored data need a migration?
+
+## Step 11 runs
+
+Three runs, none of which builds code. Run each in an interactive Claude Code session in the project folder, not in auto mode, so permission prompts are real. Count every prompt.
+
+### Run A: the finish line live, `nap-test-v2`
+Milestone v0.1 was reopened so the PA reaches its end. Start with `/nap-pa continue`.
+- [x] The PA sees v0.1 open with every issue closed and goes to the end of the milestone, not to new issues.
+- [x] `nap-finish-line` finds no `docs/finish-line.json`, stops and points to the Architect.
+- [x] The Architect takes the "finish line" case: Personal tool defaults for v0.1 and v1.0, the right milestone numbers, `test_command` that works on this PC, NAP's ignores in `.gitignore`, one PR.
+- [x] After that PR merges, the check fails only `prs-checked` (PRs #8 and #10).
+- [x] Nothing edits a file to make a gate pass. The way past is offered as an ADR, and only the user decides it.
+- [x] With the ADR merged, the check passes, and the PA closes v0.1 and asks before planning v1.0.
+- [x] Permission prompts: count, and which commands. 2 before the user switched to auto mode: the Architect checking `pytest --version` and `py -m pytest --version`. The rest of the run is not counted.
+
+**Result, 20-11-2026:** passed in about 7 minutes on Haiku 5.5. PRs #13 (finish line) and #14 (ADR 0004) on `nap-test-v2`, then v0.1 passed and closed. Two fixes followed:
+- The check ran while CI on the new merge was still running, and `tests-pass` failed. The PA worked around it on its own with `gh run watch`. Fixed in the script: it now waits up to 10 minutes (`--wait`) for CI on main to start and finish.
+- The Architect's first `gh pr create --body-file` used a backslash path and failed (blocker 3 again). Fixed: a forward slash gotcha in the Architect, `/nap-vision` and `/nap-backlog`.
+
+### Run B: plan a Personal tool, `nap-test-v3`
+Start with `/nap-pa <idea>`. Stop when v0.1's issues are created.
+- [ ] `/nap-vision` asks the scope first, then open questions, and writes the PRD with versions and a docs plan after "Approve". Milestones created.
+- [ ] The Architect's first commit on `main` has the PRD, architecture, ADRs, project rules, `docs/finish-line.json` (Personal tool defaults, one entry per version, milestone numbers match GitHub) and NAP's ignores.
+- [ ] One test command everywhere, and it runs on this PC.
+- [ ] The skeleton task is first and has CI on pull requests in its criteria.
+- [ ] Every docs task has **Written by** and **File** lines.
+- [ ] Permission prompts: count, and which commands.
+
+### Run C: plan an App, `a-day`
+A Day for real, on React, AppSync, DynamoDB and Lambda, with deploy. Same checks as run B, plus:
+- [ ] `docs/finish-line.json` has the App gates. `deploy_workflow` names the deploy workflow, or `deploy` is left as a sign-off.
+- [ ] The changelog rule is in the project rules, if the docs plan has a changelog.
+- [ ] The architecture is sized to v0.1, not to the whole product.
+- [ ] The output is good enough to keep as A Day's real start.

@@ -342,6 +342,50 @@ class ConfigErrors(unittest.TestCase):
             fl.check(config("Product", gates=["readme"]), "v0.1", FakeFacts())
 
 
+class WaitForRuns(unittest.TestCase):
+    """Right after a merge, CI on main hasn't started or hasn't finished. The check waits for it."""
+
+    def setUp(self):
+        self.now = 0.0
+        self.sleeps = 0
+
+    def clock(self):
+        return self.now
+
+    def sleep(self, seconds):
+        self.sleeps += 1
+        self.now += seconds
+
+    def wait(self, answers, timeout=600):
+        answers = list(answers)
+        fetch = lambda: answers.pop(0) if len(answers) > 1 else answers[0]
+        return fl.wait_for_runs(fetch, sleep=self.sleep, clock=self.clock, timeout=timeout)
+
+    def test_returns_at_once_when_finished(self):
+        done = [{"workflow": "tests", "status": "completed", "conclusion": "success"}]
+        self.assertEqual(self.wait([done]), done)
+        self.assertEqual(self.sleeps, 0)
+
+    def test_waits_for_a_running_run(self):
+        running = [{"workflow": "tests", "status": "in_progress", "conclusion": ""}]
+        done = [{"workflow": "tests", "status": "completed", "conclusion": "success"}]
+        self.assertEqual(self.wait([running, running, done]), done)
+        self.assertEqual(self.sleeps, 2)
+
+    def test_waits_for_a_run_to_appear(self):
+        done = [{"workflow": "tests", "status": "completed", "conclusion": "success"}]
+        self.assertEqual(self.wait([[], done]), done)
+
+    def test_gives_up_at_the_timeout(self):
+        running = [{"workflow": "tests", "status": "queued", "conclusion": ""}]
+        self.assertEqual(self.wait([running], timeout=60), running)
+        self.assertLessEqual(self.now, 70)
+
+    def test_no_runs_at_all_stops_after_a_minute(self):
+        self.assertEqual(self.wait([[]]), [])
+        self.assertLessEqual(self.now, 70)
+
+
 class CheckConclusions(unittest.TestCase):
     def test_rollup_entries(self):
         rollup = [

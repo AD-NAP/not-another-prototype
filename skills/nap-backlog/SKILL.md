@@ -112,6 +112,7 @@ If `gh` isn't available, write the approved issues to `docs/backlog/YYYY-MM-DD-<
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
+- Use forward slashes in any path you pass to a command, such as `--body-file C:/Users/me/.../body.md`. Bash drops backslashes, so the command fails or writes to the wrong place.
 - If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to paste anything.
 
 ## What you never do

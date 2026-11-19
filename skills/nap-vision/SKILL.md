@@ -134,6 +134,7 @@ Then close with the next step: `/nap-architect` if there is no `docs/ARCHITECTUR
 ## Gotchas
 
 - Run one command per Bash call. A chained command (`;`, `&&`, a pipe, `echo $?`, a heredoc) is checked as a whole, so it asks for approval even when every part is allowed. Write files with the Write tool, not `cat <<EOF`.
+- Use forward slashes in any path you pass to a command, such as `--body-file C:/Users/me/.../body.md`. Bash drops backslashes, so the command fails or writes to the wrong place.
 - Run `git` from the project folder, without `-C <path>`. The allowed commands start with `git status`, `git switch` and so on, so `git -C ...` asks for approval.
 - Keep `{owner}/{repo}` as written in `gh api` calls. `gh` fills it in from the repo, and the allowed command matches it only in that form.
 - If a command is refused or waits for approval, say so plainly, and retry it on its own before asking the user to do anything.
