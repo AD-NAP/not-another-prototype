@@ -1,14 +1,14 @@
 # NAP: Not Another Prototype
 
-A small AI dev team for developers, with issues first, TDD and code review. Ship production-ready work, not prototypes.
+An AI planning team for developers. Talk to one agent, and it turns your idea into a PRD, an architecture, a roadmap of versions and the issues for each. Then it holds each version to a finish line, so you ship a real application, not another prototype.
 
-> **Status: early.** NAP was cut back to a small team on 14-11-2026 ([decision 1](docs/decisions.md#1-a-simple-team-of-four-2026-11-14)). On 15-11-2026 the full loop ran through the Personal Assistant on a new project: one brief became a working app in 7 issues and 4 PRs, all approved first time, with CI green. `/nap-fix` worked on an earlier test project but hasn't run inside the PA yet. See the [roadmap](docs/roadmap.md).
+> **Status: early.** On 19-11-2026 NAP changed direction ([decision 14](docs/decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)): it plans the work and enforces the finish line of each version, and building is pluggable. The planning half passed its last run on a test project; the finish-line gates are next. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
 AI makes it faster to build, but without a shared process the quality drifts: one person installs a skill, another doesn't, and every project ends up different.
 
-NAP is a set of Claude Code skills and agents that gives you a team of agents modelled on a real dev team, each with the skills its role needs. You brief the team, approve the architecture and the issues, and merge every PR yourself.
+NAP does the work a team with good practice does before the code. You discuss the problem with one agent, the Personal Assistant, and it calls a PM and an Architect to write the PRD, the architecture, the ADRs, the versions (v0.1, v1.0 and later) and the issues for the current version. Build the issues however you like: with NAP's own Engineer and Reviewer, with another tool, or by hand. At the end of each version, NAP checks its finish line (for example tests, CI, deploy and the docs due) and keeps the version open until it passes. The finish-line check is being built ([roadmap](docs/roadmap.md) steps 9 and 10). You approve the plan and merge every PR yourself.
 
 ## The team
 
@@ -22,7 +22,7 @@ NAP is a set of Claude Code skills and agents that gives you a team of agents mo
 | `/nap-review` | Reviewer | Reviews a PR against its issue, the project rules and the ADRs in a fresh context, and runs the tests |
 | `/nap-fix` | Engineer | Fixes the findings from a review on the same PR, up to three rounds |
 
-More roles (UX Designer, Platform, QA) get added when a real project needs them.
+`/nap-build`, `/nap-review` and `/nap-fix` are one optional way to build. They are frozen: they get fixes only when they stop a version from reaching its finish line ([decision 14](docs/decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). More roles (UX Designer, Platform, QA) get added when a real project needs them.
 
 ## Known limits
 

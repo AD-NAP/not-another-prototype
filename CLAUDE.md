@@ -1,6 +1,6 @@
 # NAP: Not Another Prototype
 
-A small AI dev team for developers, as plain Claude Code skills and agents. Four roles: Architect, PM, Engineer, Reviewer, plus a Personal Assistant that runs the loop. Issues first, TDD, review. The user merges every PR.
+An AI planning team for developers, as plain Claude Code skills and agents. A Personal Assistant runs the PM and Architect to turn an idea into a PRD, architecture, versions and issues, and holds each version to a finish line. Building is pluggable: the Engineer and Reviewer are one optional way to build, and are frozen (`docs/decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19`). The user merges every PR.
 
 ## Start here
 - `docs/design.md`: the roles and the loop.

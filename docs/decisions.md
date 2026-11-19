@@ -10,7 +10,7 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 
 **Why.** The goal was a team of agents with the right skills. The guardrails grew faster than the team: five roles came with 30 decisions, dozens of eval cases, about 1,000 lines of hooks and a 10-phase plan, and the loop still needed hand patches. Most open gaps came from the guardrails, not the roles. Packaging as a plugin also came before there was much to package.
 
-**What we give up.** Tool-enforced rules and measured proof. Both can come back once the team works.
+**What we give up.** Tool-enforced rules and measured proof. Tool-enforced checks come back for the finish line of each version in [decision 14](#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19).
 
 ## 2. Skill or subagent per role (2026-10-30)
 
@@ -117,3 +117,13 @@ The first 30 decisions (sprints, hooks, evals, the event log, releases, the runn
 **What we give up.** One more approval at the start of a project. On a new project, the PRD waits uncommitted until the Architect commits it, so the user merges one change instead of two. The reader check costs one more subagent run for a Product or Platform.
 
 **Adapted from** Superpowers' `brainstorming` skill and its builder check ([THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)).
+
+## 14. NAP plans and enforces the finish line, and building is pluggable (2026-11-19)
+
+**Decision.** NAP's job is the work before the code and the check at the end of each version. It keeps `/nap-pa`, `/nap-vision`, `/nap-architect` and `/nap-backlog`: a conversation with one agent turns into a PRD, architecture, ADRs, a roadmap of versions and the issues for the current milestone. Each version gets a finish line: gates the Architect writes for its scope and version (for example, tests pass, CI required on `main`, deploy works, the docs due for that version exist). A milestone closes only when its gates pass, and the gates are checked by a script and GitHub settings, not by a prompt. Building the issues is pluggable. `/nap-build`, `/nap-review`, `/nap-fix` and the Engineer and Reviewer agents stay as one way to build, but are frozen: they get fixes only when they stop a version from reaching its finish line. Superpowers, plain Claude Code or a person can build the issues instead. NAP still installs and depends on none of them ([decision 8](#8-mit-license-and-other-projects-are-sources-2026-11-14)).
+
+**Why.** NAP is meant to plan a full application like a team with good practice would, not to ship another prototype. The step 7 run on `nap-test-v2` showed the planning half works: the scope question, the PRD, the milestones and the stop at the end of v0.1 all passed. All nine blockers came from the build half: commit trailers, self-approval on GitHub, Windows paths, the test command, scope rulings, CI on a stale branch, a second session in the checkout. Most of them are environment and enforcement problems that more prompt lines don't fix reliably, and each full run takes hours of a limited plan to test. The build loop is also the most crowded part of the space. A finish line enforced by tools keeps "not a prototype" true whoever builds the code.
+
+**What we give up.** One agent that runs everything from brief to merged PR without another tool. The user, or a tool they pick, drives the builds, and the PA takes over again at the milestone's end.
+
+**Partly reverses** [decision 1](#1-a-simple-team-of-four-2026-11-14): tool-enforced checks come back, but only for the finish line.
