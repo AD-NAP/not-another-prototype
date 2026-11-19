@@ -21,6 +21,7 @@ NAP does the work a team with good practice does before the code. You discuss th
 | `/nap-build` | Engineer | Builds one issue, or a few related ones, test-first in a fresh context and opens one PR |
 | `/nap-review` | Reviewer | Reviews a PR against its issue, the project rules and the ADRs in a fresh context, and runs the tests |
 | `/nap-fix` | Engineer | Fixes the findings from a review on the same PR, up to three rounds |
+| `/nap-finish-line` | Finish line check | At the end of each version: runs a script that checks the version's gates (tests, CI, checked PRs, docs due, deploy and more, by scope), asks you to sign off the ones that need judgement, and keeps the version open until it passes. `setup` adds NAP's files to `.gitignore`. |
 
 `/nap-build`, `/nap-review` and `/nap-fix` are one optional way to build. They are frozen: they get fixes only when they stop a version from reaching its finish line ([decision 14](docs/decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). More roles (UX Designer, Platform, QA) get added when a real project needs them.
 
@@ -32,7 +33,7 @@ NAP does the work a team with good practice does before the code. You discuss th
 
 ## Install
 
-You need [Claude Code](https://code.claude.com), `git`, and the [GitHub CLI](https://cli.github.com) (`gh`) signed in to your account.
+You need [Claude Code](https://code.claude.com), `git`, and the [GitHub CLI](https://cli.github.com) (`gh`) signed in to your account. For `/nap-finish-line` you also need Python 3.10 or later.
 
 NAP is plain files, with no plugin to install. Clone this repo, then copy `skills/` and `agents/` into `~/.claude/` to use the team in every project, or into one project's `.claude/` folder to use it there.
 
@@ -67,7 +68,10 @@ Then allow the commands the roles run after you approve, in the project's `.clau
       "Skill(nap-backlog)",
       "Skill(nap-build)",
       "Skill(nap-review)",
-      "Skill(nap-fix)"
+      "Skill(nap-fix)",
+      "Skill(nap-finish-line)",
+      "Bash(py *finish_line.py *)",
+      "Bash(python3 *finish_line.py *)"
     ],
     "ask": ["Bash(gh pr merge *)"]
   }
@@ -90,7 +94,7 @@ Claude Code only uses a project's allow rules once you have trusted the folder: 
 - [Design](docs/design.md): the roles and the loop.
 - [Decisions](docs/decisions.md): what was decided and why.
 - [Roadmap](docs/roadmap.md): what is next.
-- [Finish line](docs/finish-line.md): the gates a version must pass, by scope. Agreed, not built yet.
+- [Finish line](docs/finish-line.md): the gates a version must pass, by scope. Built for Personal tool and App.
 - [Skill writing](docs/skill-writing.md): how the skills and agents are written and refined.
 - [Skill research](docs/skill-research.md): other people's skills worth learning from.
 - [Third-party notices](THIRD_PARTY_NOTICES.md).

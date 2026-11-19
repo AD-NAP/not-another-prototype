@@ -6,7 +6,7 @@ An AI planning team for developers, as plain Claude Code skills and agents. A Pe
 - `docs/design.md`: the roles and the loop.
 - `docs/decisions.md`: the decisions that hold today, and why. Keep it current: remove or rewrite an entry that stops being true.
 - `docs/roadmap.md`: what is next.
-- `docs/finish-line.md`: the gates each version must pass, by scope. Agreed for roadmap step 9, not built yet.
+- `docs/finish-line.md`: the gates each version must pass, by scope. Built for Personal tool and App.
 - `docs/skill-writing.md`: how we write and refine skills and agents. Follow its checklists when editing one.
 - `docs/skill-research.md`: other people's skills worth learning from, per role.
 
@@ -14,6 +14,7 @@ An AI planning team for developers, as plain Claude Code skills and agents. A Pe
 - `skills/nap-<name>/SKILL.md`: one skill per job. Commands read like `/nap-build`.
 - `agents/nap-<name>.md`: subagents for roles that need a fresh context (Engineer, Reviewer).
 - No plugin, hooks or CI. To use the team, copy `skills/` and `agents/` into `~/.claude/` or a project's `.claude/`.
+- `skills/nap-finish-line/finish_line.py`: the one script, the finish line check. Python standard library only, Python 3.10+. Its tests are in `tests/`: run `py -m unittest discover tests` and keep them green. Change a gate in the script, its tests and `docs/finish-line.md` together.
 
 ## How we work
 - Keep it simple. Add a role, rule or tool only when a real project run shows it is needed.

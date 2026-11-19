@@ -49,7 +49,11 @@ Use the templates in [doc-templates.md](doc-templates.md). It sits next to this 
 4. **Project rules for `CLAUDE.md`:** the test command, folder layout, naming, and any rule the stack needs. Short lines a person can check.
 5. **Other docs the docs plan says are due now**, and only those. A document planned for a later version or feature waits for its docs task: written now, it would rest on guesses. For a Script, write only the project rules, and only if the plan has them.
 
+6. **`docs/finish-line.json`**, for a Personal tool or App: the gates each version must pass. Use the format and default gates in [doc-templates.md](doc-templates.md). One entry per version in the PRD, with its milestone number and the scope's default gates. To leave a default out, add an ADR in this draft that says why, and name it under `removed`. Show the gates as a short list per version, not the JSON.
+
 If the docs plan has a changelog, add a project rule: "Every PR adds a line to `CHANGELOG.md`."
+
+Use one test command everywhere: the project rules, the README and `test_command` in `docs/finish-line.json`. Make it the one that works on the user's machine. On Windows `pytest` is often not on PATH, so it is `py -m pytest`.
 
 Rules:
 - **Sized to the scope.** Build for the current versions in the PRD, and leave room for the later ones only where it is cheap now and costly later (such as data that will need to belong to users). A Script or Personal tool needs the least: often one language and no services. A Product or Platform may need more, but still nothing the versions don't ask for.
@@ -67,7 +71,7 @@ Wait. Apply changes and show them again until the user approves with a clear yes
 
 ## 5. Write and open a PR (only after approval)
 
-1. Write the files. If `docs/PRD.md` exists and isn't committed yet, the PM left it for you: include it in the same commit. In an existing `CLAUDE.md`, add or update a `## Project rules` section and leave the rest as it is.
+1. Write the files. If `docs/PRD.md` exists and isn't committed yet, the PM left it for you: include it in the same commit. In an existing `CLAUDE.md`, add or update a `## Project rules` section and leave the rest as it is. Add NAP's files to `.gitignore` if they aren't there: `.claude/skills/`, `.claude/agents/` and `.claude/settings.local.json`.
 2. If the repo has no commits yet, commit the files as the first commit on the main branch, and push if there is a remote. You are done.
 3. Otherwise: `git switch -c docs/architecture` (or `docs/adr-<number>` for one decision), commit, push, and open a PR with the body written to a file: `gh pr create --title "<title>" --body-file <path>`.
 4. Show the link. Say that the user should merge it before builds start, because the Engineer and Reviewer read these files from the main branch.
