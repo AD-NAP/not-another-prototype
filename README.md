@@ -90,7 +90,7 @@ Claude Code only uses a project's allow rules once you have trusted the folder: 
 - [Design](docs/design.md): the roles and the loop.
 - [Decisions](docs/decisions.md): what was decided and why.
 - [Roadmap](docs/roadmap.md): what is next.
-- [Finish line](docs/finish-line.md): the gates a version must pass, by scope. Draft.
+- [Finish line](docs/finish-line.md): the gates a version must pass, by scope. Agreed, not built yet.
 - [Skill writing](docs/skill-writing.md): how the skills and agents are written and refined.
 - [Skill research](docs/skill-research.md): other people's skills worth learning from.
 - [Third-party notices](THIRD_PARTY_NOTICES.md).

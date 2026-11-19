@@ -1,6 +1,6 @@
 # Finish line
 
-> **Draft for [roadmap](roadmap.md) step 9.** Nothing here is built yet. Edit the tables and answer the open questions at the end, then step 10 builds the check.
+> **Agreed 20-11-2026 for [roadmap](roadmap.md) step 9.** Nothing here is built yet. Step 10 builds the check for Personal tool and App. The Product and Platform rows are sketches until a real project needs them.
 
 A version is done when it passes its finish line: a list of gates set by the project's scope. NAP checks the gates at the end of each milestone and keeps the milestone open until they pass ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). It does not matter who built the code.
 
@@ -8,10 +8,10 @@ A version is done when it passes its finish line: a list of gates set by the pro
 
 1. **The scope sets the defaults.** `/nap-vision` already asks the scope. Each scope has a default set of gates (below).
 2. **The Architect writes the gates for each version** into `docs/finish-line.json`, starting from the defaults. It can add gates. It can only remove a default with an ADR that says why, so the bar is never lowered quietly.
-3. **The PA runs the check at the end of each milestone,** before closing it. A failing gate keeps the milestone open, and the PA lists what is missing, with the fix for each.
+3. **The PA runs the check at the end of each milestone,** before closing it. A failing gate keeps the milestone open, and the PA lists what is missing, with the fix for each. The PA won't plan the next version until it passes. A gate can still be removed with an ADR, so there is a way out, but it is on record.
 4. **Every gate is checked or signed, never assumed.**
    - **Checked:** a script decides from files, `gh` or `git`. No model judgement.
-   - **Signed:** the gate needs judgement. The PA asks the user, and the answer is posted as a comment on the milestone's last issue, so it is on record.
+   - **Signed:** the gate needs judgement. The PA asks the user and records the answer under `signed` in `docs/finish-line.json`, in a small PR that closes the milestone (with the changelog entry when the version has one).
    - A checked gate that can't run (no network, `gh` signed out) **fails**. It never passes by default.
 
 ## Gates
@@ -51,8 +51,9 @@ The Architect writes `docs/finish-line.json` with the architecture, and adds eac
   "versions": {
     "v0.1": {
       "milestone": 1,
-      "gates": ["readme", "tests-pass", "issues-closed", "ci-on-prs", "prs-checked", "ignore-nap", "docs-due", "arch-docs", "changelog"],
-      "removed": { "deploy": "ADR 0004: v0.1 runs locally only" }
+      "gates": ["readme", "tests-pass", "issues-closed", "ci-on-prs", "prs-checked", "ignore-nap", "docs-due", "arch-docs", "changelog", "data-migration"],
+      "removed": { "deploy": "ADR 0004: v0.1 runs locally only" },
+      "signed": { "data-migration": { "answer": "No stored data changed shape", "date": "2026-11-20" } }
     }
   }
 }
@@ -81,10 +82,9 @@ Personal tool scope, milestone 1, already closed. Checked by hand on 19-11-2026.
 
 Both failures are real step 7 blockers, so a check that reports exactly these two is working.
 
-## Open questions
+## Decided 20-11-2026
 
-1. **Are these the right gates per scope?** Add, move or drop rows in the table.
-2. **Should `prs-checked` also need each PR to be up to date with `main` when it merged?** That is the real cause of PR #10. It is harder to check after the fact (compare the PR's base with `main` at merge time).
-3. **Where should signed answers live?** The draft says a comment on the milestone's last issue. A line in `docs/finish-line.json` would keep them in the repo instead.
-4. **Should a failing gate block the next version from starting,** or only keep the current milestone open with a warning?
-5. **GitHub Pro.** With Pro, private repos get branch protection, and the setup step can block a bad merge instead of catching it later. Worth it for your projects, or stay on the free plan?
+1. **Gates:** as in the table. Step 10 builds Personal tool and App only.
+2. **Stale branches:** stay on the free plan. `prs-checked` catches a PR merged with no or failing checks at the milestone end. No up-to-date check after the fact: it is harder to check and catches a rarer case. If a project gets branch protection (a public repo, Pro, or a work organisation), the setup step turns it on with strict checks.
+3. **Signed answers** live in `docs/finish-line.json`, so they travel with the repo and the script reads them directly.
+4. **A failing version blocks the next one.** The PA won't plan the next version until the current one passes, or a gate is removed with an ADR.
