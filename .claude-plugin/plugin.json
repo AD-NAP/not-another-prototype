@@ -1,0 +1,6 @@
+{
+  "name": "nap",
+  "description": "Plans a project before code: a brief, a PRD, a tech plan and a backlog, sized to the project.",
+  "repository": "https://github.com/AD-NAP/not-another-prototype",
+  "license": "MIT"
+}
