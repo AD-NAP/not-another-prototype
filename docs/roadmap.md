@@ -10,7 +10,7 @@ Start small. A skill comes back only with its tests, and a new one only when a r
 | 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes the log's tech plan | | |
 | 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and the log's v0.1 is built from the documents with any tool. That is **NAP v1.0** | | |
 
-A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used. Both were used on 20-11-2026, on the weight and IPPT log, and the user kept the brief and the PRD. That session found problems in both skills, listed in their sections below. Those fixes passed their cases on 20-11-2026, so phase 3 can start. The full suite was not rerun at 3 runs after the last change to `/nap-start`.
+A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used. Both were used on 20-11-2026, on the weight and IPPT log, and the user kept the brief and the PRD. That session found problems in both skills, listed in their sections below. Those fixes passed their cases on 20-11-2026, so phase 3 can start. Two things are short of the strict rule: the full suite was not rerun at 3 runs after the last change to `/nap-start`, and `marks-its-guesses` has one live run since its grader was fixed.
 
 Each phase is about a weekend.
 
