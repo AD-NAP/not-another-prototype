@@ -2,7 +2,7 @@
 
 Plan a project the way a team with good practice would, before the first line of code. Tell NAP your idea. It works out what kind of project it is, asks only what's missing, and writes the documents that project needs: a brief, a PRD with versions, a tech plan and the first version's backlog. Then build it however you like.
 
-> **Status: being rebuilt.** On 20-11-2026 NAP narrowed to the documents before code ([decision 1](docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The skills come back one at a time, each with its tests written first ([roadmap](docs/roadmap.md)). Phase 0 is done, and `/nap-start` is next. The team version, with a Personal Assistant, an Engineer, a Reviewer and a finish line check, is at tag `nap--v0.2.0`.
+> **Status: being rebuilt.** On 20-11-2026 NAP narrowed to the documents before code ([decision 1](docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The skills come back one at a time, each with its tests written first ([roadmap](docs/roadmap.md)). Phase 0 is done, and `/nap-start` is next. The team version, with a Personal Assistant, an Engineer, a Reviewer and a finish line check, is in git history at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35).
 
 ## The idea
 
@@ -35,7 +35,7 @@ Each skill writes local files only, after you approve. You commit them. Nothing 
 
 No skill is ready yet. Phase 1 brings the first. When it lands, copy `skills/` into `~/.claude/` to use NAP in every project, or into one project's `.claude/` folder.
 
-To use the team version meanwhile, check out tag `nap--v0.2.0` and follow its README.
+To use the team version meanwhile, check out commit `b18d3e3` and follow its README.
 
 ## Principles
 

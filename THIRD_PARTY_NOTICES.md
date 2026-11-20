@@ -24,7 +24,7 @@ Each entry uses this format:
 - License: MIT
 - What NAP adapted: ideas, rewritten in NAP's own words, with one sentence quoted and credited.
   - `docs/skill-writing.md` and decision 4 in `docs/decisions.md` (tests before skills: watch an agent fail without the skill first, then write only what fixes that) from `skills/writing-skills/SKILL.md` and `skills/writing-skills/references/testing-skills-with-subagents.md`. The sentence "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing" is quoted from `writing-skills`.
-  - In the team version, at tag `nap--v0.2.0`:
+  - In the team version, at commit `b18d3e3`:
     - `agents/nap-reviewer.md` (approval needs a fresh test run) from `skills/verification-before-completion/SKILL.md`.
     - `skills/nap-fix/SKILL.md` and the "Fixing review findings" section of `agents/nap-engineer.md` (findings passed word for word, a cap on rounds, a per-finding result, checking a finding before acting on it) from `skills/subagent-driven-development/references/fix-loop.md` and `skills/receiving-code-review/SKILL.md`.
     - `skills/nap-vision/SKILL.md` and `skills/nap-vision/reader-check.md` (open questions before suggestions, playing a detailed idea back, marking what the user didn't say, anti-goals, asking what the user has used or tried, and a fresh reader listing the gaps it would have to guess) from `skills/brainstorming/SKILL.md` and `skills/brainstorming/builder-check-prompt.md`.

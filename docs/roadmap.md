@@ -1,10 +1,10 @@
 # Roadmap
 
-Start small. A skill comes back only with its tests, and a new one only when a real project needs it ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). The team version's roadmap (steps 1 to 11, with the blockers from each run) is in git history at tag `nap--v0.2.0`.
+Start small. A skill comes back only with its tests, and a new one only when a real project needs it ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). The team version's roadmap (steps 1 to 11, with the blockers from each run) is in git history at commit `b18d3e3`.
 
 | Phase | Delivers | Done when | Status |
 |---|---|---|---|
-| 0. Clear the ground | Park the team version at tag `nap--v0.2.0`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | Done 20-11-2026 |
+| 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | Done 20-11-2026 |
 | 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | Next |
 | 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | |
 | 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | |
@@ -41,7 +41,7 @@ Each phase is about a weekend.
 
 ## What carries over
 
-The team version's planning skills are the starting points, at tag `nap--v0.2.0`:
+The team version's planning skills are the starting points, at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35). Print one with `git show b18d3e3:<path>`, using the paths below:
 
 - `skills/nap-vision/SKILL.md`, for `/nap-start` and `/nap-prd`: the scope question, open questions, playback, *(suggested: why)* marks, and the reader check in `reader-check.md`.
 - `skills/nap-vision/doc-plan.md`, for the docs plan: which documents each scope needs, who writes them, and when.

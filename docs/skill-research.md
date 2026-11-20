@@ -2,7 +2,7 @@
 
 Other people's skills worth learning from. Researched 2026-11-14 for the team version's four roles, and trimmed the same day. The full survey of 15 roles is in git history at tag `nap--v0.1.0`.
 
-> Since 20-11-2026 NAP writes the documents before code ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The PM and Architect sections now feed `/nap-prd`, `/nap-architecture` and `/nap-backlog`. The Engineer and Reviewer sections are parked with those roles at tag `nap--v0.2.0`. [Where to start](#where-to-start) maps the sources to the new skills.
+> Since 20-11-2026 NAP writes the documents before code ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The PM and Architect sections now feed `/nap-prd`, `/nap-architecture` and `/nap-backlog`. The Engineer and Reviewer sections are parked with those roles at commit `b18d3e3`. [Where to start](#where-to-start) maps the sources to the new skills.
 
 ## How this was checked
 

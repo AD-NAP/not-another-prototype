@@ -2,11 +2,11 @@
 
 The decisions that hold today, and why. Add a new entry for a new decision. When one stops being true, remove or rewrite it, so this file only says what is current.
 
-Earlier decisions are in git history: the first 30 at tag `nap--v0.1.0`, and the team version's 14 at tag `nap--v0.2.0`.
+Earlier decisions are in git history: the first 30 at tag `nap--v0.1.0`, and the team version's 14 at commit `b18d3e3`.
 
 ## 1. NAP writes the documents before code (2026-11-20)
 
-**Decision.** NAP's job is the documents a project needs before code: a brief, a PRD, a tech plan and a backlog, sized to the project. Each skill writes local files after the user approves, and the user commits them. NAP doesn't build, review, merge or post to GitHub. Building is up to the user and any tool they like. The team version is parked at tag `nap--v0.2.0`: the Personal Assistant, the Engineer and Reviewer subagents, the fix loop, GitHub issues and milestones, and the finish line check. Its planning skills come back one at a time, rewritten without the GitHub parts.
+**Decision.** NAP's job is the documents a project needs before code: a brief, a PRD, a tech plan and a backlog, sized to the project. Each skill writes local files after the user approves, and the user commits them. NAP doesn't build, review, merge or post to GitHub. Building is up to the user and any tool they like. The team version is parked in git history at commit `b18d3e3`: the Personal Assistant, the Engineer and Reviewer subagents, the fix loop, GitHub issues and milestones, and the finish line check. Its planning skills come back one at a time, rewritten without the GitHub parts.
 
 **Why.** The planning half passed every run. The build half did not: in the last full run, 8 of 9 blockers were environment and enforcement problems, such as commit trailers, self-approval on GitHub, Windows paths and a second session in the same checkout. Every step that acted on GitHub met a permission prompt, an allow list or a refusal, and every test was a full run that took hours of a limited plan. Skills that only write files are useful on their own, flow without interruptions, and are cheap to test.
 

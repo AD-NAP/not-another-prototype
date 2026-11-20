@@ -2,7 +2,7 @@
 
 How NAP works. Decisions and their reasons are in [decisions.md](decisions.md). What comes next is in [roadmap.md](roadmap.md).
 
-Earlier designs are in git history: the first one (sprints, hooks, evals and a pixel office) at tag `nap--v0.1.0`, and the team version (a Personal Assistant running a PM, Architect, Engineer and Reviewer, with a finish line check) at tag `nap--v0.2.0`. [Decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20) says why NAP narrowed.
+Earlier designs are in git history: the first one (sprints, hooks, evals and a pixel office) at tag `nap--v0.1.0`, and the team version (a Personal Assistant running a PM, Architect, Engineer and Reviewer, with a finish line check) at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35). [Decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20) says why NAP narrowed.
 
 ## The idea
 
@@ -85,4 +85,4 @@ The docs plan in the brief sets the order: each document the type and traits nee
 
 ## What NAP doesn't do
 
-It doesn't build, review or merge, and it doesn't post to GitHub. The team version did, and it is parked at tag `nap--v0.2.0` ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)).
+It doesn't build, review or merge, and it doesn't post to GitHub. The team version did, and it is parked in git history at commit `b18d3e3` ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)).

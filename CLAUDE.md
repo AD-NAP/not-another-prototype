@@ -1,6 +1,6 @@
 # NAP: Not Another Prototype
 
-Plans a project before code, the way a team with good practice would. `/nap-start` works out what kind of project it is and which documents it needs. Then one skill per document writes them: a brief, a PRD, a tech plan and a backlog. Local files only, written after the user approves. Building is up to the user. The team version (a Personal Assistant, Engineer, Reviewer and finish line check) is parked at tag `nap--v0.2.0` (`docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20`). The user merges every PR.
+Plans a project before code, the way a team with good practice would. `/nap-start` works out what kind of project it is and which documents it needs. Then one skill per document writes them: a brief, a PRD, a tech plan and a backlog. Local files only, written after the user approves. Building is up to the user. The team version (a Personal Assistant, Engineer, Reviewer and finish line check) is parked in git history at commit `b18d3e3` (`docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20`). The user merges every PR.
 
 ## Start here
 - `docs/design.md`: the types, traits, documents and skills.
