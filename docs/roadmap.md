@@ -101,8 +101,8 @@ Full run on Sonnet with an Opus judge, 3 runs, after the fixes from the first re
 - The `marks-its-guesses` row was rerun with NAP only after the marks rule changed, so its plain Claude figure is from before.
 - Plain Claude now scores 1.00 on "Starts on an idea": the check that `/nap-start` ran only counts as an indicator, and plain Claude wrote nothing. With NAP, it ran 3 of 3.
 - The type name checks, reported apart: plain Claude said "Personal tool" in 0 of 3 runs and "App" in 0 of 3. Without them, each case scores 0.50 for plain Claude, so its Δ is +0.50, not +0.67.
-- `marks-its-guesses` failed `marks-in-the-draft` 3 of 3 with NAP, and beats plain Claude by only +0.08. Each draft left a guess unmarked, and one left the same line unmarked as the real session: "My log is still there after I close it". `one-open-question` joined two questions with "and" in 1 of 3 runs.
-- With its corrected prompt, `marks-its-guesses` failed the old skill at one run, by 3 of 3 judge votes, and passed the new one. So the case catches the bug, but the fix doesn't hold yet.
+- In the full pass, `marks-its-guesses` failed `marks-in-the-draft` 3 of 3 with NAP, at 0.75. One draft left the same line unmarked as the real session: "My log is still there after I close it". The other two marked every "done when" line and missed only small inferences. That is why the rule was narrowed to choices, as the last entry of the list above says. The 0.92 in the table is from the rerun after that.
+- `one-open-question` joined two questions with "and" in 1 of 3 runs. This is still open, and it is the one case that keeps phase 3 from starting.
 
 ## Phase 2: `/nap-prd`
 
