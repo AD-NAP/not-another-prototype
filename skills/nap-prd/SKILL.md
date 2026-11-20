@@ -42,6 +42,8 @@ One question per message, with one thing to answer. Read the question back befor
 
 Stop once you can draft: usually one or two questions for a Personal tool, up to five for an App. If the user says "your call" to a question, decide it, and mark it as a suggestion.
 
+Before you draft, think of what you would put under Open questions. If the user could answer one of them today, it is not an open question: ask it now, with a suggested answer, even if that is one question more than usual.
+
 ## 4. Show the draft
 
 Show the whole draft in your reply, using the template below. Not in a file: nothing is written until the user approves. Close with: "Approve, and I'll write `docs/PRD.md`. Or tell me what to change."
@@ -52,8 +54,8 @@ Before you show it, check:
 - **Each must-do comes from the user or the brief.** Anything you added ends with *(suggested: why)*. Add little: the first version is the least that is worth using, and the rest goes to a later version or Out of scope.
 - **Each "done when" is a check a person can run.**
 - **Short.** One line per item, and a reason of a few words at most. A Personal tool's PRD fits in about 300 words.
-- **Open questions are about the product.** How it's built, such as how data is stored or which channel sends a message, is the tech plan's question, and it asks it anyway. Leave those out.
-- **Only the sections the type and traits need,** as step 2 lists them and the template's comments mark. A Personal tool has no Anti-goals or How we'll know it works. Leave a section out rather than writing "not applicable", and drop the comments.
+- **Open questions are what nobody can answer yet.** The PRD is the last document that decides what the product does, so a product question left here has nothing after it to settle it. Whether a version needs a feature is a question for the user: ask it, or decide it as a suggestion if they said "your call". Keep an open question only when its answer needs something that hasn't happened yet, such as a few weeks of use, or when the user says to leave it open. How it's built, such as how data is stored or which channel sends a message, is the tech plan's question, and it asks it anyway. Leave those out. "None" is fine.
+- **Only the sections the type and traits need,** as step 2 lists them and the template's comments mark. A Personal tool has no Anti-goals or How we'll know it works, and no Key screens unless the brief's traits say it has screens. Leave a section out rather than writing "not applicable", and drop the comments.
 
 ```markdown
 # PRD: <name>
@@ -92,14 +94,14 @@ Who it's for, why, the type and the constraints are in [the brief](brief.md).
 - **<screen>:** <what the user sees and does there, in a line>
 
 ## Open questions
-- <what is still unknown, and which document settles it>
+- <what nobody can answer yet, and what will answer it. "None" is fine.>
 ```
 
 Apply changes and show the draft again until the user approves with a clear yes.
 
 ## 5. Write it
 
-After a clear yes, write `docs/PRD.md`, with that name, as approved. Don't commit, branch or push: the user commits.
+After a clear yes, write `docs/PRD.md`, with that name, as approved, in the folder you are in. Don't make a worktree, commit, branch or push: the user commits.
 
 Then name the next step: "Run `/nap-architecture` next for the tech plan."
 
@@ -114,4 +116,5 @@ What went wrong in testing, without this skill and with early drafts of it:
 - **Asked to plan the versions of a Personal tool, it invented v2 and v3,** then asked four numbered questions with menus of answers.
 - **Asked for the draft now, it asked a question first.** "Your call" means draft.
 - **A Personal tool's draft ran to 450 words,** with tech plan questions in Open questions, such as how amounts are stored.
+- **In its first real use, it asked two questions, then left a product question in Open questions** that the user could have answered on the spot: whether the first version needs a way to fix a mistyped entry. Ask it. No document after the PRD decides what the product does.
 - **In a real session it listed the files with `find . | head`.** Glob, or Read by path where Glob is missing, does the same without a permission prompt.

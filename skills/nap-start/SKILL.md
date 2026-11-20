@@ -49,7 +49,13 @@ Stop once you can write the brief: usually one or two questions for a Script, up
 
 ## 5. Show the brief
 
-Show the whole draft in one message, using the template below. Anything the user didn't say ends with *(suggested: why)*. Close with: "Approve, and I'll write `docs/brief.md`. Or tell me what to change."
+Show the whole draft in one message, using the template below. A choice you made for the user ends with *(suggested: why)*. Close with: "Approve, and I'll write `docs/brief.md`. Or tell me what to change."
+
+Before you show it, check:
+
+- **Each choice you made is marked in the draft itself.** A number, a limit, a feature or a "done when" line the user didn't say is a choice they might disagree with, so it ends with *(suggested: why)* on that line. That includes a "done when" line you added because it seemed obvious, such as that entries are kept between uses. A note after the draft doesn't count: the file is what lasts, and the note is gone. Mark nothing else: not their idea in your words, not a trait you can see, and not a fact such as "no deadline named".
+- **Open questions are choices a later document weighs,** such as how far back a trend looks. A plain fact the user could give in a word, such as which distance, is not one: ask it, or write your guess and mark it.
+- **The brief is a document, not a reply.** No "as I said", and nothing else that points back at the conversation.
 
 Apply changes and show the draft again until the user approves with a clear yes.
 
@@ -84,7 +90,7 @@ Apply changes and show the draft again until the user approves with a clear yes.
 | Backlog | The first version's tasks | `/nap-backlog` | After the tech plan |
 
 ## Open questions
-- <What is still unknown, and which document settles it.>
+- <A choice a later document weighs, and which document settles it.>
 ```
 
 The docs plan follows the type:
@@ -97,7 +103,7 @@ Each trait adds a section, named in the Why column. Has screens adds the key scr
 
 ## 6. Write it
 
-After a clear yes, write `docs/brief.md` as approved. Don't commit, branch or push: the user commits.
+After a clear yes, write `docs/brief.md` as approved, in the folder you are in. Don't make a worktree, commit, branch or push: the user commits.
 
 Then name the next step. A Script: "Build it: the example run becomes the README." A Personal tool or App: "Run `/nap-prd` next to plan the versions."
 
@@ -108,4 +114,6 @@ What went wrong in testing, without this skill and with early drafts of it:
 - **Claude built the project from a bare idea**, guessing the shape ("I read it as a personal log..."). An idea is not a request to build.
 - **Asked to plan, it wrote the whole plan at once:** features the user never mentioned, a stack, a data model and command-line flags. The first message has no plan, and the brief has no stack.
 - **It asked four questions at once, each with a menu of options.** Ask one, in the user's own terms. Early drafts still slipped menus in: after a colon, as a list of types the idea might be, and as two questions joined by "and".
+- **In its first real session, its guesses were named in a note after the draft, not marked in it:** a time limit, a distance, and that entries are kept between uses. It also left that distance as an open question, wrote "as I said" in the brief, and marked "no stack chosen yet" as a suggestion.
+- **In the same session it tried to make a git worktree before writing the brief.** The folder wasn't a git repo, so that failed and it wrote in place. In a repo, the brief would have landed in a worktree the user never opens.
 - **It looked around with chained shell commands** (`pwd; ls -la; cat README.md`), and one stopped for permission. Glob and Read do the same without asking.
