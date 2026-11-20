@@ -2,56 +2,87 @@
 
 How NAP works. Decisions and their reasons are in [decisions.md](decisions.md). What comes next is in [roadmap.md](roadmap.md).
 
-The first design (sprints, a runner, a pixel office, hooks, an event log, evals) is in git history at tag `nap--v0.1.0`. It was cut back in [decision 1](decisions.md#1-a-simple-team-of-four-2026-11-14).
+Earlier designs are in git history: the first one (sprints, hooks, evals and a pixel office) at tag `nap--v0.1.0`, and the team version (a Personal Assistant running a PM, Architect, Engineer and Reviewer, with a finish line check) at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35). [Decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20) says why NAP narrowed.
 
-On 19-11-2026 NAP narrowed to planning and the finish line of each version ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). The Engineer and Reviewer below are one optional way to build, and are frozen.
+## The idea
 
-## Problem
+NAP writes the documents a project needs before code, sized to the project. Two things decide which documents:
 
-- AI speeds up coding, but without a shared setup the work drifts. Code quality ends up very different across projects and people.
-- Good habits get lost: issues before code, tests before code, review before merge.
+- **The type** sets how many: how big the project is, and who uses it.
+- **Traits** add the ones a kind of project needs: screens, stored data, AI and so on.
 
-## The team
+Building is up to the user: plan mode, Superpowers, another tool, or by hand.
 
-A team of agents, each with the skills its role needs. Plain skill and agent files, no plugin. The user briefs the team and makes the calls.
+## Types
 
-| Role | Runs as | What it does | Hands off |
+| Type | What it is | Example | Documents before code | In v1 |
+|---|---|---|---|---|
+| **Script** | Does one job per run and keeps nothing between runs. A sitting or two. | Convert a folder of images to WebP | Brief, with an example run | Yes |
+| **Personal tool** | A few features you use yourself, again and again. Runs on your machine. | Track what you lend to friends | Brief, short PRD, half-page tech plan, first version's backlog | Yes |
+| **App** | A complete app other people use. Runs online. Weeks of work. | An order page for a bakery | Brief, PRD up to v1.0, full tech plan, v0.1 backlog | Yes |
+| **Product** | An app that grows with its users over months. Maybe paid. | A daily planner sold to the public | App's documents, plus success metrics, user research, a roadmap past v1.0, and a release and support plan | Later |
+| **System** | Several apps or services that work together | A dashboard, a mobile app and a backend that share one set of devices | Product's documents, plus a system map, contracts between the parts, who owns which data, scale and uptime targets, and a threat model | Later |
+
+`/nap-start` proposes a type by going down this list, and the user can correct it:
+
+1. More than one app or service working together: System.
+2. One job per run: Script.
+3. Only you use it: Personal tool.
+4. Others use it, and it will grow from their feedback over months: Product.
+5. Otherwise: App.
+
+A project can change type. A Personal tool that others start to use becomes an App, and gets the documents an App needs from then on.
+
+## Traits
+
+| Trait | Adds | In v1 | Later, for App and up |
 |---|---|---|---|
-| Architect | Skill, `/nap-architect` | Once per project, and again for a big decision. Reads the PRD, asks what shapes the build, recommends a stack sized to the scope, and writes the goal, architecture, ADRs and project rules. Asks whether CI and deploy are needed. | `docs/ARCHITECTURE.md`, `docs/ADR.md`, rules in `CLAUDE.md`, in a PR |
-| PM | Skills, `/nap-vision` and `/nap-backlog` | First, once per project: asks how big it is (Script, Personal tool, App, Product, Platform), refines the idea into versions, and agrees a docs plan. Then, one version at a time: turns that version's features into issues with testable acceptance criteria, setup issues first, plus a docs task for each document due. | `docs/PRD.md` and a GitHub milestone per version, then GitHub issues in that milestone |
-| Engineer | Subagent, `/nap-build` | Builds one issue, or a few related ones in one PR, test-first within the architecture: failing tests, then code, then a PR. Decides the UI when there is no mock-up. Stops for a big decision. | PR with tests and code |
-| Reviewer | Subagent, `/nap-review` | Reviews the PR against the issue, the project rules and the ADRs, without the Engineer's reasoning. Runs the tests. | One review |
+| Has screens | Key flows and a screen list, sketched in text | A section in the PRD | `docs/ux.md`, from `/nap-ux` |
+| Stores data | What is stored, how it changes, backups | A section in the tech plan | Its own document for Product and up |
+| Uses AI | What good output looks like, a first eval set, the baseline to beat | A section in the tech plan | `docs/evals.md`, from `/nap-evals` |
+| Other people's data, sign-in or payments | What is stored, who can see it, secrets | A section in the tech plan | `docs/security.md`, from `/nap-security` |
+| Runs online | Where it runs, how it ships, secrets | A section in the tech plan | Its own operations document for Product and up |
 
-**The Personal Assistant** (`/nap-pa`, a skill) runs the whole loop for the user: it calls each role's skill in order, groups related issues into builds, switches the checkout for reviews, and stops only for the user's questions, approvals and merges. It merges a PR only when the user says "merge it" for it. Each role can still be run on its own. See [decision 12](decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14).
+A Script ignores traits. Its "done when" covers them.
 
-**The finish line** (`/nap-finish-line`, a skill with a script) runs at the end of each milestone. The script checks the version's gates from `docs/finish-line.json`, and the milestone stays open until they pass. See [finish-line.md](finish-line.md) and [decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19).
+## The documents
 
-The Architect and PM are skills because they talk with the user. The Engineer and Reviewer are subagents because they need a fresh context. See [decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14) for why there is no per-issue design.
+- **Brief** (`docs/brief.md`), from `/nap-start`. The idea in the user's words, who it's for and why, the type and traits, "done when" for the first version, constraints, the docs plan and open questions. A Script's brief adds an example run: the command, the input and the output. It becomes the README once the script works.
+- **PRD** (`docs/PRD.md`), from `/nap-prd`. The versions, what each must do, "done when" for each version, and what is out of scope. An App's PRD adds anti-goals, how you'll know it works, and the key screens.
+- **Tech plan**, from `/nap-architecture`. `docs/ARCHITECTURE.md` (the parts, the data, how to run and test it), `docs/ADR.md` (each hard-to-undo choice, with one alternative) and project rules in `CLAUDE.md`. Half a page for a Personal tool. An App's adds sign-in, CI and deploy.
+- **Backlog** (`docs/backlog/v0.1.md`), from `/nap-backlog`. The first version's tasks, each with Given/When/Then acceptance criteria and an edge case, setup first.
 
-## The loop
+"Done when" is the finish line in plain words: what must be true before a version counts as done. It replaces the team version's gate check.
+
+## Documents that wait
+
+A document is written once what it describes is known. Written earlier, it rests on guesses and has to be redone.
+
+- **API spec:** before the version that builds the API.
+- **Changelog:** from the first PR, for an App and up.
+- **User docs:** before launch.
+- **Runbooks and monitoring:** before real users depend on it.
+- **Contributing guide:** before others join.
+
+## The skills
 
 ```
-Idea -> PM (PRD, milestones) -> Architect (docs, stack, rules) -> PM (issues for one milestone) -> Engineer (tests, code, PR) -> Reviewer -> user merges
-            ^                                              ^                              |
-            |                                              +---- /nap-fix, up to 3 rounds +
-            +------------ big decision found mid-build (Engineer stops) ------------------+
+/nap-start  ->  docs/brief.md (type, traits, docs plan)
+  |
+  +-- Script ------------------> build. The brief's example becomes the README.
+  |
+  +-- Personal tool or App ----> /nap-prd -> /nap-architecture -> /nap-backlog -> build with any tool
 ```
 
-Each step hands off something a person can read (docs, issue, PR, review), not chat history.
+The docs plan in the brief sets the order: each document the type and traits need, and the skill that writes it. Apart from `/nap-start`, each skill is named after the document it writes. Every skill follows the same rules:
 
-## Rules
+1. **Read first.** Read what exists, and never ask what it already answers. So each skill also works on its own.
+2. **One question at a time.** Questions about the user's own view are open, with no suggested answer. The rest come with a suggested answer the user can accept with "yes". Ask only what would change the document.
+3. **Mark suggestions.** Anything the user didn't say ends with *(suggested: why)*.
+4. **Write after a clear yes.** Local files only. No commits, branches or GitHub: the user commits.
+5. **Each fact lives in one document.** Later documents link back instead of repeating it.
+6. **Name the next step.** End with the next skill from the docs plan, or "build" once the plan is done.
 
-1. **The user approves** the PRD, the architecture, each batch of issues, every big decision and every merge, and decides when to start the next version.
-2. **Tests come first.** The Engineer writes failing tests from the criteria before the code.
-3. **Fresh context for review.** The Reviewer judges the change, not the story about it.
-4. **Evidence before approval.** The Reviewer approves only after seeing the tests pass. Findings are fixed on the same PR with `/nap-fix` and reviewed again.
-5. **Big decisions go through the Architect.** A new language, framework, service, major library or data store needs an ADR first.
-6. **Grow on need.** A new role, rule or tool is added only when a real project run shows it is missing.
+## What NAP doesn't do
 
-## Roles to add when needed
-
-| Role | Trigger |
-|---|---|
-| UX Designer | The Engineer's UI choices keep needing rework. Until then the Engineer decides the UI. |
-| Platform | CI or deploy setup is more than the Architect's docs and a setup issue can cover |
-| QA | Unit tests pass but the app is broken end to end |
+It doesn't build, review or merge, and it doesn't post to GitHub. The team version did, and it is parked in git history at commit `b18d3e3` ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)).

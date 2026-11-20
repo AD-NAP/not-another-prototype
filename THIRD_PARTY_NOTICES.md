@@ -1,6 +1,6 @@
 # Third-party notices
 
-NAP is MIT licensed (see [LICENSE](LICENSE)). When NAP adapts text or code from another project, that project is listed here with its license notice, as [decision 8](docs/decisions.md#8-mit-license-and-other-projects-are-sources-2026-11-14) requires.
+NAP is MIT licensed (see [LICENSE](LICENSE)). When NAP adapts text or code from another project, that project is listed here with its license notice, as [decision 5](docs/decisions.md#5-mit-license-and-other-projects-are-sources-2026-11-14) requires.
 
 ## Adapted material
 
@@ -22,10 +22,12 @@ Each entry uses this format:
 
 - Source: https://github.com/obra/superpowers
 - License: MIT
-- What NAP adapted: ideas, rewritten in NAP's own words, no text copied.
-  - `agents/nap-reviewer.md` (approval needs a fresh test run) from `skills/verification-before-completion/SKILL.md`.
-  - `skills/nap-fix/SKILL.md` and the "Fixing review findings" section of `agents/nap-engineer.md` (findings passed word for word, a cap on rounds, a per-finding result, checking a finding before acting on it) from `skills/subagent-driven-development/references/fix-loop.md` and `skills/receiving-code-review/SKILL.md`.
-  - `skills/nap-vision/SKILL.md` and `skills/nap-vision/reader-check.md` (open questions before suggestions, playing a detailed idea back, marking what the user didn't say, anti-goals, asking what the user has used or tried, and a fresh reader listing the gaps it would have to guess) from `skills/brainstorming/SKILL.md` and `skills/brainstorming/builder-check-prompt.md`.
+- What NAP adapted: ideas, rewritten in NAP's own words, with one sentence quoted and credited.
+  - `docs/skill-writing.md` and decision 4 in `docs/decisions.md` (tests before skills: watch an agent fail without the skill first, then write only what fixes that) from `skills/writing-skills/SKILL.md` and `skills/writing-skills/references/testing-skills-with-subagents.md`. The sentence "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing" is quoted from `writing-skills`.
+  - In the team version, at commit `b18d3e3`:
+    - `agents/nap-reviewer.md` (approval needs a fresh test run) from `skills/verification-before-completion/SKILL.md`.
+    - `skills/nap-fix/SKILL.md` and the "Fixing review findings" section of `agents/nap-engineer.md` (findings passed word for word, a cap on rounds, a per-finding result, checking a finding before acting on it) from `skills/subagent-driven-development/references/fix-loop.md` and `skills/receiving-code-review/SKILL.md`.
+    - `skills/nap-vision/SKILL.md` and `skills/nap-vision/reader-check.md` (open questions before suggestions, playing a detailed idea back, marking what the user didn't say, anti-goals, asking what the user has used or tried, and a fresh reader listing the gaps it would have to guess) from `skills/brainstorming/SKILL.md` and `skills/brainstorming/builder-check-prompt.md`.
 
 ```
 MIT License
@@ -55,5 +57,5 @@ SOFTWARE.
 
 These shaped how NAP works, but no text or code was copied from them:
 
-- [anthropics/claude-plugins-official `pr-test-analyzer`](https://github.com/anthropics/claude-plugins-official/tree/HEAD/plugins/pr-review-toolkit/agents) (Apache-2.0): judging tests by the behaviour they cover, not by whether test files exist.
-- [obra/superpowers](https://github.com/obra/superpowers) (MIT): strict TDD and review in a fresh subagent. NAP treats it as a source, not a dependency ([decision 8](docs/decisions.md#8-mit-license-and-other-projects-are-sources-2026-11-14)).
+- [anthropics/claude-plugins-official `pr-test-analyzer`](https://github.com/anthropics/claude-plugins-official/tree/HEAD/plugins/pr-review-toolkit/agents) (Apache-2.0): judging tests by the behaviour they cover, not by whether test files exist. Used in the team version's Reviewer.
+- [obra/superpowers](https://github.com/obra/superpowers) (MIT): strict TDD and review in a fresh subagent, in the team version. NAP treats it as a source, not a dependency ([decision 5](docs/decisions.md#5-mit-license-and-other-projects-are-sources-2026-11-14)).

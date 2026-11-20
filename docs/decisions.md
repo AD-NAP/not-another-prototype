@@ -2,128 +2,42 @@
 
 The decisions that hold today, and why. Add a new entry for a new decision. When one stops being true, remove or rewrite it, so this file only says what is current.
 
-The first 30 decisions (sprints, hooks, evals, the event log, releases, the runner) are in git history at tag `nap--v0.1.0`.
+Earlier decisions are in git history: the first 30 at tag `nap--v0.1.0`, and the team version's 14 at commit `b18d3e3`.
 
-## 1. A simple team of four (2026-11-14)
+## 1. NAP writes the documents before code (2026-11-20)
 
-**Decision.** NAP is four roles, each with the skills it needs: Architect, PM, Engineer, Reviewer. The Architect replaced the Tech Lead in [decision 10](#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14). It is plain skill and agent files, named with a `nap-` prefix. There is no plugin, no hooks, no event log, no evals and no CI. A role, rule or tool is added only when a real project run shows it is needed.
+**Decision.** NAP's job is the documents a project needs before code: a brief, a PRD, a tech plan and a backlog, sized to the project. Each skill writes local files after the user approves, and the user commits them. NAP doesn't build, review, merge or post to GitHub. Building is up to the user and any tool they like. The team version is parked in git history at commit `b18d3e3`: the Personal Assistant, the Engineer and Reviewer subagents, the fix loop, GitHub issues and milestones, and the finish line check. Its planning skills come back one at a time, rewritten without the GitHub parts.
 
-**Why.** The goal was a team of agents with the right skills. The guardrails grew faster than the team: five roles came with 30 decisions, dozens of eval cases, about 1,000 lines of hooks and a 10-phase plan, and the loop still needed hand patches. Most open gaps came from the guardrails, not the roles. Packaging as a plugin also came before there was much to package.
+**Why.** The planning half passed every run. The build half did not: in the last full run, 8 of 9 blockers were environment and enforcement problems, such as commit trailers, self-approval on GitHub, Windows paths and a second session in the same checkout. Every step that acted on GitHub met a permission prompt, an allow list or a refusal, and every test was a full run that took hours of a limited plan. Skills that only write files are useful on their own, flow without interruptions, and are cheap to test.
 
-**What we give up.** Tool-enforced rules and measured proof. Tool-enforced checks come back for the finish line of each version in [decision 14](#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19).
+**What we give up.** One agent that takes an idea all the way to merged PRs. Issues and milestones on GitHub, until a script pushes the backlog there. The enforced finish line: "done when" for each version in the PRD replaces it in plain words.
 
-## 2. Skill or subagent per role (2026-10-30)
+## 2. Types set the documents, traits add to them (2026-11-20)
 
-**Decision.** Roles that talk with the user run as skills in the main session. Roles that need a fresh context run as subagents.
+**Decision.** Five types, by size and by who uses the project: Script, Personal tool, App, Product and System. System replaces Platform, since it means several apps or services working together. Version 1 builds Script, Personal tool and App. Traits (screens, stored data, AI, other people's data, running online) add a section to the PRD or the tech plan, and later their own documents for an App and up. A document that describes something not yet known waits, such as an API spec until the version that builds the API. The types, traits and documents are in [design.md](design.md#types).
 
-| Role | Runs as | Why |
-|---|---|---|
-| Architect | Skill | Asks the user what shapes the build, and gets the stack approved live |
-| PM | Skill | Needs a back-and-forth with the user to turn a brief into issues |
-| Engineer | Subagent | Own context and branch per issue |
-| Reviewer | Subagent | Sees only the change, the issue and the project's rules, never the Engineer's reasoning |
-| Personal Assistant | Skill | Talks with the user, and starts the Engineer and Reviewer. Subagents can't start subagents. |
+**Why.** Whether a project has screens or uses AI changes which documents it needs, not how many. Keeping the types to five keeps the first question easy. Personal tool and App are where the team version's planning was proven. Script is the simplest check that NAP doesn't write too much.
 
-## 3. Subagent roles get an entry skill (2026-10-31)
+**What we give up.** Product and System, until a real project needs them.
 
-**Decision.** Each subagent role has a thin skill that hands the work to it: `/nap-build` and `/nap-fix` for the Engineer, and `/nap-review` for the Reviewer. The procedure lives in the agent file.
+## 3. One skill per document, and /nap-start routes (2026-11-20)
 
-**Why.** Without the skill, Claude did small tasks itself and the agent never ran. The skill also decides what the agent sees, so the Reviewer never gets the Engineer's notes.
+**Decision.** `/nap-start` takes the idea, works out the type and traits, and writes the brief with a docs plan. Then one skill per document, named after what it writes: `/nap-prd`, `/nap-architecture` and `/nap-backlog`. Each skill reads what exists and works on its own. The PRD says what and why, never how. The tech plan owns how.
 
-## 4. One Engineer builds test-first (2026-11-14)
+**Why.** Small skills can be tested one at a time, and each is useful without the rest. The team version's roles only helped when the whole chain worked. Keeping the PRD and the tech plan apart keeps the product plan free of the solution, as the team version's PM and Architect did.
 
-**Decision.** The Engineer writes the failing tests from the acceptance criteria, then the code, on a plain branch. There is no separate Test Engineer and no git worktree.
+**What we give up.** One conversation that covers everything. The user runs each skill in turn, as the brief suggests.
 
-**Why.** The split caused the test hand-off bug, the worktree problems on Windows and the need for hooks to keep the two apart.
+## 4. Tests before skills (2026-11-20)
 
-**What we give up.** Tests written blind to the code. The Reviewer checking the tests against the criteria covers part of it.
+**Decision.** Each skill gets its eval cases before it is written, in `evals/`, run with `claude plugin eval` against plain Claude ([evals/README.md](../evals/README.md)). A few cases run without the skill first, and the skill says only what fixes what went wrong. A skill is done when its cases pass at 3 runs, it beats plain Claude, and one real use writes a document the user keeps. A small plugin manifest exists only so the evals can load the skills. NAP is still installed by copying files.
 
-## 5. Work lives in GitHub issues (2026-10-30)
+**Why.** A full run found 5 to 9 problems at once, the fixes landed together, and no one could tell which fix worked, so rules piled up. The October evals showed which rules added nothing: 4 of 11 cases tied with plain Claude. Adapted from Superpowers' `writing-skills`: "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing."
 
-**Decision.** The PM writes GitHub issues with testable acceptance criteria and a priority label. Nothing is created until the user approves the draft.
+**What we give up.** Plan usage for eval runs. One run per case while writing (`--runs 1 --ablation none`) keeps it low.
 
-**Why.** Issues are visible, a PR can close one, and every role can read the issue the same way with `gh issue view`.
-
-## 6. The Reviewer posts a comment review on your own PR (2026-11-01)
-
-**Decision.** The Reviewer posts one review per request. It tries a real approve or request-changes review first. GitHub refuses both on your own PR, so it then posts the same body as a comment review whose first line gives the verdict.
-
-**Why.** Every agent runs as the user's GitHub account, so a real approval is impossible.
-
-## 7. A person decides every merge (2026-11-14, updated 2026-11-15)
-
-**Decision.** Agents never merge on their own. The user merges on GitHub, or tells the PA to merge one PR ("merge it"), and the PA then runs `gh pr merge` for that PR only, after checking it is approved and has no conflicts. The README's settings put `gh pr merge` under `ask`, so Claude Code asks the user to confirm every merge, whatever allow rules are added later. This repo's own `.claude/settings.json` still denies `gh pr merge`, since NAP's own PRs are merged by hand.
-
-**Why.** AI can't be accountable for what ships, so a person owns it. Saying "merge it" after reading the review keeps that decision with the person, and saves a trip to GitHub for every PR, which the first PA run asked for. The `ask` rule is a check the model can't skip, unlike a line in a skill.
-
-## 8. MIT license, and other projects are sources (2026-11-14)
+## 5. MIT license, and other projects are sources (2026-11-14)
 
 **Decision.** NAP is MIT licensed. It does not install or depend on other skill collections such as [Superpowers](https://github.com/obra/superpowers). It adapts their best parts into its own words, with credit in `THIRD_PARTY_NOTICES.md`. Apache-2.0 sources can be adapted if their notices are kept there.
 
-**Why.** The repo is public and meant to be copied, and most of the work worth adapting is MIT already ([skill-research.md](skill-research.md)). Superpowers triggers on its own and overrides NAP's routing when installed beside it, but its useful parts are small enough to adapt.
-
-## 9. Approval needs a test run, and fixes stay on the PR (2026-11-14)
-
-**Decision.** The Reviewer approves only after running the full test suite itself and seeing it pass, and only when each criterion has a test that would fail if it broke. It runs the tests only when the checkout is already on the PR's code, and never switches branches. `/nap-fix` hands a review's findings to the Engineer, who fixes them on the same branch and comments on the PR with what was fixed and what was not. After three rounds without an approval, the user rules on what is left.
-
-**Why.** In the first full loop run the Reviewer approved a PR where a design task had no test, and it had never run the tests. There was also no way to fix findings without a person patching by hand. The cap is three because a loop that long usually means the two roles disagree or the issue is unclear, and each round costs usage.
-
-**Adapted from** Superpowers' fix loop and its rule of evidence before claims ([skill-research.md](skill-research.md)).
-
-## 10. An Architect instead of a per-issue Tech Lead (2026-11-14)
-
-**Decision.** The Tech Lead and `/nap-design` are removed. The Architect (`/nap-architect`) runs once per project and again for a big decision. It records the goal and recommends a stack, then writes `docs/ARCHITECTURE.md`, `docs/ADR.md` and the project rules in `CLAUDE.md`, in a PR the user merges. On the first run it asks whether CI and deploy are needed. The PM starts from the Architect's goal and asks deeper only where it is vague. The Engineer builds within the architecture, decides the UI when there is no mock-up, and stops when an issue needs a big decision. The Reviewer checks the change against the project rules and ADRs instead of a per-issue design.
-
-**Why.** Approving a design for every issue was too much work for the user, most of all on a new project with many issues, and on small issues the design repeated what the Engineer works out anyway. Meanwhile nobody owned the stack, the architecture or the ADRs. The step 3 run also showed the per-issue design check penalising private helpers (PR #9 on `nap-sprint-test`).
-
-**Why the Architect and PM stay apart.** They run at different times (once per project, against every feature idea), and they judge different things (how it is built, against what the user needs). Kept apart, the PM's "what, never how" rule keeps stories free of the solution, and each skill stays small.
-
-**What we give up.** A checked plan of names and files before each build. The Engineer picks them within the rules, and the Reviewer checks the rules, not the split into functions.
-
-## 11. Related issues can share a PR (2026-11-14)
-
-**Decision.** `/nap-build` takes one issue or several. The Engineer builds related issues (the same feature or the same code) on one branch and opens one PR with a `Closes #N` line for each. It leaves out any issue that isn't related, and keeps the PR to about 12 criteria. The Reviewer checks the criteria of every issue the PR closes, numbered by issue. The PM still writes each issue small enough for one PR on its own.
-
-**Why.** A new project can start with 30 issues. One PR each means 30 builds, 30 reviews and 30 merges, and related issues often change the same code twice.
-
-**What we give up.** Smaller PRs. A grouped PR takes longer to review, and one failing issue holds back the others until it is fixed. The cap keeps that bounded.
-
-## 12. A Personal Assistant runs the loop (2026-11-14)
-
-**Decision.** `/nap-pa` takes the user's plans and goals and runs the whole loop: the Architect when there is no architecture or a plan goes against an ADR, the PM for new plans, then for each group of related issues the build, review and fix rounds. It runs each role through its own skill with the Skill tool, so every role's instructions stay in one file. It keeps no state of its own: it reads the architecture docs, open issues and open PRs from GitHub at the start of each turn. It stops only for the user: a role's questions and approvals, a PR to merge, a big decision, findings still open after three rounds, and changes in the checkout it didn't make. Each PR is merged as it is approved, by the user or by the PA on the user's "merge it" ([decision 7](#7-a-person-decides-every-merge-2026-11-14-updated-2026-11-15)), and the PA waits for that before the next build.
-
-**Why.** Typing each command, switching branches before a review and passing PR numbers between roles was manual work the user didn't need to do. Merging as you go keeps every build on the real main branch, which matters because issues often build on each other. Grouping related issues ([decision 11](#11-related-issues-can-share-a-pr-2026-11-14)) keeps the number of merges down.
-
-**What we give up.** One build at a time, since there is one checkout. And the PA is one more file that can drift from the roles it runs, which is why it calls their skills instead of repeating them.
-
-## 13. The PM starts with a PRD, one milestone at a time (2026-11-15)
-
-**Decision.** A new project starts with `/nap-vision`, the PM's second skill. It asks the scope first, then only the questions that scope needs. It agrees a docs plan, writes `docs/PRD.md`, and creates a GitHub milestone per version, all after the user approves. `/nap-backlog` then writes full stories for the current milestone only. The PA closes each milestone when its last issue is merged and its finish line passes ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)), and asks before starting the next version.
-
-| Scope | Versions and milestones |
-|---|---|
-| Script | No PRD and no milestones. A summary only |
-| Personal tool | The user picks: start at v0.1 and grow, or go straight to v1.0 |
-| App | v0.1 and up to v1.0, the MVP |
-| Product, Platform | v0.1, v1.0 and later, each explored in depth. The user picks the MVP |
-| Unsure | Two or three questions, then a suggested scope |
-
-**The docs plan.** `skills/nap-vision/doc-plan.md` says, per scope, which documents are a must, which are good to have, and which to leave out, who writes each, and when. The PM proposes the plan in the PRD, and the user adjusts it. A document is written when what it describes is known, not before. An API spec, for example, waits until the version that builds the API. The Architect writes the documents due now. Each later one becomes a `type: docs` task in its version's milestone, labelled with who writes it. The Architect also writes the UX and operations documents until a real UX or Platform role exists.
-
-**Why.** The user wanted the idea refined before anything is built: how big it should be, the end goal, the MVP and later versions. The first PA run produced only architecture docs, with no PRD. Scope changes how much architecture and documentation a project needs: a Script needs a README, a Platform needs runbooks. Full stories and later documents wait until their version is next, because what the user learns from v0.1 changes v1.0.
-
-**How the PM asks.** The questions about the user's own view (who and why, the end goal, what they have used or tried) are open, with no suggested answer, so the PRD is the user's idea. A detailed idea is played back first. Anything the user didn't say is marked as the PM's suggestion. App and above also cover anti-goals (failure even if it works) and what the user has used or tried. For a Product or Platform, a fresh subagent reads the draft and lists what it would have to guess. The PM settles minor gaps itself, and asks the user about important ones before approval.
-
-**What we give up.** One more approval at the start of a project. On a new project, the PRD waits uncommitted until the Architect commits it, so the user merges one change instead of two. The reader check costs one more subagent run for a Product or Platform.
-
-**Adapted from** Superpowers' `brainstorming` skill and its builder check ([THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)).
-
-## 14. NAP plans and enforces the finish line, and building is pluggable (2026-11-19)
-
-**Decision.** NAP's job is the work before the code and the check at the end of each version. It keeps `/nap-pa`, `/nap-vision`, `/nap-architect` and `/nap-backlog`: a conversation with one agent turns into a PRD, architecture, ADRs, a roadmap of versions and the issues for the current milestone. Each version gets a finish line: gates the Architect writes for its scope and version (for example, tests pass, CI required on `main`, deploy works, the docs due for that version exist). A milestone closes only when its gates pass, and the gates are checked by a script and GitHub settings, not by a prompt. Building the issues is pluggable. `/nap-build`, `/nap-review`, `/nap-fix` and the Engineer and Reviewer agents stay as one way to build, but are frozen: they get fixes only when they stop a version from reaching its finish line. Superpowers, plain Claude Code or a person can build the issues instead. NAP still installs and depends on none of them ([decision 8](#8-mit-license-and-other-projects-are-sources-2026-11-14)).
-
-**Why.** NAP is meant to plan a full application like a team with good practice would, not to ship another prototype. The step 7 run on `nap-test-v2` showed the planning half works: the scope question, the PRD, the milestones and the stop at the end of v0.1 all passed. All nine blockers came from the build half: commit trailers, self-approval on GitHub, Windows paths, the test command, scope rulings, CI on a stale branch, a second session in the checkout. Most of them are environment and enforcement problems that more prompt lines don't fix reliably, and each full run takes hours of a limited plan to test. The build loop is also the most crowded part of the space. A finish line enforced by tools keeps "not a prototype" true whoever builds the code.
-
-**What we give up.** One agent that runs everything from brief to merged PR without another tool. The user, or a tool they pick, drives the builds, and the PA takes over again at the milestone's end.
-
-**Partly reverses** [decision 1](#1-a-simple-team-of-four-2026-11-14): tool-enforced checks come back, but only for the finish line.
+**Why.** The repo is public and meant to be copied, and most of the work worth adapting is MIT already ([skill-research.md](skill-research.md)). Superpowers triggers on its own and overrides NAP's routing when installed beside it. Its `brainstorming` skill fires on the same requests as `/nap-start`, so with both installed, run `/nap-start` by name.
