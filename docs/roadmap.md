@@ -5,7 +5,7 @@ Start small. A skill comes back only with its tests, and a new one only when a r
 | Phase | Delivers | Done when | Status |
 |---|---|---|---|
 | 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | Done 20-11-2026 |
-| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | Next |
+| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | Built 20-11-2026. Real use next |
 | 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | |
 | 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | |
 | 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and A Day v0.1 is built from the documents with any tool. That is **NAP v1.0** | |
@@ -22,22 +22,35 @@ Each phase is about a weekend.
 
 ## Phase 1: `/nap-start`
 
-1. Write the cases below in `evals/nap-start/`.
-2. Run a few without the skill, and note how plain Claude goes wrong, in its own words.
-3. Write the skill from Superpowers' `brainstorming` and the team version's `/nap-vision`. Write only what fixes what step 2 found.
-4. Run the cases with `--runs 1 --ablation none` while editing, then at 3 runs against plain Claude.
-5. Write A Day's brief with it, for real.
+Built 20-11-2026, tests first, on Haiku 5.5. Left to do: the real use, A Day's brief written with it and kept.
 
-| Case | Setup | Passes when |
-|---|---|---|
-| Starts on an idea | "I want to build something that tracks who borrowed my stuff" | `/nap-start` runs |
-| Ignores a fix | "Fix the failing test in parser.py" | It doesn't run |
-| Script stays small | "A script that converts every PNG in a folder to WebP" | It proposes Script, and the docs plan has no PRD |
-| Personal tool | "A tracker for things I lend to friends, only for me" | It proposes Personal tool |
-| App | "An order page for my friend's bakery" | It proposes App |
-| One open question | "Something for my running" | It asks one question with no options, and writes nothing |
-| Reads first | A repo whose README describes the idea | It plays the idea back instead of asking what it is |
-| Writes after yes | A saved conversation that ends with "Approve" | `docs/brief.md` has every heading, and the reply names `/nap-prd` |
+Scores are the share of checks passed over 3 runs, in the last full run. Mean Δ over plain Claude: +0.52.
+
+| Case | Setup | Passes when | Plain Claude | `/nap-start` |
+|---|---|---|---|---|
+| Starts on an idea | "I want to build something that tracks who borrowed my stuff" | `/nap-start` runs, and nothing is written | 0.00 | 1.00 |
+| Ignores a fix | "Fix the failing test in parser.py" | It doesn't run | 1.00 | 1.00 |
+| Script stays small | "A script that converts every PNG in a folder to WebP" | It treats it as a Script, with no PRD, code or step-by-step plan | 0.50 | 1.00 |
+| Personal tool | "A tracker for things I lend to friends, only for me" | It proposes Personal tool, with no stack yet | 0.33 | 1.00 |
+| App | "An order page for my friend's bakery" | It proposes App, with no stack yet | 0.33 | 1.00 |
+| One open question | "Something for my running" | It asks one open question with no options, and writes nothing | 0.44 | 1.00 |
+| Reads first | A repo whose README describes the idea | It plays the idea back, with no stack yet | 0.75 | 1.00 |
+| Writes after yes | A saved conversation that ends with "Approve" | `docs/brief.md` has every heading and no leftover closing line, and the reply names `/nap-prd` | | 1.00 |
+
+What plain Claude did, in its own words:
+- Given a bare idea, it built the tool: "I built a small command-line tool called lendlog... I read it as a personal log."
+- Asked to plan, it wrote the whole plan at once, "a plan you can react to": features nobody asked for, a tooling table, flags, a stack and a data model.
+- Given a vague idea, it asked four questions at once, each with a menu: "1. What kind of thing? Options I'd consider:..."
+- It never said how big the project was, so a PNG converter got the same plan as a bakery shop.
+- It already read the README first, so the skill has no rule for that. The case stays as a guard.
+
+What the evals caught while writing it:
+- Menus came back three ways: after a colon, as a list of the types the idea might be, and as two questions joined by "and". The fix: no list anywhere, one thing to answer, and read the question back before sending.
+- A rule that "who uses it decides the type" made it skip Script, which "one job per run" decides.
+- It once ended its first message on a statement, with no question to answer.
+- It named how data would be stored ("a database", "on disk"). Traits say what, not how or where.
+- In a real session it looked around with chained shell commands, and one stopped for permission. The evals grant no Bash, so only a real session could show this.
+- Twice the grader was wrong, not the skill: one wanted exactly one "?", and one failed traits the skill is told to guess.
 
 ## What carries over
 

@@ -24,16 +24,20 @@ You need Claude Code with `claude plugin eval`, and git 2.31 or later. Every run
 While writing a skill: one run per case, with NAP only.
 
 ```bash
-claude plugin eval . --tag nap-start --runs 1 --ablation none --allow-tools Write
+claude plugin eval . --tag nap-start --runs 1 --ablation none --allow-tools Write --scaffold --model haiku
 ```
 
 Before a phase is done: three runs per case, with NAP and without it. Δ is what the skill adds over plain Claude.
 
 ```bash
-claude plugin eval . --tag nap-start --allow-tools Write
+claude plugin eval . --tag nap-start --allow-tools Write --scaffold --model haiku
 ```
 
-`--allow-tools Write` lets cases write files, such as `docs/brief.md`. Skills that use no Bash need no sandbox, so this runs on Windows without WSL.
+- `--allow-tools Write` lets cases write files, such as `docs/brief.md`. Skills that use no Bash need no sandbox, so this runs on Windows without WSL.
+- `--scaffold` runs a case's setup script, such as the README for `reads-first`.
+- `--model haiku` is the cheapest model, and the one phase 1 was tested on. On it, the whole `nap-start` suite at three runs, with and without NAP, took about two minutes and $0.15 at list price.
+- `--case <name>` runs one case: the quick way to check a fix.
+- From a script or another Claude session, add `--trust-plugin`, since there is no terminal to ask.
 
 ## Writing cases
 
@@ -41,5 +45,7 @@ claude plugin eval . --tag nap-start --allow-tools Write
 - A case that checks whether the skill starts describes the idea the way a user would, without naming the skill. Other cases can call the skill directly.
 - Check that the skill ran with a `tool_used` grader on `Skill`, with `input_match: '"skill"\s*:\s*"(?:[\w-]+:)?nap-start"'`.
 - Prefer graders that cost nothing: `file_exists`, `regex` and `tool_used`. Keep `llm` graders for short answers, with PASS and FAIL written as concrete conditions.
-- To test a step after "Approve", save the conversation up to that point as a `.jsonl` file in the case, and name it in `case.yaml` under `context.history_file`.
+- To test a step after "Approve", save the conversation up to that point as a `.jsonl` file in the case, and name it in `case.yaml` under `context.history_file`. Keep only the user and assistant messages. A recording also carries what Claude Code injects, such as account IDs and local paths, and this repo is public. Drop tool calls and thinking too: with old paths in the history, the resumed run writes to the wrong folder.
+- A saved conversation holds a copy of the skill's text, in its `isMeta` message. Update that copy when `SKILL.md` changes, or record the conversation again.
+- Each run that resumes a saved conversation writes a session file beside it, named after its session ID, with the account details of whoever ran it. `.gitignore` keeps it out of git. Delete it after a run.
 - Read the report's transcripts, not just the scores. A case that passes without NAP tests Claude, not the skill.

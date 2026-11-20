@@ -4,3 +4,7 @@
 node_modules/
 __pycache__/
 evals/results/
+# A run that resumes a saved conversation writes a session file beside it, with
+# the account details of whoever ran it. Only the saved conversation is committed.
+evals/**/*.jsonl
+!evals/**/history.jsonl
