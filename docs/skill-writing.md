@@ -32,7 +32,7 @@ Cheapest first:
 What the results mean:
 - **A case that passes without the skill tests Claude, not NAP.** Drop the rule it checks, or the case. The October evals had 4 of 11 cases like this.
 - **Read the transcripts, not just the scores.** Evals can pass for the wrong reason, such as a prompt that gives the answer away.
-- **Check the grader before changing the skill.** In phase 1, two failing cases were the grader's fault: one wanted exactly one "?", and one failed traits the skill is told to guess.
+- **Check the grader before changing the skill.** In phase 1, two failing cases were the grader's fault: one wanted exactly one "?", and one failed traits the skill is told to guess. In phase 2 most failures were: the Haiku judge misread criteria written as "PASS if it has no...". Ask the judge for its reasons with the same text, and grade with Sonnet.
 - **The evals grant no Bash, so they can't show permission prompts.** Phase 1 found a chained shell command stopping for permission in a real session. Check one real session before calling a skill done.
 - **A skill that can't be tested cheaply needs a different design.** The team version's skills posted to GitHub and waited for approval, which only a full run could exercise. So every fix waited hours for its test.
 

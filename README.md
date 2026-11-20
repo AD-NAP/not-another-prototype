@@ -2,7 +2,7 @@
 
 Plan a project the way a team with good practice would, before the first line of code. Tell NAP your idea. It works out what kind of project it is, asks only what's missing, and writes the documents that project needs: a brief, a PRD with versions, a tech plan and the first version's backlog. Then build it however you like.
 
-> **Status: being rebuilt.** On 20-11-2026 NAP narrowed to the documents before code ([decision 1](docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The skills come back one at a time, each with its tests written first ([roadmap](docs/roadmap.md)). Phase 1 is built: `/nap-start` passes all its tests and beats plain Claude. Its first real use is next. The team version, with a Personal Assistant, an Engineer, a Reviewer and a finish line check, is in git history at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35).
+> **Status: being rebuilt.** On 20-11-2026 NAP narrowed to the documents before code ([decision 1](docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The skills come back one at a time, each with its tests written first ([roadmap](docs/roadmap.md)). Phases 1 and 2 are built: `/nap-start` and `/nap-prd` pass all their tests and beat plain Claude. Their first real use, on A Day, is next. The team version, with a Personal Assistant, an Engineer, a Reviewer and a finish line check, is in git history at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35).
 
 ## The idea
 
@@ -25,7 +25,7 @@ Product and System types come later. Traits, like screens, stored data or AI, ad
 | Skill | Writes | Status |
 |---|---|---|
 | `/nap-start` | `docs/brief.md`: the idea, type, traits and docs plan | Built in phase 1 |
-| `/nap-prd` | `docs/PRD.md`: the versions, and "done when" for each | Phase 2 |
+| `/nap-prd` | `docs/PRD.md`: the versions, and "done when" for each | Built in phase 2 |
 | `/nap-architecture` | `docs/ARCHITECTURE.md`, `docs/ADR.md` and project rules in `CLAUDE.md` | Phase 3 |
 | `/nap-backlog` | `docs/backlog/v0.1.md`: the first version's tasks, with acceptance criteria | Phase 4 |
 
