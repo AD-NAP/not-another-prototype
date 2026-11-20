@@ -107,6 +107,9 @@ What the evals caught while writing it:
 - Most failures were the grader's. The Haiku judge failed clean drafts 3 of 3 on "PASS if it has no..." criteria, then passed the same text when asked for its reasons. A Sonnet judge (`--judge-model sonnet`), and a regex for the section headings, fixed it. Two other graders were wrong too: one failed a suggested answer as a second option, and one failed "keeps purchases between uses" as saying how data is stored.
 - One run started from `evals/nap-prd/` instead of the repo root, so it loaded no skills: "that skill isn't available here". Run from the root.
 
+What the first real use caught, on the weight and IPPT log (20-11-2026):
+- After two questions, the draft left a product question in Open questions that the user could have answered on the spot: whether the first version needs a way to fix a mistyped entry. No document after the PRD decides what the product does, so the skill now asks such a question before it drafts, and keeps an open question only when nobody can answer it yet or the user says to leave it. The grader `open-questions-settled` checks this on the two draft-now cases. It has not been run yet.
+
 Evals for phase 2 cost about $2.30 at list price, including two full runs with plain Claude.
 
 Rerun on Sonnet with an Opus judge the same day, the setup from then on ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). `/nap-prd` passed every check over 3 runs but one: a regex for "Python" caught a note before the draft saying it left Python out, so that check moved into the `llm` grader. Mean Δ over plain Claude: +0.48 over the seven cases. `/nap-start` asked its one open question twice in other words in 1 of 3 runs ("Why do you want this for your running? What problem or itch is behind it?"). One line now says to ask it once, as the only "?" in the message, and the case passes 3 of 3. Mean Δ: +0.38 over the seven cases. Both suites cost about $7.
