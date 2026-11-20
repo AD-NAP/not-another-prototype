@@ -82,6 +82,26 @@ What the first real session caught, on the weight and IPPT log (20-11-2026):
 
 On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the seven cases was +0.38. A stronger model already does more of this unasked. The run is described at the end of phase 2.
 
+Full run on Sonnet with an Opus judge, 3 runs, after the fixes from the first real session (20-11-2026):
+
+| Case | Plain Claude | `/nap-start` |
+|---|---|---|
+| Starts on an idea (guard) | 1.00 | 1.00 |
+| Ignores a fix (guard) | 1.00 | 1.00 |
+| Script stays small | 0.50 | 1.00 |
+| Personal tool | 0.33 | 1.00 |
+| App | 0.33 | 1.00 |
+| One open question | 0.33 | 0.89 |
+| Reads first | 0.75 | 1.00 |
+| Marks its guesses | 0.67 | 0.75 |
+| Writes after yes | | 1.00 |
+
+- Mean Δ over plain Claude: +0.34 over the eight cases with a baseline, and +0.45 over the six that aren't guards.
+- Plain Claude now scores 1.00 on "Starts on an idea": the check that `/nap-start` ran only counts as an indicator, and plain Claude wrote nothing. With NAP, it ran 3 of 3.
+- The type name checks, reported apart: plain Claude said "Personal tool" in 0 of 3 runs and "App" in 0 of 3. Without them, each case scores 0.50 for plain Claude, so its Δ is +0.50, not +0.67.
+- `marks-its-guesses` failed `marks-in-the-draft` 3 of 3 with NAP, and beats plain Claude by only +0.08. Each draft left a guess unmarked, and one left the same line unmarked as the real session: "My log is still there after I close it". `one-open-question` joined two questions with "and" in 1 of 3 runs.
+- With its corrected prompt, `marks-its-guesses` failed the old skill at one run, by 3 of 3 judge votes, and passed the new one. So the case catches the bug, but the fix doesn't hold yet.
+
 ## Phase 2: `/nap-prd`
 
 Built 20-11-2026, tests first, on Haiku 5.5, from the team version's `/nap-vision` without its GitHub parts. Left to do: the real use, the weight and IPPT log's PRD written with it and kept.
@@ -123,6 +143,23 @@ What the first real session caught, on the weight and IPPT log (20-11-2026):
 Evals for phase 2 cost about $2.30 at list price, including two full runs with plain Claude.
 
 Rerun on Sonnet with an Opus judge the same day, the setup from then on ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). `/nap-prd` passed every check over 3 runs but one: a regex for "Python" caught a note before the draft saying it left Python out, so that check moved into the `llm` grader. Mean Δ over plain Claude: +0.48 over the seven cases. `/nap-start` asked its one open question twice in other words in 1 of 3 runs ("Why do you want this for your running? What problem or itch is behind it?"). One line now says to ask it once, as the only "?" in the message, and the case passes 3 of 3. Mean Δ: +0.38 over the seven cases. Both suites cost about $7.
+
+Full run on Sonnet with an Opus judge, 3 runs, after the fixes from the first real session (20-11-2026):
+
+| Case | Plain Claude | `/nap-prd` |
+|---|---|---|
+| Starts on a request (guard) | 1.00 | 1.00 |
+| Ignores a bare idea (guard) | 1.00 | 1.00 |
+| Reads the brief | 0.75 | 1.00 |
+| Script gets no PRD | 0.00 | 1.00 |
+| Personal tool depth | 0.42 | 0.92 |
+| App depth | 0.33 | 1.00 |
+| No stack | 0.33 | 1.00 |
+| Writes after yes | | 1.00 |
+
+- Mean Δ over plain Claude: +0.44 over the seven cases with a baseline, and +0.62 over the five that aren't guards.
+- In 1 of 3 runs, `personal-tool-depth` added Key screens to a Personal tool whose brief has no screens trait. The check before the draft now says so, and that case and `writes-after-yes` then passed 3 of 3.
+- Both suites cost about $7.20.
 
 ## What carries over
 
