@@ -1,17 +1,19 @@
 # How we write skills and agents
 
-How NAP's skills and agents get created and refined. Researched 2026-11-14 from Anthropic's docs and engineering posts, the `skill-creator` skill, Superpowers' `writing-skills` and practitioner write-ups. Sources are at the bottom.
+How NAP's skills and agents get created, tested and refined. Researched 2026-11-14 from Anthropic's docs and engineering posts, the `skill-creator` skill, Superpowers' `writing-skills` and practitioner write-ups. The testing parts were updated 2026-11-20, when tests came before skills ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). Sources are at the bottom.
 
 ## The approach
 
-Refine the skills we have, by hand with Claude, driven by failures from real runs. Not from a blank page, and not through a full eval loop.
+Tests first, then the skill, then real use. Start from the team version's skill when there is one, not from a blank page.
 
-1. **Start from what exists.** The four skills and the open issues are our observed failures.
-2. **Edit by hand** against the checklist below.
-3. **Test by running a real project.** Each failure becomes a Gotchas line or an edit.
-4. **Tune descriptions last.**
+1. **Write the cases.** A few prompts that should and shouldn't start the skill, and 5 to 8 cases for what it must do. See [evals/README.md](../evals/README.md).
+2. **Watch plain Claude fail.** Run a few cases without the skill, and note what goes wrong, in its own words.
+3. **Write only what fixes that.** Check each line against the checklist below.
+4. **Run the cases** while editing, then at 3 runs against plain Claude.
+5. **Use it on a real project.** Each rescue becomes a case or a Gotchas line.
+6. **Tune the description last.**
 
-Anthropic's docs describe the same loop as "Claude A" and "Claude B": one session helps write the skill, a fresh session uses it on real work, and what the second got wrong goes back to the first.
+Anthropic's docs describe the same loop as "Claude A" and "Claude B": one session helps write the skill, a fresh session uses it on real work, and what the second got wrong goes back to the first. Superpowers' `writing-skills` calls it TDD for skills: "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing."
 
 ## Why not generate from scratch
 
@@ -19,13 +21,20 @@ A benchmark reported by Arize (SkillsBench, 87 tasks) found skills a model wrote
 
 A skill's value comes from real knowledge and real failures, not from the tool that formats it.
 
-## Why not skill-creator's full loop
+## How we test
 
-`skill-creator` writes 2 to 3 test prompts, runs each with and without the skill, grades them and shows a viewer. That doubles every run, and it suits skills with checkable output such as file transforms. Ours ask questions, wait for approval and post to GitHub, which scripted prompts can't exercise. It is also the shape of the eval system NAP removed.
+Cheapest first:
 
-Two parts are worth using:
-- **Its writing advice**, which is folded into the checklist below.
-- **Its description optimizer.** It tests about 20 should-trigger and should-not-trigger queries and keeps the best description. Triggering is cheap to test and matters most. Check the script works before relying on it.
+1. **Does it start?** Prompts that should and shouldn't start the skill, checked by a `tool_used` grader on `Skill`. `skill-creator`'s description optimizer tunes the description against about 20 of them. Check its script works before relying on it.
+2. **Does it behave?** Cases in `evals/`, run with `claude plugin eval`. Each case runs with NAP and without it, and the difference (Δ) is what the skill adds. Graders that look at files and text (`file_exists`, `regex`, `tool_used`) cost nothing extra. A case can start from a saved conversation (`context.history_file`), so the step after "Approve" is tested without replaying every question.
+3. **Does it help?** One real project. Count the rescues: retries, stalls and corrections, not the approvals you want to keep.
+
+What the results mean:
+- **A case that passes without the skill tests Claude, not NAP.** Drop the rule it checks, or the case. The October evals had 4 of 11 cases like this.
+- **Read the transcripts, not just the scores.** Evals can pass for the wrong reason, such as a prompt that gives the answer away.
+- **A skill that can't be tested cheaply needs a different design.** The team version's skills posted to GitHub and waited for approval, which only a full run could exercise. So every fix waited hours for its test.
+
+Skills that only read and write files need no Bash, so their evals need no sandbox, and run on Windows without WSL.
 
 ## Checklist for a skill
 
@@ -87,22 +96,17 @@ Vague briefs were the main failure in Anthropic's own multi-agent system.
 | Phases share a lot of context | The output is verbose and not needed in the main context |
 | It is a quick change | Tool restrictions or a fresh perspective matter |
 
-- **Reviewer:** a strong fit. Fresh perspective and read-only tools are the textbook case.
-- **Engineer:** a weaker fit. Implementation shares context with planning, and Anthropic says coding suits multi-agent setups less than research does. NAP's answer is that the issue and the architecture docs are written down, so the hand-off is a file. The two runs on `nap-sprint-test` built well this way.
+A fresh reader that checks a draft and lists what it would have to guess is a good fit: it needs a fresh view and returns only a list. The team version's reader check for a PRD worked this way.
 
 Agents cost more. Anthropic measured about 4 times the tokens of chat for agents and about 15 times for multi-agent systems, in their research product.
 
-## Open design option
-
-Each agent role is two files today: an entry skill and an agent. A skill with `context: fork` and `agent: <name>` runs its body directly as the subagent's prompt, which makes the brief fixed text and stops Claude doing the work inline. It runs in the background unless `background: false` is set. Not tried since the reset, and not decided.
-
 ## When to remove a rule or a skill
 
-If the role does the right thing without it, remove it. Models improve, and a rule that once helped can later hold a better default back.
+If the skill does the right thing without it, remove it. The baseline in the evals shows this. Models improve, and a rule that once helped can later hold a better default back.
 
 ## How strong the evidence is
 
-The official docs and the `skill-creator` source are first-hand. The practitioner posts are personal experience, and one sells a product. Activation-rate percentages quoted around the web could not be verified and are left out.
+The official docs, the `claude plugin eval` docs and the `skill-creator` source are first-hand. The practitioner posts are personal experience, and one sells a product. Activation-rate percentages quoted around the web could not be verified and are left out.
 
 ## Sources
 
@@ -113,7 +117,9 @@ The official docs and the `skill-creator` source are first-hand. The practitione
 - [How we built our multi-agent research system (Anthropic)](https://www.anthropic.com/engineering/multi-agent-research-system)
 - [Effective context engineering for AI agents (Anthropic)](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [Subagents in Claude Code (Claude blog)](https://claude.com/blog/subagents-in-claude-code)
-- [writing-skills (obra/superpowers)](https://github.com/obra/superpowers/blob/main/skills/writing-skills/SKILL.md)
+- [Test plugins with evals (Claude Code docs)](https://code.claude.com/docs/en/plugin-evals)
+- [writing-skills (obra/superpowers)](https://github.com/obra/superpowers/blob/main/skills/writing-skills/SKILL.md) and its [testing with subagents](https://github.com/obra/superpowers/blob/main/skills/writing-skills/references/testing-skills-with-subagents.md)
+- [Measuring what a Claude Code skill actually adds (Very Good Ventures)](https://verygood.ventures/blog/evaluating-claude-code-skills-with-ablation)
 - [Lessons from Building Claude Code: How We Use Skills (Thariq, reposted gist)](https://gist.github.com/Danm72/467f6d6cd193d19c0042371866d53b75)
 - [How to write effective AI agent skills (Arize)](https://arize.com/blog/how-to-write-effective-ai-agent-skills/)
 - [8 Tips for Writing Agent Skills (Phil Schmid)](https://www.philschmid.de/agent-skills-tips)

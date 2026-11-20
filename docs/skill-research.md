@@ -1,6 +1,8 @@
-# Skill research per role
+# Skill research
 
-Other people's skills worth learning from, for the four roles. Researched 2026-11-14, trimmed the same day when NAP was cut back to four roles. The full survey of 15 roles is in git history at tag `nap--v0.1.0`.
+Other people's skills worth learning from. Researched 2026-11-14 for the team version's four roles, and trimmed the same day. The full survey of 15 roles is in git history at tag `nap--v0.1.0`.
+
+> Since 20-11-2026 NAP writes the documents before code ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The PM and Architect sections now feed `/nap-prd`, `/nap-architecture` and `/nap-backlog`. The Engineer and Reviewer sections are parked with those roles at tag `nap--v0.2.0`. [Where to start](#where-to-start) maps the sources to the new skills.
 
 ## How this was checked
 
@@ -9,7 +11,7 @@ Other people's skills worth learning from, for the four roles. Researched 2026-1
 - **Contents.** "Read" means the file was opened. "Survey" means the claim comes from an earlier pass and the file was not re-opened. Read every "Survey" file in full before adapting it.
 - **Safety.** Nothing was installed or run. No instructions in third-party files were followed.
 
-All of these are sources, not dependencies ([decision 8](decisions.md#8-mit-license-and-other-projects-are-sources-2026-11-14)). Adapt the ideas into NAP's own words and credit them in `THIRD_PARTY_NOTICES.md`.
+All of these are sources, not dependencies ([decision 5](decisions.md#5-mit-license-and-other-projects-are-sources-2026-11-14)). Adapt the ideas into NAP's own words and credit them in `THIRD_PARTY_NOTICES.md`.
 
 ---
 
@@ -34,7 +36,7 @@ What theirs does that ours does not:
 
 ## Tech Lead (`/nap-design`), now the Architect
 
-The Tech Lead was replaced by the Architect in [decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14). The ADR sources below apply to the Architect. The per-issue ideas (seams, plans) have no role to go in for now.
+The team version replaced the Tech Lead with the Architect, whose job is now `/nap-architecture`. The ADR sources below apply there. The per-issue ideas (seams, plans) have no skill to go in for now.
 
 | Candidate | What it does | License |
 |---|---|---|
@@ -98,14 +100,14 @@ What theirs does that ours does not:
 
 ---
 
-## Roles to add later
+## Documents to add later
 
-Only when a real project needs them ([design.md](design.md#roles-to-add-when-needed)).
+Only when a real project needs them ([roadmap](roadmap.md#later-by-need)).
 
-| Role | Where to start | License |
+| Document | Where to start | License |
 |---|---|---|
-| UX Designer | [mastepanoski](https://github.com/mastepanoski/claude-skills/tree/HEAD/skills) heuristics, cognitive walkthrough and WCAG audit. Nothing found does user flows and wireframes from a brief. | MIT |
-| Platform | [dwmkerr `project-setup`](https://github.com/dwmkerr/claude-toolkit/tree/HEAD/plugins/dwmkerr/skills/project-setup) for repo setup and branch protection with `gh`. No safe ready-made check for "code changed without tests" was found. | MIT |
+| UX flows (`/nap-ux`) | [mastepanoski](https://github.com/mastepanoski/claude-skills/tree/HEAD/skills) heuristics, cognitive walkthrough and WCAG audit. Nothing found does user flows and wireframes from a brief. | MIT |
+| Operations and setup | [dwmkerr `project-setup`](https://github.com/dwmkerr/claude-toolkit/tree/HEAD/plugins/dwmkerr/skills/project-setup) for repo setup and branch protection with `gh`. No safe ready-made check for "code changed without tests" was found. | MIT |
 
 ---
 
@@ -114,18 +116,16 @@ Only when a real project needs them ([design.md](design.md#roles-to-add-when-nee
 - Read the LICENSE in the plugin or skill folder, not only the one at the repo root. In `claude-plugins-official`, `code-review` and `pr-review-toolkit` are Apache-2.0, but `claude-security` is all rights reserved.
 - Apache-2.0 sources need their notice kept and changed files marked.
 - Never use the BMad name. BMAD's code is MIT but the name is a trademark.
-- Do not install Superpowers beside NAP. Its session-start hook injects text into every session.
+- Superpowers beside NAP: its session-start hook injects text into every session, and its `brainstorming` skill fires on the same requests as `/nap-start`. Run NAP's skills by name. The evals load NAP alone, so they don't see the clash.
 - Do not copy from share-alike or non-commercial sources.
 
 ## Where to start
 
-Ordered by what the first loop run showed was missing.
+One source per phase of the [roadmap](roadmap.md), on top of the team version's own skill.
 
-1. **Reviewer runs the tests and judges their quality.** Done 2026-11-14, from Superpowers `verification-before-completion` and the official `pr-test-analyzer`. Not yet proven in a run.
-2. **A fix loop for review findings.** Done 2026-11-14 as `/nap-fix`, from Superpowers `fix-loop.md` and `receiving-code-review`. Not yet proven in a run.
+1. **`/nap-start`:** [superpowers `brainstorming`](https://github.com/obra/superpowers/tree/HEAD/skills/brainstorming) (MIT). Look before you ask, one open question about the biggest gap, play the idea back, mark your own proposals, and a fresh builder check. Read in full 2026-11-20.
+2. **`/nap-prd`:** spec-kit `clarify` for a cap on questions, with the answers written back into the document.
+3. **`/nap-architecture`:** mattpocock `ADR-FORMAT.md` and the adr/madr templates, for short ADRs.
+4. **`/nap-backlog`:** mattpocock `to-tickets`, for blocking edges and slices that fit one fresh context.
 
-Items 3 to 5 wait until a real run shows they are needed.
-
-3. **Better tests from the Engineer.** mattpocock `tdd`: anti-patterns, mocking, independent expected values.
-4. **Seams in the design.** mattpocock `tdd` seams section.
-5. **Bounded PM questions and blocking edges.** spec-kit `clarify`, mattpocock `to-tickets`.
+Parked with the team version: the Engineer and Reviewer sources above, and the fix loop.

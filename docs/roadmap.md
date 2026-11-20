@@ -1,62 +1,58 @@
 # Roadmap
 
-Start small. Add only what a real project run shows is missing. The earlier 17-step roadmap is in git history at tag `nap--v0.1.0`.
+Start small. A skill comes back only with its tests, and a new one only when a real project needs it ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). The team version's roadmap (steps 1 to 11, with the blockers from each run) is in git history at tag `nap--v0.2.0`.
 
-| # | Step | What it delivers | Status |
+| Phase | Delivers | Done when | Status |
 |---|---|---|---|
-| 1 | **Simplify** | Four roles, no hooks, event log, evals or runner ([decision 1](decisions.md#1-a-simple-team-of-four-2026-11-14)). | Done |
-| 2 | **Learn from others** | Bring the best parts of existing skills into the four roles ([skill-research.md](skill-research.md)). Only what a real failure asked for: the Reviewer runs the tests, and `/nap-fix` fixes findings on the same PR. The rest waits for step 3. | Done, proven on `nap-sprint-test` PR #9 |
-| 3 | **Run it** | Take a real project from brief to merged PRs with the four roles. List the blockers. | Done 14-11-2026 on `nap-sprint-test` (#6 to #9) |
-| 4 | **Fix blockers** | Fix what step 3 found, one at a time. Add a role only if a blocker needs one. The Tech Lead was replaced by the Architect ([decision 10](decisions.md#10-an-architect-instead-of-a-per-issue-tech-lead-2026-11-14)). | Done 14-11-2026 |
-| 5 | **Personal Assistant** | A `/nap-pa` skill that runs the whole loop from your plans and goals: Architect, PM, then build, review and fix for each group of related issues. It stops for your approvals: the architecture, each issue batch, big decisions and each merge. Chosen 14-11-2026: you merge as you go, and the PA waits for each merge before the next build. | Built 14-11-2026 ([decision 12](decisions.md#12-a-personal-assistant-runs-the-loop-2026-11-14)). Checked: it hands off to the Architect and keeps the Architect's questions going across turns. |
-| 6 | **New project** | Run a brand-new project through the PA, from brief to merged PRs. Check whether CI, deploy and UI need their own roles, whether grouped builds work, and whether the README's allow list stops permission prompts in an interactive session. | Done 15-11-2026 on `nap-test-v1`: 7 issues in 4 PRs, all approved first time, CI green, one permission prompt |
-| 7 | **PRD and milestones** | `/nap-vision` asks the scope first, refines the idea into versions (each a GitHub milestone) and agrees a docs plan with timings in `docs/PRD.md`. The PM writes stories one milestone at a time, and the PA stops at the end of each ([decision 13](decisions.md#13-the-pm-starts-with-a-prd-one-milestone-at-a-time-2026-11-15)). | Run 19-11-2026 on `nap-test-v2` through v0.1: 7 issues, 5 PRs, milestone closed. Planning passed; the build half hit nine blockers (below) |
-| 8 | **New direction** | NAP plans and enforces the finish line. Building is pluggable, and the build roles are frozen ([decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19)). | Decided 19-11-2026 |
-| 9 | **Finish line per scope** | What "done" means for each scope and version: Script (tests, README), Personal tool, App (adds CI required on `main` and a working deploy), Product (adds security and monitoring), Platform. The Architect writes each version's gates into `docs/finish-line.json`. | Agreed 20-11-2026 in [finish-line.md](finish-line.md) |
-| 10 | **Enforce the gates** | A setup step for the project (branch protection with required checks, `.gitignore` for `.claude/`) and a gate check the PA runs at the end of each milestone. A failing gate keeps the milestone open and lists what is missing. The check is a script with its own tests, not a prompt. | Built 20-11-2026: `/nap-finish-line` and its script, wired into the PA, Architect and PM. First run on `nap-test-v2` v0.1 failed `prs-checked` (PRs #8 and #10) and `ignore-nap`, as expected |
-| 11 | **Cheap proof** | Run the planning half on two or three different briefs, about 20 minutes each with no code written. Test the gate check against a repo that is broken on purpose. No more multi-hour full runs. | Next |
+| 0. Clear the ground | Park the team version at tag `nap--v0.2.0`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | Done 20-11-2026 |
+| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | Next |
+| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | |
+| 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | |
+| 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and A Day v0.1 is built from the documents with any tool. That is **NAP v1.0** | |
 
-## Blockers from the step 3 run
+Each phase is about a weekend.
 
-The run on `nap-sprint-test`, 14-11-2026. Fixed means the second loop (#8, #9) ran with no refused command in any role.
+## Later, by need
 
-- **Chained commands were refused** in the PM, Tech Lead and Engineer. Fixed: a Gotchas line in each role with Bash.
-- **The PM could not create issues.** Its `allowed-tools` lacked the `gh` write commands. Fixed.
-- **Posts after approval asked again.** A skill's `allowed-tools` only lasts for the turn it starts in. Fixed: the README's Install section now gives an allow list.
-- **The Tech Lead read no issue.** Without a terminal, `gh issue view --comments` prints only the comments. Fixed: it reads with `--json`, like the Engineer and Reviewer.
-- **Open: the Engineer works in the user's checkout.** Two builds at once would clash. The PA runs one build at a time, so this waits until parallel builds are needed.
-- **"Outside the design" caught private helpers.** On PR #9 the Reviewer flagged two small helpers, and the fix inlined them into a harder-to-read `main`. Fixed: per-issue designs are gone, and the Reviewer checks the project rules and ADRs instead.
+- `/nap-ux`, `/nap-evals` and `/nap-security`: their own documents for an App and up.
+- A script that pushes the backlog to GitHub issues.
+- The Product and System types.
+- Planning a feature in an existing project.
+- A finish line check, if "done when" in plain words isn't enough.
 
-From the 13-11-2026 run, checked in step 3: `/nap-fix` and the Reviewer's test run work. Design tasks with no test and the PM drafting too much did not happen.
+## Phase 1: `/nap-start`
 
-## From the step 6 run
+1. Write the cases below in `evals/nap-start/`.
+2. Run a few without the skill, and note how plain Claude goes wrong, in its own words.
+3. Write the skill from Superpowers' `brainstorming` and the team version's `/nap-vision`. Write only what fixes what step 2 found.
+4. Run the cases with `--runs 1 --ablation none` while editing, then at 3 runs against plain Claude.
+5. Write A Day's brief with it, for real.
 
-`nap-test-v1`, 14 to 15-11-2026, through `/nap-pa`. Brief to a working Streamlit app in about 45 minutes. The PA grouped related issues twice (#3 to #5, #6 and #7).
+| Case | Setup | Passes when |
+|---|---|---|
+| Starts on an idea | "I want to build something that tracks who borrowed my stuff" | `/nap-start` runs |
+| Ignores a fix | "Fix the failing test in parser.py" | It doesn't run |
+| Script stays small | "A script that converts every PNG in a folder to WebP" | It proposes Script, and the docs plan has no PRD |
+| Personal tool | "A tracker for things I lend to friends, only for me" | It proposes Personal tool |
+| App | "An order page for my friend's bakery" | It proposes App |
+| One open question | "Something for my running" | It asks one question with no options, and writes nothing |
+| Reads first | A repo whose README describes the idea | It plays the idea back instead of asking what it is |
+| Writes after yes | A saved conversation that ends with "Approve" | `docs/brief.md` has every heading, and the reply names `/nap-prd` |
 
-- **The PA stopped after the Architect** when there was no PR to merge, and relayed the Architect's own closing line. Fixed: it carries on to the PM, and decides each next step itself.
-- **The CI issue was "tested" by reading the workflow file as text**, and the Reviewer never looked at the PR's checks. Fixed: config criteria are proved by the CI run, and the Reviewer checks `gh pr checks` before approving.
-- **The skeleton built ahead** with a placeholder table for a later issue, which that issue then had to drop. Fixed: the Engineer builds nothing for later issues, and the Reviewer flags it as outside the issue.
-- **The Architect read its template from `~/.claude/skills/`.** Fixed in #78.
-- **Open, small:** no schema migrations (delete the local database after a change), the local Python version differed from the project rules, and one test uses a fixed 2030 date.
-- **Not yet run:** `/nap-fix` in a PA run, and "merge it" (#79).
+## What carries over
 
-## From the step 7 run
+The team version's planning skills are the starting points, at tag `nap--v0.2.0`:
 
-`nap-test-v2` (`lent`, a lending tracker CLI), 19-11-2026, through `/nap-pa` in auto mode. v0.1 went from idea to a closed milestone: 7 issues, 5 PRs (#8 to #12), all merged by "merge it". `/nap-vision`, the Architect's first commit, milestones, `/nap-fix` (two rounds on PR #8) and the milestone end all passed. Not tested: docs tasks as issues (none came up), and permission prompts (auto mode).
+- `skills/nap-vision/SKILL.md`, for `/nap-start` and `/nap-prd`: the scope question, open questions, playback, *(suggested: why)* marks, and the reader check in `reader-check.md`.
+- `skills/nap-vision/doc-plan.md`, for the docs plan: which documents each scope needs, who writes them, and when.
+- `skills/nap-architect/`, for `/nap-architecture`: the stack with one alternative, ADRs, project rules, and the templates in `doc-templates.md`.
+- `skills/nap-backlog/`, for `/nap-backlog`: Given/When/Then with an edge case, the banned words, what not how, setup first, and the templates in `issue-templates.md`.
 
-Every blocker came from the build half. Under [decision 14](decisions.md#14-nap-plans-and-enforces-the-finish-line-and-building-is-pluggable-2026-11-19), the ones that belong to building leave NAP's scope, and the rest move into steps 9 and 10.
+Lessons from its runs that still apply:
 
-**Belong to whatever builds the code (not fixed in NAP):**
-- **Engineer commits carried a `Co-Authored-By` trailer.** The auto mode classifier denied one, and the run stalled 42 minutes until "Retry the Engineer". A Claude Code attribution setting or a `commit-msg` hook fixes this in any project, whoever builds.
-- **The Reviewer tried `--approve` and `--request-changes` first.** GitHub refuses both on your own PR, so all 9 reviews failed once before going up as a comment.
-- **Windows backslash paths broke in Bash.** A venv landed at the repo root, `--body-file` failed twice, and a PR body was written into `.claude/`.
-- **Project rules said `pytest`, which isn't on PATH.** Every agent fell back to `py -m pytest`.
-- **The Reviewer flagged `.gitignore` as outside a skeleton issue,** which needed the user's ruling and a third review.
-- **A second session in the same checkout** built #3, reviewed PR #10 and moved the branch. The PA noticed and stopped.
-
-**Move into the finish line (steps 9 and 10):**
-- **`.claude/` wasn't ignored**, so `git add .` would commit the skills. The setup step adds it.
-- **PR #10 merged with no CI.** Its branch was cut before the CI PR merged, and nothing noticed. Branch protection with required, up-to-date checks stops this.
-- **PRs aren't put in milestones,** only issues. The gate check can report them.
-
-**Open from step 6:** schema migrations. `store.py` only uses `CREATE TABLE IF NOT EXISTS`, and v1.0 needs a new column. This becomes a question for the finish line of an App or larger: does a version that changes stored data need a migration?
+- Don't number the questions or say how many are left. Skipped questions make the count wrong.
+- Fill in only the sections whose questions were asked. Mark the rest as suggestions.
+- Don't suggest an answer to a question about the user's own experience.
+- A fresh reader of a PRD should list product gaps, not the questions the tech plan asks next.
+- Read a skill's reference files from its own folder, the base directory Claude Code gives when the skill loads, not from `~/.claude/skills/`.
+- Write the test command that works on the user's machine. On Windows that is often `py -m pytest`, not `pytest`.
