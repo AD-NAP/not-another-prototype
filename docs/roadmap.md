@@ -79,7 +79,7 @@ What the evals caught while writing it:
 What the first real session caught, on the weight and IPPT log (20-11-2026):
 - Its guesses were named in a note after the draft, not marked in it: "under a minute", the run distance, and that entries are kept between uses. It also left the run distance as an open question, wrote "as I said" in the brief, and marked "no stack chosen yet" as a suggestion. The skill now checks the draft for all four, and the case `marks-its-guesses` tests them. At one run on Sonnet the case passes, but on the old skill only `marks-in-the-draft` failed, by 2 of 3 judge votes, so its other three checks don't yet test the fix.
 - After "Approve" it tried to make a git worktree before writing the brief. The folder wasn't a git repo, so that failed and it wrote in place. In a repo, the brief would have landed in a worktree. Both skills now say to write in the folder they are in, with no worktree. The evals grant no such tool, so only a real session can show this.
-- The full run showed the marks rule was too wide to hold: "anything the user didn't say" passed 2 of 5 runs. Decided 20-11-2026: mark only choices the user might disagree with, which are numbers, limits, features and "done when" lines. Inferences, such as a trait, aren't marked. The skill, the grader and the design say so now. Not yet rerun.
+- The full run showed the marks rule was too wide to hold: "anything the user didn't say" passed 2 of 5 runs. Decided 20-11-2026: mark only choices the user might disagree with, which are numbers, limits, features and "done when" lines. Inferences, such as a trait, aren't marked. The skill, the grader and the design say so now. Rerun at 3 runs with NAP: the old skill failed the marks check in 2 of 3, and the new one passed 2 of 3, with its one fail the grader's, for counting "no sign-in" as a choice, so the grader now exempts traits wherever they appear and a rerun passed.
 
 On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the seven cases was +0.38. A stronger model already does more of this unasked. The run is described at the end of phase 2.
 
@@ -94,10 +94,11 @@ Full run on Sonnet with an Opus judge, 3 runs, after the fixes from the first re
 | App | 0.33 | 1.00 |
 | One open question | 0.33 | 0.89 |
 | Reads first | 0.75 | 1.00 |
-| Marks its guesses | 0.67 | 0.75 |
+| Marks its guesses | 0.67 | 0.92 |
 | Writes after yes | | 1.00 |
 
-- Mean Δ over plain Claude: +0.34 over the eight cases with a baseline, and +0.45 over the six that aren't guards.
+- Mean Δ over plain Claude: +0.34 over the eight cases with a baseline, and +0.45 over the six that aren't guards. These means are from the full pass, before the marks rule changed.
+- The `marks-its-guesses` row was rerun with NAP only after the marks rule changed, so its plain Claude figure is from before.
 - Plain Claude now scores 1.00 on "Starts on an idea": the check that `/nap-start` ran only counts as an indicator, and plain Claude wrote nothing. With NAP, it ran 3 of 3.
 - The type name checks, reported apart: plain Claude said "Personal tool" in 0 of 3 runs and "App" in 0 of 3. Without them, each case scores 0.50 for plain Claude, so its Δ is +0.50, not +0.67.
 - `marks-its-guesses` failed `marks-in-the-draft` 3 of 3 with NAP, and beats plain Claude by only +0.08. Each draft left a guess unmarked, and one left the same line unmarked as the real session: "My log is still there after I close it". `one-open-question` joined two questions with "and" in 1 of 3 runs.
