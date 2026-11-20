@@ -2,13 +2,15 @@
 
 Start small. A skill comes back only with its tests, and a new one only when a real project needs it ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). The team version's roadmap (steps 1 to 11, with the blockers from each run) is in git history at commit `b18d3e3`.
 
-| Phase | Delivers | Done when | Status |
-|---|---|---|---|
-| 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | Done 20-11-2026 |
-| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | Built 20-11-2026. Real use next |
-| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | Built 20-11-2026. Real use next |
-| 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | |
-| 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and A Day v0.1 is built from the documents with any tool. That is **NAP v1.0** | |
+| Phase | Delivers | Done when | Built | Real use |
+|---|---|---|---|---|
+| 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | 20-11-2026 | Not needed |
+| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | 20-11-2026 | Not yet. Next |
+| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | 20-11-2026 | Not yet. After phase 1's |
+| 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | | |
+| 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and A Day v0.1 is built from the documents with any tool. That is **NAP v1.0** | | |
+
+A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used, so phase 3 waits for both.
 
 Each phase is about a weekend.
 
@@ -24,12 +26,14 @@ Each phase is about a weekend.
 
 Built 20-11-2026, tests first, on Haiku 5.5. Left to do: the real use, A Day's brief written with it and kept.
 
-Scores are the share of checks passed over 3 runs, in the last full run. Mean Δ over plain Claude: +0.52.
+Scores are the share of checks passed over 3 runs, in the last full run. Mean Δ over plain Claude: +0.52 over the seven cases with a baseline, and +0.53 over the five that aren't guards.
+
+Two cases are guards, not evidence that the skill helps. "Starts on an idea" checks that `/nap-start` ran, and plain Claude has no such skill, so it scores 0.00 whatever it does. "Ignores a fix" ties. The Personal tool and App cases each hold one check of the same kind, for NAP's own type name, which plain Claude was never told. The case scores below can't separate that check from the other two, so report it apart at the next full run.
 
 | Case | Setup | Passes when | Plain Claude | `/nap-start` |
 |---|---|---|---|---|
-| Starts on an idea | "I want to build something that tracks who borrowed my stuff" | `/nap-start` runs, and nothing is written | 0.00 | 1.00 |
-| Ignores a fix | "Fix the failing test in parser.py" | It doesn't run | 1.00 | 1.00 |
+| Starts on an idea (guard) | "I want to build something that tracks who borrowed my stuff" | `/nap-start` runs, and nothing is written | 0.00 | 1.00 |
+| Ignores a fix (guard) | "Fix the failing test in parser.py" | It doesn't run | 1.00 | 1.00 |
 | Script stays small | "A script that converts every PNG in a folder to WebP" | It treats it as a Script, with no PRD, code or step-by-step plan | 0.50 | 1.00 |
 | Personal tool | "A tracker for things I lend to friends, only for me" | It proposes Personal tool, with no stack yet | 0.33 | 1.00 |
 | App | "An order page for my friend's bakery" | It proposes App, with no stack yet | 0.33 | 1.00 |
@@ -52,16 +56,18 @@ What the evals caught while writing it:
 - In a real session it looked around with chained shell commands, and one stopped for permission. The evals grant no Bash, so only a real session could show this.
 - Twice the grader was wrong, not the skill: one wanted exactly one "?", and one failed traits the skill is told to guess.
 
+On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the seven cases was +0.38. A stronger model already does more of this unasked. The run is described at the end of phase 2.
+
 ## Phase 2: `/nap-prd`
 
 Built 20-11-2026, tests first, on Haiku 5.5, from the team version's `/nap-vision` without its GitHub parts. Left to do: the real use, A Day's PRD written with it and kept.
 
-Scores are the share of checks passed over 3 runs, in the last full runs. Mean Δ over plain Claude: +0.57. The cases that need a brief get one from `setup.sh`: a spending tracker (Personal tool), a bakery order page (App) or a PNG to WebP converter (Script).
+Scores are the share of checks passed over 3 runs, in the last full runs. Mean Δ over plain Claude: +0.57 over the seven cases with a baseline, and +0.80 over the five that aren't guards. The cases that need a brief get one from `setup.sh`: a spending tracker (Personal tool), a bakery order page (App) or a PNG to WebP converter (Script).
 
 | Case | Setup | Passes when | Plain Claude | `/nap-prd` |
 |---|---|---|---|---|
-| Starts on a request | Personal tool brief. "The brief is done. Now help me work out what each version should do." | `/nap-prd` runs, `/nap-start` doesn't, and nothing is written | 1.00 | 1.00 |
-| Ignores a bare idea | No brief. "I want to build something that tracks who borrowed my stuff." | `/nap-prd` doesn't run | 1.00 | 1.00 |
+| Starts on a request (guard) | Personal tool brief. "The brief is done. Now help me work out what each version should do." | `/nap-prd` runs, `/nap-start` doesn't, and nothing is written | 1.00 | 1.00 |
+| Ignores a bare idea (guard) | No brief. "I want to build something that tracks who borrowed my stuff." | `/nap-prd` doesn't run | 1.00 | 1.00 |
 | Reads the brief | Personal tool brief. "Let's do the PRD next." | It reads the brief, doesn't re-ask what it answers, asks at most one question, and writes nothing | 0.50 | 1.00 |
 | Script gets no PRD | Script brief. "Write the PRD for this project." | It says a Script needs no PRD and points to building it, and writes nothing | 0.00 | 1.00 |
 | Personal tool depth | Personal tool brief. "Draft the PRD from the brief now. Your call on anything it doesn't say, just mark it." | One version with what it must do, "done when" and out of scope, about a page, no App sections, and nothing written | 0.33 | 1.00 |
@@ -89,7 +95,7 @@ What the evals caught while writing it:
 
 Evals for phase 2 cost about $2.30 at list price, including two full runs with plain Claude.
 
-Rerun on Sonnet with an Opus judge the same day, the setup from then on ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). `/nap-prd` passed every check over 3 runs but one: a regex for "Python" caught a note before the draft saying it left Python out, so that check moved into the `llm` grader. Mean Δ over plain Claude: +0.48. `/nap-start` asked its one open question twice in other words in 1 of 3 runs ("Why do you want this for your running? What problem or itch is behind it?"). One line now says to ask it once, as the only "?" in the message, and the case passes 3 of 3. Mean Δ: +0.38. Both suites cost about $7.
+Rerun on Sonnet with an Opus judge the same day, the setup from then on ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). `/nap-prd` passed every check over 3 runs but one: a regex for "Python" caught a note before the draft saying it left Python out, so that check moved into the `llm` grader. Mean Δ over plain Claude: +0.48 over the seven cases. `/nap-start` asked its one open question twice in other words in 1 of 3 runs ("Why do you want this for your running? What problem or itch is behind it?"). One line now says to ask it once, as the only "?" in the message, and the case passes 3 of 3. Mean Δ: +0.38 over the seven cases. Both suites cost about $7.
 
 ## What carries over
 

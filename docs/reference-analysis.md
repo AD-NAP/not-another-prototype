@@ -4,11 +4,24 @@ Written 20-11-2026. It compares NAP with [danyuchn/asd-ste100-skill](https://git
 
 **The short answer: clean up, don't restart.** Today's NAP is already a restart, one day old and under 1,000 lines. What it lacks is not a better structure. It lacks one real use. Section 5 has the reasons and the exact list.
 
+**Update, later on 20-11-2026.** The decision was a cleanup. PR #90 (`/nap-prd`) was merged first, so two skills are now on `main`. Items 1 to 6 of section 5 are applied, in the commit after the one that added this document:
+
+1. Agent material cut from `docs/skill-writing.md`.
+2. Parked roles cut from `docs/skill-research.md`.
+3. Unasked-for types, the "later" traits column and the waiting documents cut from `docs/design.md`.
+4. History cut from `README.md`.
+5. The gate added to `CLAUDE.md`: one skill at a time, real use included.
+6. Real use and honest counts in `docs/roadmap.md`.
+
+Still open: items 7 and 8 (two eval additions, which need a paid run), item 9 (the README example, which needs a real brief) and item 10 (the GitHub description, a repo setting). Sections 2 to 4 describe NAP as it was before the cleanup. One finding in section 2 was corrected while doing item 6, and is marked there.
+
+Also decided: `main`'s history stays as it is, since the docs point into it. From now on PRs are squash-merged, so each lands as one commit.
+
 How this was checked:
 
 - The reference repo was cloned at commit `65c8ab6` (20-11-2026). All 97 commits were read with `git log --stat`, and the significant diffs were opened. Its 22 issues and 50 PRs were read from the GitHub pages.
 - Nothing from the reference repo was run. Its linter's self-test was read, not executed.
-- NAP was read in full at `bb9e60d` on `main`, plus the diff of open PR #90 (`/nap-prd`).
+- NAP was read in full at `bb9e60d` on `main`, plus the diff of PR #90 (`/nap-prd`), which was open at the time and has merged since.
 - Why the reference repo got its stars can't be read from a repo. Section 1 only claims what the commits and issues show.
 
 ## 1. Reference repo: origin, evolution themes, and what drove the changes
@@ -123,7 +136,7 @@ Their gap is ours in reverse. They have real use and no measurement of the skill
 
 Blunt notes on NAP's numbers, from reading the cases:
 
-1. **Part of the +0.52 is there by construction.** `starts-on-an-idea` checks that the `nap-start` skill ran. Without the plugin there is no such skill, so plain Claude scores 0.00 whatever it does. `says-personal-tool` and `says-app` check for NAP's own type names, which plain Claude has never been told. These are fine as guards. They are not evidence that the skill helps, and they should not be in the mean.
+1. **Some checks pass or fail by construction.** `starts-on-an-idea` checks that the `nap-start` skill ran. Without the plugin there is no such skill, so plain Claude scores 0.00 whatever it does. `says-personal-tool` and `says-app` check for NAP's own type names, which plain Claude has never been told. These are fine as guards. They are not evidence that the skill helps. *Corrected during the cleanup:* an earlier draft of this point said the +0.52 was inflated by them. Recounting for the roadmap showed it is not, at the case level. Without the two guard cases the mean is +0.53, because one guard adds a full point and the other adds none. The type-name checks sit inside mixed cases, and the case scores in the repo can't separate them, so their effect is unknown until a run reports them apart.
 2. **The honest gain is smaller on a stronger model.** PR #90 reran `/nap-start` on Sonnet: the mean gain fell from +0.52 to +0.38.
 3. **Seven of eight cases test the first message only.** The eighth tests the write after "Approve". Nothing tests the middle: filling the gaps, the draft, and applying changes. That is most of the skill.
 4. **The skill's core promise has no check.** Anything the user didn't say must end with *(suggested: why)*. No grader looks for that in the written brief. It is NAP's version of their "keep modality" rule, and theirs is asserted in a self-test.
@@ -133,7 +146,7 @@ Blunt notes on NAP's numbers, from reading the cases:
 
 | | Reference | NAP | Gap for NAP |
 |---|---|---|---|
-| The job | One: rewrite text under fixed rules | Four planned skills, one on `main`, one in an open PR | Wide plan, little shipped |
+| The job | One: rewrite text under fixed rules | Four planned skills, two built, neither used on a real project | Wide plan, nothing proven in use |
 | Time to first value | One turn | Two to seven questions, then a brief whose docs plan mostly follows from the type | Unknown whether the brief is worth a skill of its own. Real use decides |
 | What "good" means | An outside standard, with rules you can point at | The author's judgment of what a good team writes | No outside yardstick. Not fixable, but it makes real use matter more |
 | Rule that protects the user's content | Keep modality, add no fact. Stated five times and asserted in a test | Mark what the user didn't say. Stated in the skill, tested nowhere | Add the test |
@@ -164,7 +177,7 @@ One more stale item outside the repo's files: the GitHub description of the repo
 
 ## 4. What to adopt from them, and what to keep from NAP (with reasons)
 
-### NAP as it stands
+### NAP as it stood before the cleanup
 
 The audit behind the lists below. Blunt, part by part.
 
@@ -227,7 +240,7 @@ What would change this recommendation: if the real use of `/nap-start` on A Day 
 ### Before the cleanup: two things only the user can do
 
 1. **Run `/nap-start` on A Day for real,** and keep or reject the brief. This comes first because several items below depend on it.
-2. **Decide what to do with PR #90** (`/nap-prd`). It is built, and it passes its cases. By NAP's own rule it should not have been started before step 1. Suggested: leave it open, use `/nap-start` for real, then use `/nap-prd` from its branch on the same project, and merge it once it has written a PRD worth keeping. Note that the cleanup below edits `README.md` and `docs/roadmap.md`, which PR #90 also edits, so one of them will need a small merge.
+2. **Decide what to do with PR #90** (`/nap-prd`). Done: it was merged on 20-11-2026, before the cleanup. `/nap-prd` now waits for its real use, like `/nap-start`, and `CLAUDE.md` holds phase 3 until both have had one.
 
 ### Cut
 
@@ -263,7 +276,7 @@ One commit each.
 So nothing valuable is lost, these carry over into a new version:
 
 - `evals/nap-start/` whole, and `evals/README.md`. The cases describe behaviour, not the current skill's wording.
-- The eval cases in PR #90 for `/nap-prd`.
+- `evals/nap-prd/` whole.
 - The Gotchas section of `skills/nap-start/SKILL.md`, and "What plain Claude did" and "What the evals caught" from the roadmap.
 - Decisions 1, 4 and 5.
 - "How we test" and "Checklist for a skill" from `docs/skill-writing.md`.
