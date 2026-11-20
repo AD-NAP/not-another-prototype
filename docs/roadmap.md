@@ -77,7 +77,7 @@ What the evals caught while writing it:
 - Twice the grader was wrong, not the skill: one wanted exactly one "?", and one failed traits the skill is told to guess.
 
 What the first real session caught, on the weight and IPPT log (20-11-2026):
-- Its guesses were named in a note after the draft, not marked in it: "under a minute", the run distance, and that entries are kept between uses. It also left the run distance as an open question, wrote "as I said" in the brief, and marked "no stack chosen yet" as a suggestion. The skill now checks the draft for all four, and the case `marks-its-guesses` tests them. Not yet run.
+- Its guesses were named in a note after the draft, not marked in it: "under a minute", the run distance, and that entries are kept between uses. It also left the run distance as an open question, wrote "as I said" in the brief, and marked "no stack chosen yet" as a suggestion. The skill now checks the draft for all four, and the case `marks-its-guesses` tests them. At one run on Sonnet the case passes, but on the old skill only `marks-in-the-draft` failed, by 2 of 3 judge votes, so its other three checks don't yet test the fix.
 - After "Approve" it tried to make a git worktree before writing the brief. The folder wasn't a git repo, so that failed and it wrote in place. In a repo, the brief would have landed in a worktree. Both skills now say to write in the folder they are in, with no worktree. The evals grant no such tool, so only a real session can show this.
 
 On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the seven cases was +0.38. A stronger model already does more of this unasked. The run is described at the end of phase 2.
@@ -118,7 +118,7 @@ What the evals caught while writing it:
 - One run started from `evals/nap-prd/` instead of the repo root, so it loaded no skills: "that skill isn't available here". Run from the root.
 
 What the first real session caught, on the weight and IPPT log (20-11-2026):
-- After two questions, the draft left a product question in Open questions that the user could have answered on the spot: whether the first version needs a way to fix a mistyped entry. No document after the PRD decides what the product does, so the skill now asks such a question before it drafts, and keeps an open question only when nobody can answer it yet or the user says to leave it. The grader `open-questions-settled` checks this on the two draft-now cases. It has not been run yet.
+- After two questions, the draft left a product question in Open questions that the user could have answered on the spot: whether the first version needs a way to fix a mistyped entry. No document after the PRD decides what the product does, so the skill now asks such a question before it drafts, and keeps an open question only when nobody can answer it yet or the user says to leave it. The grader `open-questions-settled` checks this on the two draft-now cases. At one run on Sonnet it failed the old skill on `personal-tool-depth`, which left the same mistyped-entry question open, and passes on the new one, but on `app-depth` it passed the old skill too, so there it tests nothing yet.
 
 Evals for phase 2 cost about $2.30 at list price, including two full runs with plain Claude.
 
