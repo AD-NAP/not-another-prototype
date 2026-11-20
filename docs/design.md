@@ -1,78 +1,123 @@
 # Design
 
-How NAP works. Decisions and their reasons are in [decisions.md](decisions.md). What comes next is in [roadmap.md](roadmap.md).
+What NAP writes, and for which kind of project. Approved 20-11-2026. The reasons are in [decisions.md](decisions.md), and what the earlier attempts taught is in [lessons.md](lessons.md).
 
-Earlier designs are in git history: the first one (sprints, hooks, evals and a pixel office) at tag `nap--v0.1.0`, and the team version (a Personal Assistant running a PM, Architect, Engineer and Reviewer, with a finish line check) at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35). [Decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20) says why NAP narrowed.
+This is a plan on paper. No skill at the repo's root writes any of these documents yet, and the Product and System columns have never been tried.
 
 ## The idea
 
-NAP writes the documents a project needs before code, sized to the project. Two things decide which documents:
+When an AI writes most of the code, the documents stop being descriptions and become the controls. An AI builds what is written and guesses the rest. A person's time goes to reviewing documents and code, not to typing.
 
-- **The type** sets how many: how big the project is, and who uses it.
-- **Traits** add the ones a kind of project needs: screens, stored data, AI and so on.
+So NAP writes the documents that pin down what an AI can't infer, and that make a person's review fast. It sizes them to the project: a script gets one page, and a system gets the full set.
 
-Building is up to the user: plan mode, Superpowers, another tool, or by hand.
+NAP's skills contribute what a senior planner knows. They propose users, risks, versions and requirements. They don't only write down what the user said. Everything a skill adds is marked as its own, and nothing is written until the user approves it.
+
+## Three rules for every document
+
+1. **Every statement can be checked,** by a test, a tool, or a person with a yes or no.
+2. **Each fact lives in one document.** Other documents link to it. Two copies will disagree, and the AI will follow the wrong one.
+3. **Only the next version gets full detail.** The rest stays a line in the roadmap until its turn.
+
+A document a person can't review in about ten minutes gets approved unread. How NAP guards against that is not decided yet.
 
 ## Types
 
-| Type | What it is | Example | Documents before code |
-|---|---|---|---|
-| **Script** | Does one job per run and keeps nothing between runs. A sitting or two. | Convert a folder of images to WebP | Brief, with an example run |
-| **Personal tool** | A few features you use yourself, again and again. Runs on your machine. | Track what you lend to friends | Brief, short PRD, half-page tech plan, first version's backlog |
-| **App** | A complete app other people use. Runs online. Weeks of work. | An order page for a bakery | Brief, PRD up to v1.0, full tech plan, v0.1 backlog |
+The type says how big the project is and who uses it. It sets the documents.
 
-Two more types come later, when a real project needs one: Product (an app that grows with its users over months) and System (several apps or services that work together). Until then `/nap-start` names them, and offers to plan the first piece as an App.
+| Type | What it is | Example |
+|---|---|---|
+| **Script** | Does one job per run and keeps nothing between runs. A sitting or two. | Convert a folder of images to WebP |
+| **Personal tool** | A few features you use yourself, again and again. Runs on your machine. | A log of your weight and training, with a trend |
+| **App** | A complete app other people use. Weeks of work. | A tool that turns a building's point list into a Brick model |
+| **Product** | An app that grows with its users over months. Maybe paid. | A daily planner sold to the public |
+| **System** | Several apps or services that work together. | Cloud monitoring for a train network: status, faults and fault prediction |
 
-`/nap-start` proposes a type by going down this list, and the user can correct it:
+To choose a type, go down this list:
 
 1. More than one app or service working together: System.
-2. One job per run: Script.
+2. One job per run, with nothing kept between runs: Script.
 3. Only you use it: Personal tool.
 4. Others use it, and it will grow from their feedback over months: Product.
 5. Otherwise: App.
 
-A project can change type. A Personal tool that others start to use becomes an App, and gets the documents an App needs from then on.
-
-## Traits
-
-| Trait | Adds | Where |
-|---|---|---|
-| Has screens | Key flows and a screen list, sketched in text | A section in the PRD |
-| Stores data | What is stored, how it changes, backups | A section in the tech plan |
-| Uses AI | What good output looks like, a first eval set, the baseline to beat | A section in the tech plan |
-| Other people's data, sign-in or payments | What is stored, who can see it, secrets | A section in the tech plan |
-| Runs online | Where it runs, how it ships, secrets | A section in the tech plan |
-
-A Script ignores traits. Its "done when" covers them.
+A project can change type. A Personal tool that others start to use becomes an App, and gets an App's documents from then on.
 
 ## The documents
 
-- **Brief** (`docs/brief.md`), from `/nap-start`. The idea in the user's words, who it's for and why, the type and traits, "done when" for the first version, constraints, the docs plan and open questions. A Script's brief adds an example run: the command, the input and the output. It becomes the README once the script works.
-- **PRD** (`docs/PRD.md`), from `/nap-prd`. The versions, what each must do, "done when" for each version, and what is out of scope. An App's PRD adds anti-goals, how you'll know it works, and the key screens.
-- **Tech plan**, from `/nap-architecture`. `docs/ARCHITECTURE.md` (the parts, the data, how to run and test it), `docs/ADR.md` (each hard-to-undo choice, with one alternative) and project rules in `CLAUDE.md`. Half a page for a Personal tool. An App's adds sign-in, CI and deploy.
-- **Backlog** (`docs/backlog/v0.1.md`), from `/nap-backlog`. The first version's tasks, each with Given/When/Then acceptance criteria and an edge case, setup first.
+| Document | What it pins down |
+|---|---|
+| **Brief** | The problem, who has it, why now, and how we'd know it is solved. |
+| **PRD** | Goals, users and use cases, scope and non-goals, and success measures. |
+| **Roadmap** | The versions in order, riskiest first, each one a usable slice. |
+| **Glossary and domain model** | One meaning for each term, and how the things in the domain relate. |
+| **Quality targets** | Numbers: speed, uptime, data volume, retention, recovery. |
+| **Risks** | What could sink the project, and which version retires each risk. |
+| **Architecture** | The parts, the data flows between them, and how to run and test it. |
+| **Decision records** | Each hard-to-undo choice, with the alternative that was rejected. |
+| **Backlog** | Stories for the next version, each with acceptance tests that can run. |
+| **Agent rules file** | Conventions, commands, and what an AI must never touch. Read at the start of every session. |
+| **Operations plan** | How it is released, watched and supported once people rely on it. |
 
-"Done when" is the finish line in plain words: what must be true before a version counts as done. It replaces the team version's gate check.
+## Documents for each type
 
-## The skills
+| Document | Script | Personal tool | App | Product | System |
+|---|---|---|---|---|---|
+| Brief | Own doc | Own doc | Own doc | Own doc | Own doc |
+| PRD | None | Short | Full | Full | Full |
+| Roadmap | None | None, one version | Section in PRD | Own doc | Own doc |
+| Glossary and domain model | None | None | Section in PRD | Own doc | Own doc |
+| Quality targets | None | A line or two in PRD | Section in PRD | Own doc | Own doc |
+| Risks | None | The biggest risk, one line in PRD | Section in PRD | Own doc | Own doc, with hazard analysis |
+| Architecture | None | Half page | Own doc | Own doc | Own doc, with a system map |
+| Decision records | None | Inside the half page | Own doc | Own doc | Own doc |
+| Backlog | None | First version | Next version only | Next version only | Next version, per part |
+| Agent rules file | None | Short | Yes | Yes | Yes |
+| Operations plan | None | None | None, the README covers it | Own doc | Own doc, with runbooks |
 
-```
-/nap-start  ->  docs/brief.md (type, traits, docs plan)
-  |
-  +-- Script ------------------> build. The brief's example becomes the README.
-  |
-  +-- Personal tool or App ----> /nap-prd -> /nap-architecture -> /nap-backlog -> build with any tool
-```
+That is one document for a Script, four short ones and a rules file for a Personal tool, six for an App, and ten or more for a Product or a System. A System gets every document as its own file.
 
-The docs plan in the brief sets the order: each document the type and traits need, and the skill that writes it. Apart from `/nap-start`, each skill is named after the document it writes. Every skill follows the same rules:
+## Traits
 
-1. **Read first.** Read what exists, and never ask what it already answers. So each skill also works on its own.
-2. **One question at a time.** Questions about the user's own view are open, with no suggested answer. The rest come with a suggested answer the user can accept with "yes". Ask only what would change the document.
-3. **Mark suggestions.** A choice the skill made for the user ends with *(suggested: why)*: a number, a limit, a feature or a "done when" line they didn't say. What it only inferred, such as a trait, isn't marked.
-4. **Write after a clear yes.** Local files only. No commits, branches or GitHub: the user commits.
-5. **Each fact lives in one document.** Later documents link back instead of repeating it.
-6. **Name the next step.** End with the next skill from the docs plan, or "build" once the plan is done.
+A trait is something about the project that cuts across its size. Each trait adds a document.
+
+| Trait | Adds | From which type |
+|---|---|---|
+| Has screens | UX flows: a section in the PRD, then its own document for a Product and up | Personal tool |
+| Uses AI | A model spec: what is predicted or generated, the data, the baseline to beat, and the acceptable error. A section for a Personal tool, its own document from an App up | Personal tool |
+| Other people's data | Security and privacy: a section for an App, a threat model for a Product and up | App |
+| Runs online | A deploy and monitoring section in the architecture | App |
+| Exposes an interface | Interface contracts, as their own documents, in a form a tool can check. Always needed between the parts of a System | App |
+| High stakes: safety, money or regulation | A hazard analysis as its own document, and a check for standards that apply | App |
+
+A Script ignores traits.
+
+**An example.** A tool that turns a building's point list into a Brick model is an App: other people will install and run it. It has screens, it uses AI, and it exposes an interface, since others depend on the file formats it reads and writes. So it gets an App's six documents, plus UX flows in the PRD, a model spec, and a contract for its input and output files.
+
+## Where the documents come from
+
+They follow the stages a team works through, from a one-line request to developers picking up stories.
+
+| Stage | Who leads in a team | Document |
+|---|---|---|
+| Intake | Product manager | Brief |
+| Discovery | Product manager, tech lead, designer | Risks, and a test of the riskiest unknown |
+| Product definition | Product manager | PRD, glossary, quality targets |
+| Design | Designer and tech lead | UX flows, architecture, decision records, interface contracts, model spec |
+| Roadmap | Product manager and tech lead | Roadmap |
+| Backlog | Product manager, refined by the team | Backlog |
+| Building | The team, or an AI | Agent rules file |
+| Running it | The team | Operations plan |
+
+Discovery comes before the PRD. Requirements for something not yet shown to be possible are guesses.
+
+## Not decided yet
+
+- Which skill writes which document.
+- The guards: how long a document may be, and how a person approves it part by part.
+- How the skills interview: in stages with approval for each part, or one draft that the user then edits.
+- The order to build in. Proposed, not agreed: the App type first, one document at a time, with the Brick tool as the real project.
+- How a document is judged good, before the skill for it is written. Proposed, not agreed: write the target document by hand first, and test against it.
 
 ## What NAP doesn't do
 
-It doesn't build, review or merge, and it doesn't post to GitHub. The team version did, and it is parked in git history at commit `b18d3e3` ([decision 1](decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)).
+It doesn't build, review code, merge or post to GitHub. It writes local files, after the user approves, and the user commits them.

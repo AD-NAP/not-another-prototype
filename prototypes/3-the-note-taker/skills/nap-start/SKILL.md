@@ -53,7 +53,7 @@ Show the whole draft in one message, using the template below. A choice you made
 
 Before you show it, check:
 
-- **Each choice you made is marked in the draft itself.** A number, a limit, a feature or a "done when" line the user didn't say is a choice they might disagree with, so it ends with *(suggested: why)* on that line. That includes a "done when" line you added because it seemed obvious, such as that entries are kept between uses. A note after the draft doesn't count: the file is what lasts, and the note is gone. Mark nothing else: not their idea in your words, not a trait you can see, and not a fact such as "no deadline named".
+- **Each choice you made is marked in the draft itself.** A number, a limit, a feature or a "done when" line the user didn't say is a choice they might disagree with, so it ends with *(suggested: why)* on that line. That includes a "done when" line you added because it seemed obvious, such as that entries are kept between uses. Keep each "done when" line to one thing: if your addition would be joined with "and" to something the user asked for, it gets its own line and its own mark. So does anything the example run shows that the user didn't ask for, such as a number it prints. A note after the draft doesn't count: the file is what lasts, and the note is gone. Mark nothing else: not their idea in your words, not a trait you can see, and not a fact such as "no deadline named".
 - **Open questions are choices a later document weighs,** such as how far back a trend looks. A plain fact the user could give in a word, such as which distance, is not one: ask it, or write your guess and mark it.
 - **The brief is a document, not a reply.** No "as I said", and nothing else that points back at the conversation.
 

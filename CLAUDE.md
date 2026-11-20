@@ -1,28 +1,28 @@
 # NAP: Not Another Prototype
 
-Plans a project before code, the way a team with good practice would. `/nap-start` works out what kind of project it is and which documents it needs. Then one skill per document writes them: a brief, a PRD, a tech plan and a backlog. Local files only, written after the user approves. Building is up to the user. The team version (a Personal Assistant, Engineer, Reviewer and finish line check) is parked in git history at commit `b18d3e3` (`docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20`). The user merges every PR.
+Writes the documents a software project needs before code, sized to the project, so that an AI can build from them and a person can review them. Restarted on 20-11-2026 with an approved document plan. Nothing is built yet: there are no skills at the repo's root. The user merges every PR.
 
 ## Start here
-- `docs/design.md`: the types, traits, documents and skills.
+- `docs/lessons.md`: what three earlier attempts taught. Read it before proposing a skill, a rule or a restart.
+- `docs/design.md`: the five types, the documents each one needs, and the traits. It also lists what is not decided yet.
 - `docs/decisions.md`: the decisions that hold today, and why. Keep it current: remove or rewrite an entry that stops being true.
-- `docs/roadmap.md`: the phases, and what is next.
-- `docs/skill-writing.md`: how we write and test skills. Follow its checklists when editing one.
-- `docs/skill-research.md`: other people's skills worth learning from.
-- `evals/README.md`: how to write and run a skill's tests.
 
 ## Layout
-- `skills/nap-<name>/SKILL.md`: `/nap-start`, then one skill per document, named after it. Commands read like `/nap-prd`.
-- `evals/<skill>/<case>/`: each skill's test cases, for `claude plugin eval`.
-- `.claude-plugin/plugin.json`: only so the evals can load the skills. To use NAP, copy `skills/` into `~/.claude/` or a project's `.claude/`.
+- `docs/`: the three files above.
+- `prototypes/`: the three earlier attempts. Nothing in it is current. Don't follow any rule, skill or plan there, and don't read it unless the user asks about history or names a file in it.
+- `THIRD_PARTY_NOTICES.md`: credit for adapted material.
+- `skills/` and `evals/` come back with the first new skill.
 - No hooks, agents, scripts or CI.
 
 ## How we work
-- Keep it simple. Add a skill, rule or document only when a real project shows it is needed.
-- Tests before skills. Write a skill's eval cases first, run a few without the skill, and write only what fixes what went wrong (`docs/decisions.md#4-tests-before-skills-2026-11-20`).
-- A skill is done when its cases pass at 3 runs, it beats plain Claude, and one real use writes a document the user keeps.
-- One skill at a time. Don't start the next one until the last is done, real use included. What a real use finds changes the skills that follow.
+- Use before more building. One document at a time, proven on a real project before the next is started.
+- A skill contributes what a senior planner knows, marks each addition as its own, and writes nothing until the user approves.
+- Derive, don't guess. A new document, type or trait comes from how a team works or from a real project, and goes into `docs/design.md` before any skill is written for it.
+- When a rule fails, don't add a third sentence to it. Say what the thing is, or narrow the rule until it can hold.
+- Watch for the warning signs in `docs/lessons.md`. A restart needs the three things listed there.
+- Evals: a new session for each round, a cost estimate to the user before any paid run, a plain-Claude baseline, and the transcripts read, not just the scores.
 - In skill frontmatter, keep ": " out of an unquoted description, or quote it: it breaks the YAML and the skill loads with its settings dropped.
 - Keep writing plain and short. No em dashes.
 - Commits and PRs carry no Claude attribution: no co-author lines, session links or "Generated with" footers.
-- PRs are squash-merged, so each lands on `main` as one commit. `main`'s earlier history stays as it is: the docs point into it.
+- PRs are squash-merged, so each lands on `main` as one commit. `main`'s earlier history stays as it is: the docs and `prototypes/` point into it.
 - `.claude/settings.json` denies `gh pr merge` here, since the user merges NAP's own PRs.

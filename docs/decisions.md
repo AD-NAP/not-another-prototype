@@ -2,42 +2,34 @@
 
 The decisions that hold today, and why. Add a new entry for a new decision. When one stops being true, remove or rewrite it, so this file only says what is current.
 
-Earlier decisions are in git history: the first 30 at tag `nap--v0.1.0`, and the team version's 14 at commit `b18d3e3`.
+Earlier decisions are in git history and in [`prototypes/`](../prototypes/README.md): 30 from the plugin, 14 from the team, and 5 from the note-taker.
 
-## 1. NAP writes the documents before code (2026-11-20)
+## 1. NAP writes the documents an AI builds from (2026-11-20)
 
-**Decision.** NAP's job is the documents a project needs before code: a brief, a PRD, a tech plan and a backlog, sized to the project. Each skill writes local files after the user approves, and the user commits them. NAP doesn't build, review, merge or post to GitHub. Building is up to the user and any tool they like. The team version is parked in git history at commit `b18d3e3`: the Personal Assistant, the Engineer and Reviewer subagents, the fix loop, GitHub issues and milestones, and the finish line check. Its planning skills come back one at a time, rewritten without the GitHub parts.
+**Decision.** NAP writes the documents a software project needs before code, sized to the project, so that an AI can build from them and a person can review them. Its skills contribute what a senior planner knows: users, risks, versions, requirements. Everything a skill adds is marked as its own, and nothing is written until the user approves it. NAP writes local files only. It doesn't build, review code, merge or post to GitHub.
 
-**Why.** The planning half passed every run. The build half did not: in the last full run, 8 of 9 blockers were environment and enforcement problems, such as commit trailers, self-approval on GitHub, Windows paths and a second session in the same checkout. Every step that acted on GitHub met a permission prompt, an allow list or a refusal, and every test was a full run that took hours of a limited plan. Skills that only write files are useful on their own, flow without interruptions, and are cheap to test.
+**Why.** With an AI writing the code, a well-defined spec matters more than before: the AI builds what is written and guesses the rest. The third attempt wrote too little. On a real App its PRD recorded what the user said, with no versions between the first and the last, no quality targets and no risks, and the project's biggest risk left as an open question. Plain Claude wrote fuller plans, but filled them with guesses nobody had confirmed. The answer is depth with every addition marked and approved.
 
-**What we give up.** One agent that takes an idea all the way to merged PRs. Issues and milestones on GitHub, until a script pushes the backlog there. The enforced finish line: "done when" for each version in the PRD replaces it in plain words.
+**What we give up.** Short interviews and one-page documents for anything larger than a Personal tool. A simple measure of success: "it stayed small" no longer counts.
 
-## 2. Types set the documents, traits add to them (2026-11-20)
+## 2. Five types set the documents, and traits add to them (2026-11-20)
 
-**Decision.** Five types, by size and by who uses the project: Script, Personal tool, App, Product and System. System replaces Platform, since it means several apps or services working together. Version 1 builds Script, Personal tool and App. Traits (screens, stored data, AI, other people's data, running online) add a section to the PRD or the tech plan, and later their own documents for an App and up. A document that describes something not yet known waits, such as an API spec until the version that builds the API. The types, traits and documents are in [design.md](design.md#types).
+**Decision.** Five types, by size and by who uses the project: Script, Personal tool, App, Product and System. Each has a fixed set of documents, in [design.md](design.md#documents-for-each-type). A Script gets a brief. An App gets six documents, with the roadmap, glossary, quality targets and risks as sections of its PRD. A System gets every document as its own file. The agent rules file starts at Personal tool. The backlog covers only the next version, at every type. Six traits add documents: has screens, uses AI, other people's data, runs online, exposes an interface, and high stakes.
 
-**Why.** Whether a project has screens or uses AI changes which documents it needs, not how many. Keeping the types to five keeps the first question easy. Personal tool and App are where the team version's planning was proven. Script is the simplest check that NAP doesn't write too much.
+**Why.** The earlier attempts guessed the document set. This one follows the stages a team works through, from a one-line request to developers picking up stories. Size decides how many documents a project needs. What cuts across size, such as AI, safety or an interface others depend on, is a trait, so there is no sixth type.
 
-**What we give up.** Product and System, until a real project needs them.
+**What we give up.** A design that has been proven. Only Script, Personal tool and App have had any skill work, and that was in an earlier attempt. The Product and System sets are on paper.
 
-## 3. One skill per document, and /nap-start routes (2026-11-20)
+## 3. Earlier attempts stay in the open, and a fourth restart has a bar (2026-11-20)
 
-**Decision.** `/nap-start` takes the idea, works out the type and traits, and writes the brief with a docs plan. Then one skill per document, named after what it writes: `/nap-prd`, `/nap-architecture` and `/nap-backlog`. Each skill reads what exists and works on its own. The PRD says what and why, never how. The tech plan owns how.
+**Decision.** The three earlier attempts are in [`prototypes/`](../prototypes/README.md). The first two are pages that link to their tag and commit in git history. The third is there as files. `main`'s history is not rewritten. A fourth restart needs three things: two real projects taken through to the last document, a note on what that use showed and why no fix can reach it, and a new direction approved before anything is moved. [lessons.md](lessons.md#when-a-restart-is-allowed) has the rule.
 
-**Why.** Small skills can be tested one at a time, and each is useful without the rest. The team version's roles only helped when the whole chain worked. Keeping the PRD and the tech plan apart keeps the product plan free of the solution, as the team version's PM and Architect did.
+**Why.** Each attempt taught something the next one used, and each reset also threw away something that worked. Keeping them visible, with one note on what they taught, makes it harder to repeat either mistake.
 
-**What we give up.** One conversation that covers everything. The user runs each skill in turn, as the brief suggests.
+**What we give up.** A clean repo. Old files sit in a folder that an AI session could read by mistake, so `CLAUDE.md` and the folder's README both say not to follow them.
 
-## 4. Tests before skills (2026-11-20)
-
-**Decision.** Each skill gets its eval cases before it is written, in `evals/`, run with `claude plugin eval` against plain Claude ([evals/README.md](../evals/README.md)). A few cases run without the skill first, and the skill says only what fixes what went wrong. A skill is done when its cases pass at 3 runs, it beats plain Claude, and one real use writes a document the user keeps. Evals run on Sonnet, graded by Opus (`--model sonnet --judge-model opus`), from 20-11-2026, when the user's plan moved to Max. The judge is the stronger model, since in phase 2 a judge no stronger than the model under test failed good answers. Phases 1 and 2 were tested on Haiku. A small plugin manifest exists only so the evals can load the skills. NAP is still installed by copying files.
-
-**Why.** A full run found 5 to 9 problems at once, the fixes landed together, and no one could tell which fix worked, so rules piled up. The October evals showed which rules added nothing: 4 of 11 cases tied with plain Claude. Adapted from Superpowers' `writing-skills`: "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing."
-
-**What we give up.** Plan usage for eval runs. One run per case while writing (`--runs 1 --ablation none`) keeps it low.
-
-## 5. MIT license, and other projects are sources (2026-11-14)
+## 4. MIT license, and other projects are sources (2026-11-14)
 
 **Decision.** NAP is MIT licensed. It does not install or depend on other skill collections such as [Superpowers](https://github.com/obra/superpowers). It adapts their best parts into its own words, with credit in `THIRD_PARTY_NOTICES.md`. Apache-2.0 sources can be adapted if their notices are kept there.
 
-**Why.** The repo is public and meant to be copied, and most of the work worth adapting is MIT already ([skill-research.md](skill-research.md)). Superpowers triggers on its own and overrides NAP's routing when installed beside it. Its `brainstorming` skill fires on the same requests as `/nap-start`, so with both installed, run `/nap-start` by name.
+**Why.** The repo is public and meant to be copied, and most of the work worth adapting is MIT already. Superpowers triggers on its own and overrides NAP's routing when installed beside it.
