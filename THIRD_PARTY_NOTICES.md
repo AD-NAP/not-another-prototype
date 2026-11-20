@@ -1,10 +1,10 @@
 # Third-party notices
 
-NAP is MIT licensed (see [LICENSE](LICENSE)). When NAP adapts text or code from another project, that project is listed here with its license notice, as [decision 5](docs/decisions.md#5-mit-license-and-other-projects-are-sources-2026-11-14) requires.
+NAP is MIT licensed (see [LICENSE](LICENSE)). When NAP adapts text or code from another project, that project is listed here with its license notice, as [decision 4](docs/decisions.md#4-mit-license-and-other-projects-are-sources-2026-11-14) requires.
 
 ## Adapted material
 
-Planned sources and their licenses are in [docs/skill-research.md](docs/skill-research.md).
+The adapted files below now live in [`prototypes/3-the-note-taker/`](prototypes/3-the-note-taker/), where the third attempt was moved on 20-11-2026. Its sources and their licenses are in [skill-research.md](prototypes/3-the-note-taker/docs/skill-research.md).
 
 Each entry uses this format:
 
@@ -23,9 +23,9 @@ Each entry uses this format:
 - Source: https://github.com/obra/superpowers
 - License: MIT
 - What NAP adapted: ideas, rewritten in NAP's own words, with one sentence quoted and credited.
-  - `docs/skill-writing.md` and decision 4 in `docs/decisions.md` (tests before skills: watch an agent fail without the skill first, then write only what fixes that) from `skills/writing-skills/SKILL.md` and `skills/writing-skills/references/testing-skills-with-subagents.md`. The sentence "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing" is quoted from `writing-skills`.
-  - `skills/nap-start/SKILL.md` (look before you ask, one open question about the biggest gap with the reason for asking, nothing to pick from, playing back a detailed idea, and marking what the user didn't say) from `skills/brainstorming/SKILL.md`, by way of the team version's `/nap-vision`.
-  - `skills/nap-prd/SKILL.md` (open questions about the user's own view before suggested answers, marking what the user didn't say, and anti-goals) from `skills/brainstorming/SKILL.md`, by way of the team version's `/nap-vision`.
+  - `prototypes/3-the-note-taker/docs/skill-writing.md` and decision 4 in `prototypes/3-the-note-taker/docs/decisions.md` (tests before skills: watch an agent fail without the skill first, then write only what fixes that) from `skills/writing-skills/SKILL.md` and `skills/writing-skills/references/testing-skills-with-subagents.md`. The sentence "If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing" is quoted from `writing-skills`.
+  - `prototypes/3-the-note-taker/skills/nap-start/SKILL.md` (look before you ask, one open question about the biggest gap with the reason for asking, nothing to pick from, playing back a detailed idea, and marking what the user didn't say) from `skills/brainstorming/SKILL.md`, by way of the team version's `/nap-vision`.
+  - `prototypes/3-the-note-taker/skills/nap-prd/SKILL.md` (open questions about the user's own view before suggested answers, marking what the user didn't say, and anti-goals) from `skills/brainstorming/SKILL.md`, by way of the team version's `/nap-vision`.
   - In the team version, at commit `b18d3e3`:
     - `agents/nap-reviewer.md` (approval needs a fresh test run) from `skills/verification-before-completion/SKILL.md`.
     - `skills/nap-fix/SKILL.md` and the "Fixing review findings" section of `agents/nap-engineer.md` (findings passed word for word, a cap on rounds, a per-finding result, checking a finding before acting on it) from `skills/subagent-driven-development/references/fix-loop.md` and `skills/receiving-code-review/SKILL.md`.
@@ -60,4 +60,4 @@ SOFTWARE.
 These shaped how NAP works, but no text or code was copied from them:
 
 - [anthropics/claude-plugins-official `pr-test-analyzer`](https://github.com/anthropics/claude-plugins-official/tree/HEAD/plugins/pr-review-toolkit/agents) (Apache-2.0): judging tests by the behaviour they cover, not by whether test files exist. Used in the team version's Reviewer.
-- [obra/superpowers](https://github.com/obra/superpowers) (MIT): strict TDD and review in a fresh subagent, in the team version. NAP treats it as a source, not a dependency ([decision 5](docs/decisions.md#5-mit-license-and-other-projects-are-sources-2026-11-14)).
+- [obra/superpowers](https://github.com/obra/superpowers) (MIT): strict TDD and review in a fresh subagent, in the team version. NAP treats it as a source, not a dependency ([decision 4](docs/decisions.md#4-mit-license-and-other-projects-are-sources-2026-11-14)).
