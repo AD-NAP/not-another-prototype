@@ -5,12 +5,12 @@ Start small. A skill comes back only with its tests, and a new one only when a r
 | Phase | Delivers | Done when | Built | Real use |
 |---|---|---|---|---|
 | 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | 20-11-2026 | Not needed |
-| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a brief for the weight and IPPT log that the user keeps | 20-11-2026 | Not yet. Next |
-| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes the log's PRD | 20-11-2026 | Not yet. After phase 1's |
+| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a brief for the weight and IPPT log that the user keeps | 20-11-2026 | 20-11-2026. Brief kept |
+| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes the log's PRD | 20-11-2026 | 20-11-2026. PRD kept |
 | 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes the log's tech plan | | |
 | 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and the log's v0.1 is built from the documents with any tool. That is **NAP v1.0** | | |
 
-A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used, so phase 3 waits for both.
+A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used. Both were used on 20-11-2026, on the weight and IPPT log, and the user kept the brief and the PRD. That session found problems in both skills, listed in their sections below. Phase 3 starts once those fixes pass their cases at 3 runs.
 
 Each phase is about a weekend.
 
@@ -27,6 +27,12 @@ The projects NAP is used on for real, chosen 20-11-2026. One for each type, none
 The type is `/nap-start`'s call, not this table's. If it proposes another, note what it said and why.
 
 A Day was the first choice. It is a set of skills, like NAP, not an application, so it would test little of what NAP plans.
+
+## The README example
+
+One idea, planned at three sizes: a weight and fitness goal tracker as a Script, as a Personal tool and as an App. The README shows the documents NAP writes for each. The idea stays the same, so the difference between the three is what the type changes, which is NAP's main claim. A System version joins them when that type is built.
+
+To do after the fixes from the first real session pass. The briefs and PRDs come from real runs of the skills, not written by hand.
 
 ## Later, by need
 
