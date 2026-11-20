@@ -70,6 +70,9 @@ What the evals caught while writing it:
 - In a real session it looked around with chained shell commands, and one stopped for permission. The evals grant no Bash, so only a real session could show this.
 - Twice the grader was wrong, not the skill: one wanted exactly one "?", and one failed traits the skill is told to guess.
 
+What the first real use caught, on the weight and IPPT log (20-11-2026):
+- After "Approve" it tried to make a git worktree before writing the brief. The folder wasn't a git repo, so that failed and it wrote in place. In a repo, the brief would have landed in a worktree. Both skills now say to write in the folder they are in, with no worktree. The evals grant no such tool, so only a real session can show this.
+
 On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the seven cases was +0.38. A stronger model already does more of this unasked. The run is described at the end of phase 2.
 
 ## Phase 2: `/nap-prd`

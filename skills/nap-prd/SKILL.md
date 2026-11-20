@@ -101,7 +101,7 @@ Apply changes and show the draft again until the user approves with a clear yes.
 
 ## 5. Write it
 
-After a clear yes, write `docs/PRD.md`, with that name, as approved. Don't commit, branch or push: the user commits.
+After a clear yes, write `docs/PRD.md`, with that name, as approved, in the folder you are in. Don't make a worktree, commit, branch or push: the user commits.
 
 Then name the next step: "Run `/nap-architecture` next for the tech plan."
 

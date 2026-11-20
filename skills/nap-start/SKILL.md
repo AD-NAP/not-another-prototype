@@ -97,7 +97,7 @@ Each trait adds a section, named in the Why column. Has screens adds the key scr
 
 ## 6. Write it
 
-After a clear yes, write `docs/brief.md` as approved. Don't commit, branch or push: the user commits.
+After a clear yes, write `docs/brief.md` as approved, in the folder you are in. Don't make a worktree, commit, branch or push: the user commits.
 
 Then name the next step. A Script: "Build it: the example run becomes the README." A Personal tool or App: "Run `/nap-prd` next to plan the versions."
 
@@ -108,4 +108,5 @@ What went wrong in testing, without this skill and with early drafts of it:
 - **Claude built the project from a bare idea**, guessing the shape ("I read it as a personal log..."). An idea is not a request to build.
 - **Asked to plan, it wrote the whole plan at once:** features the user never mentioned, a stack, a data model and command-line flags. The first message has no plan, and the brief has no stack.
 - **It asked four questions at once, each with a menu of options.** Ask one, in the user's own terms. Early drafts still slipped menus in: after a colon, as a list of types the idea might be, and as two questions joined by "and".
+- **In its first real use it tried to make a git worktree before writing the brief.** The folder wasn't a git repo, so that failed and it wrote in place. In a repo, the brief would have landed in a worktree the user never opens.
 - **It looked around with chained shell commands** (`pwd; ls -la; cat README.md`), and one stopped for permission. Glob and Read do the same without asking.
