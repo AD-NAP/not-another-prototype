@@ -21,6 +21,8 @@ Each run starts in an empty folder, with only NAP's skills loaded: no personal s
 
 You need Claude Code with `claude plugin eval`, and git 2.31 or later. Every run is a real model call on your plan. Run from the repo root.
 
+Start a new Claude session for each round of evals, with no earlier work in it. Each case already runs alone in an empty folder, but the session that reads the transcripts and decides whose fault a failure is should come to them fresh too.
+
 While writing a skill: one run per case, with NAP only.
 
 ```bash
