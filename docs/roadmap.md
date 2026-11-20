@@ -6,7 +6,7 @@ Start small. A skill comes back only with its tests, and a new one only when a r
 |---|---|---|---|
 | 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | Done 20-11-2026 |
 | 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | Built 20-11-2026. Real use next |
-| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | |
+| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | Built 20-11-2026. Real use next |
 | 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | |
 | 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and A Day v0.1 is built from the documents with any tool. That is **NAP v1.0** | |
 
@@ -51,6 +51,45 @@ What the evals caught while writing it:
 - It named how data would be stored ("a database", "on disk"). Traits say what, not how or where.
 - In a real session it looked around with chained shell commands, and one stopped for permission. The evals grant no Bash, so only a real session could show this.
 - Twice the grader was wrong, not the skill: one wanted exactly one "?", and one failed traits the skill is told to guess.
+
+## Phase 2: `/nap-prd`
+
+Built 20-11-2026, tests first, on Haiku 5.5, from the team version's `/nap-vision` without its GitHub parts. Left to do: the real use, A Day's PRD written with it and kept.
+
+Scores are the share of checks passed over 3 runs, in the last full runs. Mean Δ over plain Claude: +0.57. The cases that need a brief get one from `setup.sh`: a spending tracker (Personal tool), a bakery order page (App) or a PNG to WebP converter (Script).
+
+| Case | Setup | Passes when | Plain Claude | `/nap-prd` |
+|---|---|---|---|---|
+| Starts on a request | Personal tool brief. "The brief is done. Now help me work out what each version should do." | `/nap-prd` runs, `/nap-start` doesn't, and nothing is written | 1.00 | 1.00 |
+| Ignores a bare idea | No brief. "I want to build something that tracks who borrowed my stuff." | `/nap-prd` doesn't run | 1.00 | 1.00 |
+| Reads the brief | Personal tool brief. "Let's do the PRD next." | It reads the brief, doesn't re-ask what it answers, asks at most one question, and writes nothing | 0.50 | 1.00 |
+| Script gets no PRD | Script brief. "Write the PRD for this project." | It says a Script needs no PRD and points to building it, and writes nothing | 0.00 | 1.00 |
+| Personal tool depth | Personal tool brief. "Draft the PRD from the brief now. Your call on anything it doesn't say, just mark it." | One version with what it must do, "done when" and out of scope, about a page, no App sections, and nothing written | 0.33 | 1.00 |
+| App depth | App brief, same prompt | v0.1 to v1.0, each with what it must do and "done when", plus out of scope, anti-goals, how we'll know it works and key screens. No stack, and nothing written | 0.17 | 1.00 |
+| No stack | Personal tool brief whose constraints name Python and SQLite, same prompt | The draft names no language, library, database or data model, and nothing is written | 0.00 | 1.00 |
+| Writes after yes | Houseplant brief, and a saved conversation that ends with "Approve." | `docs/PRD.md` has its headings and no leftover closing line, and the reply names `/nap-architecture` | | 1.00 |
+
+The trigger checks are indicators, not part of the score, so plain Claude ties on the first two cases. With NAP, `/nap-prd` ran on every request to plan versions, and `/nap-start` on none of them. On the bare idea, `/nap-start` ran and `/nap-prd` didn't. There was no trigger clash to fix.
+
+What plain Claude did, in its own words:
+- It wrote the PRD straight to a file, with no draft and no yes, every time: "I drafted the PRD at `docs/prd.md`." Always lowercase.
+- A Script got a full PRD: "Functional requirements (FR-1 to FR-9)... Acceptance criteria (AC-1 to AC-8)".
+- It added features nobody asked for: "Edit and delete... browse past months, and manage categories", and "a fixed default list of nine".
+- It decided how it would be built: "Use a command-line interface", "Data stored in a plain local file", "Amounts: stored exactly, not as floating point", "WhatsApp sending needs a paid business API".
+- Asked to plan the versions of a Personal tool, it invented v2 and v3, then asked four numbered questions with menus: "Where should the budget warning appear: on the monthly view, when logging a purchase, or both?"
+
+What the evals caught while writing it:
+- Asked for the draft now, with "your call", it asked a question first. The rule sat at the end of the questions step. Moving it to the top fixed it.
+- A Personal tool's draft added Anti-goals and How we'll know it works, because the template listed every section. Marking the App-only sections in the template fixed it.
+- One draft ran to 450 words, padded with tech plan questions such as how amounts are stored. A word target and "open questions are about the product" fixed it.
+- In a real session it listed files with `find . | head`. In another, Glob was missing from that build, and the error told it to use `find` instead. "Glob and Read only, never Bash" held in three fresh sessions, reading by path where Glob was missing.
+- The write after "Approve" asks for permission once in a real session: a skill's `allowed-tools` only lasts for the turn it starts in. `/nap-start` has the same prompt. The evals grant Write, so only a real session shows it.
+- Most failures were the grader's. The Haiku judge failed clean drafts 3 of 3 on "PASS if it has no..." criteria, then passed the same text when asked for its reasons. A Sonnet judge (`--judge-model sonnet`), and a regex for the section headings, fixed it. Two other graders were wrong too: one failed a suggested answer as a second option, and one failed "keeps purchases between uses" as saying how data is stored.
+- One run started from `evals/nap-prd/` instead of the repo root, so it loaded no skills: "that skill isn't available here". Run from the root.
+
+Evals for phase 2 cost about $2.30 at list price, including two full runs with plain Claude.
+
+Rerun on Sonnet with an Opus judge the same day, the setup from then on ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). `/nap-prd` passed every check over 3 runs but one: a regex for "Python" caught a note before the draft saying it left Python out, so that check moved into the `llm` grader. Mean Δ over plain Claude: +0.48. `/nap-start` asked its one open question twice in other words in 1 of 3 runs ("Why do you want this for your running? What problem or itch is behind it?"). One line now says to ask it once, as the only "?" in the message, and the case passes 3 of 3. Mean Δ: +0.38. Both suites cost about $7.
 
 ## What carries over
 
