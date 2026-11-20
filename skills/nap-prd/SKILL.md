@@ -55,7 +55,7 @@ Before you show it, check:
 - **Each "done when" is a check a person can run.**
 - **Short.** One line per item, and a reason of a few words at most. A Personal tool's PRD fits in about 300 words.
 - **Open questions are what nobody can answer yet.** The PRD is the last document that decides what the product does, so a product question left here has nothing after it to settle it. Whether a version needs a feature is a question for the user: ask it, or decide it as a suggestion if they said "your call". Keep an open question only when its answer needs something that hasn't happened yet, such as a few weeks of use, or when the user says to leave it open. How it's built, such as how data is stored or which channel sends a message, is the tech plan's question, and it asks it anyway. Leave those out. "None" is fine.
-- **Only the sections the type and traits need,** as step 2 lists them and the template's comments mark. A Personal tool has no Anti-goals or How we'll know it works. Leave a section out rather than writing "not applicable", and drop the comments.
+- **Only the sections the type and traits need,** as step 2 lists them and the template's comments mark. A Personal tool has no Anti-goals or How we'll know it works, and no Key screens unless the brief's traits say it has screens. Leave a section out rather than writing "not applicable", and drop the comments.
 
 ```markdown
 # PRD: <name>
