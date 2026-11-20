@@ -20,7 +20,9 @@ Plans a project before code, the way a team with good practice would. `/nap-star
 - Keep it simple. Add a skill, rule or document only when a real project shows it is needed.
 - Tests before skills. Write a skill's eval cases first, run a few without the skill, and write only what fixes what went wrong (`docs/decisions.md#4-tests-before-skills-2026-11-20`).
 - A skill is done when its cases pass at 3 runs, it beats plain Claude, and one real use writes a document the user keeps.
+- One skill at a time. Don't start the next one until the last is done, real use included. What a real use finds changes the skills that follow.
 - In skill frontmatter, keep ": " out of an unquoted description, or quote it: it breaks the YAML and the skill loads with its settings dropped.
 - Keep writing plain and short. No em dashes.
 - Commits and PRs carry no Claude attribution: no co-author lines, session links or "Generated with" footers.
+- PRs are squash-merged, so each lands on `main` as one commit. `main`'s earlier history stays as it is: the docs point into it.
 - `.claude/settings.json` denies `gh pr merge` here, since the user merges NAP's own PRs.

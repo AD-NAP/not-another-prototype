@@ -15,13 +15,13 @@ Building is up to the user: plan mode, Superpowers, another tool, or by hand.
 
 ## Types
 
-| Type | What it is | Example | Documents before code | In v1 |
-|---|---|---|---|---|
-| **Script** | Does one job per run and keeps nothing between runs. A sitting or two. | Convert a folder of images to WebP | Brief, with an example run | Yes |
-| **Personal tool** | A few features you use yourself, again and again. Runs on your machine. | Track what you lend to friends | Brief, short PRD, half-page tech plan, first version's backlog | Yes |
-| **App** | A complete app other people use. Runs online. Weeks of work. | An order page for a bakery | Brief, PRD up to v1.0, full tech plan, v0.1 backlog | Yes |
-| **Product** | An app that grows with its users over months. Maybe paid. | A daily planner sold to the public | App's documents, plus success metrics, user research, a roadmap past v1.0, and a release and support plan | Later |
-| **System** | Several apps or services that work together | A dashboard, a mobile app and a backend that share one set of devices | Product's documents, plus a system map, contracts between the parts, who owns which data, scale and uptime targets, and a threat model | Later |
+| Type | What it is | Example | Documents before code |
+|---|---|---|---|
+| **Script** | Does one job per run and keeps nothing between runs. A sitting or two. | Convert a folder of images to WebP | Brief, with an example run |
+| **Personal tool** | A few features you use yourself, again and again. Runs on your machine. | Track what you lend to friends | Brief, short PRD, half-page tech plan, first version's backlog |
+| **App** | A complete app other people use. Runs online. Weeks of work. | An order page for a bakery | Brief, PRD up to v1.0, full tech plan, v0.1 backlog |
+
+Two more types come later, when a real project needs one: Product (an app that grows with its users over months) and System (several apps or services that work together). Until then `/nap-start` names them, and offers to plan the first piece as an App.
 
 `/nap-start` proposes a type by going down this list, and the user can correct it:
 
@@ -35,13 +35,13 @@ A project can change type. A Personal tool that others start to use becomes an A
 
 ## Traits
 
-| Trait | Adds | In v1 | Later, for App and up |
-|---|---|---|---|
-| Has screens | Key flows and a screen list, sketched in text | A section in the PRD | `docs/ux.md`, from `/nap-ux` |
-| Stores data | What is stored, how it changes, backups | A section in the tech plan | Its own document for Product and up |
-| Uses AI | What good output looks like, a first eval set, the baseline to beat | A section in the tech plan | `docs/evals.md`, from `/nap-evals` |
-| Other people's data, sign-in or payments | What is stored, who can see it, secrets | A section in the tech plan | `docs/security.md`, from `/nap-security` |
-| Runs online | Where it runs, how it ships, secrets | A section in the tech plan | Its own operations document for Product and up |
+| Trait | Adds | Where |
+|---|---|---|
+| Has screens | Key flows and a screen list, sketched in text | A section in the PRD |
+| Stores data | What is stored, how it changes, backups | A section in the tech plan |
+| Uses AI | What good output looks like, a first eval set, the baseline to beat | A section in the tech plan |
+| Other people's data, sign-in or payments | What is stored, who can see it, secrets | A section in the tech plan |
+| Runs online | Where it runs, how it ships, secrets | A section in the tech plan |
 
 A Script ignores traits. Its "done when" covers them.
 
@@ -53,16 +53,6 @@ A Script ignores traits. Its "done when" covers them.
 - **Backlog** (`docs/backlog/v0.1.md`), from `/nap-backlog`. The first version's tasks, each with Given/When/Then acceptance criteria and an edge case, setup first.
 
 "Done when" is the finish line in plain words: what must be true before a version counts as done. It replaces the team version's gate check.
-
-## Documents that wait
-
-A document is written once what it describes is known. Written earlier, it rests on guesses and has to be redone.
-
-- **API spec:** before the version that builds the API.
-- **Changelog:** from the first PR, for an App and up.
-- **User docs:** before launch.
-- **Runbooks and monitoring:** before real users depend on it.
-- **Contributing guide:** before others join.
 
 ## The skills
 

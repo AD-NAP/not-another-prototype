@@ -2,7 +2,7 @@
 
 Plan a project the way a team with good practice would, before the first line of code. Tell NAP your idea. It works out what kind of project it is, asks only what's missing, and writes the documents that project needs: a brief, a PRD with versions, a tech plan and the first version's backlog. Then build it however you like.
 
-> **Status: being rebuilt.** On 20-11-2026 NAP narrowed to the documents before code ([decision 1](docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20)). The skills come back one at a time, each with its tests written first ([roadmap](docs/roadmap.md)). Phases 1 and 2 are built: `/nap-start` and `/nap-prd` pass all their tests and beat plain Claude. Their first real use, on A Day, is next. The team version, with a Personal Assistant, an Engineer, a Reviewer and a finish line check, is in git history at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35).
+> **Status.** `/nap-start` and `/nap-prd` are built and pass their tests. Neither has been used on a real project yet: that is next. `/nap-architecture` and `/nap-backlog` are not built. See the [roadmap](docs/roadmap.md).
 
 ## The idea
 
@@ -37,8 +37,6 @@ Copy `skills/` into `~/.claude/` to use NAP in every project, or into one projec
 
 If Superpowers is installed too, run `/nap-start` by name: its `brainstorming` skill answers the same requests.
 
-To use the team version meanwhile, check out commit `b18d3e3` and follow its README.
-
 ## Principles
 
 1. **For developers.** NAP is a planning partner for one person, and a way to keep AI-built projects to real engineering standards. It does not replace developers.
@@ -55,6 +53,7 @@ To use the team version meanwhile, check out commit `b18d3e3` and follow its REA
 - [Skill research](docs/skill-research.md): other people's skills worth learning from.
 - [Evals](evals/README.md): how to run a skill's tests.
 - [Third-party notices](THIRD_PARTY_NOTICES.md).
+- The earlier team version, which ran agents from a brief to a merged PR, is in git history at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35). [Decision 1](docs/decisions.md#1-nap-writes-the-documents-before-code-2026-11-20) says why it was parked.
 
 ## License
 

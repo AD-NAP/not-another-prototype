@@ -1,6 +1,6 @@
-# How we write skills and agents
+# How we write skills
 
-How NAP's skills and agents get created, tested and refined. Researched 2026-11-14 from Anthropic's docs and engineering posts, the `skill-creator` skill, Superpowers' `writing-skills` and practitioner write-ups. The testing parts were updated 2026-11-20, when tests came before skills ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). Sources are at the bottom.
+How NAP's skills get created, tested and refined. Researched 2026-11-14 from Anthropic's docs and engineering posts, the `skill-creator` skill, Superpowers' `writing-skills` and practitioner write-ups. The testing parts were updated 2026-11-20, when tests came before skills ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). Sources are at the bottom.
 
 ## The approach
 
@@ -60,48 +60,6 @@ Skills that only read and write files need no Bash, so their evals need no sandb
 - Forward slashes in paths.
 - Nothing that goes out of date.
 
-## How an agent differs from a skill
-
-A skill is a procedure loaded into a conversation that already has context. An agent starts with almost nothing: its own file body as the system prompt, the hand-off message, the `CLAUDE.md` files and a git status snapshot. It does not see the conversation, the files already read or the skills already used. Only its final message comes back, so anything it learned but didn't report is lost.
-
-That makes three things to write well: the description, the body and the brief.
-
-## Checklist for an agent
-
-**Description**
-- Says when to delegate, briefly. Trigger conditions, not capabilities: "Reviews code for security issues before commits" beats "security expert".
-- "Use proactively" encourages delegation.
-- Don't rely on it alone. Automatic delegation is unreliable, so the entry skill names the agent.
-
-**Body**
-- One job per agent. Keep the roster small, since more agents make routing worse.
-- The right altitude: no brittle if-else rules, and no vague guidance that assumes shared context.
-- Starts minimal and grows from observed failures.
-- A few canonical examples instead of a long list of edge-case rules.
-- `tools` is the minimum the role needs. A reviewer gets no Edit or Write. This is real enforcement, unlike a line in the prompt.
-- States the report format, because the report is all that comes back. Aim for a condensed summary, not a transcript.
-- The shape Anthropic's examples use: a one-line role, the steps when invoked, a checklist, then the output format.
-
-**Brief** (what the entry skill passes at hand-off)
-- The objective.
-- The output format.
-- Guidance on tools and sources.
-- Clear task boundaries.
-
-Vague briefs were the main failure in Anthropic's own multi-agent system.
-
-## When an agent is the wrong tool
-
-| Use the main conversation when | Use a subagent when |
-|---|---|
-| The task needs back-and-forth | The work is self-contained and can return a summary |
-| Phases share a lot of context | The output is verbose and not needed in the main context |
-| It is a quick change | Tool restrictions or a fresh perspective matter |
-
-A fresh reader that checks a draft and lists what it would have to guess is a good fit: it needs a fresh view and returns only a list. The team version's reader check for a PRD worked this way.
-
-Agents cost more. Anthropic measured about 4 times the tokens of chat for agents and about 15 times for multi-agent systems, in their research product.
-
 ## When to remove a rule or a skill
 
 If the skill does the right thing without it, remove it. The baseline in the evals shows this. Models improve, and a rule that once helped can later hold a better default back.
@@ -114,11 +72,7 @@ The official docs, the `claude plugin eval` docs and the `skill-creator` source 
 
 - [Skill authoring best practices (Anthropic)](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 - [Skills in Claude Code (Anthropic)](https://code.claude.com/docs/en/skills)
-- [Subagents in Claude Code (Anthropic)](https://code.claude.com/docs/en/sub-agents)
 - [skill-creator (anthropics/skills)](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)
-- [How we built our multi-agent research system (Anthropic)](https://www.anthropic.com/engineering/multi-agent-research-system)
-- [Effective context engineering for AI agents (Anthropic)](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-- [Subagents in Claude Code (Claude blog)](https://claude.com/blog/subagents-in-claude-code)
 - [Test plugins with evals (Claude Code docs)](https://code.claude.com/docs/en/plugin-evals)
 - [writing-skills (obra/superpowers)](https://github.com/obra/superpowers/blob/main/skills/writing-skills/SKILL.md) and its [testing with subagents](https://github.com/obra/superpowers/blob/main/skills/writing-skills/references/testing-skills-with-subagents.md)
 - [Measuring what a Claude Code skill actually adds (Very Good Ventures)](https://verygood.ventures/blog/evaluating-claude-code-skills-with-ablation)
