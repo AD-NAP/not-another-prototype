@@ -10,7 +10,7 @@ Start small. A skill comes back only with its tests, and a new one only when a r
 | 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes the log's tech plan | | |
 | 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and the log's v0.1 is built from the documents with any tool. That is **NAP v1.0** | | |
 
-A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used. Both were used on 20-11-2026, on the weight and IPPT log, and the user kept the brief and the PRD. That session found problems in both skills, listed in their sections below. Phase 3 starts once those fixes pass their cases at 3 runs.
+A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used. Both were used on 20-11-2026, on the weight and IPPT log, and the user kept the brief and the PRD. That session found problems in both skills, listed in their sections below. Those fixes passed their cases on 20-11-2026, so phase 3 can start. The full suite was not rerun at 3 runs after the last change to `/nap-start`.
 
 Each phase is about a weekend.
 
@@ -102,7 +102,7 @@ Full run on Sonnet with an Opus judge, 3 runs, after the fixes from the first re
 - Plain Claude now scores 1.00 on "Starts on an idea": the check that `/nap-start` ran only counts as an indicator, and plain Claude wrote nothing. With NAP, it ran 3 of 3.
 - The type name checks, reported apart: plain Claude said "Personal tool" in 0 of 3 runs and "App" in 0 of 3. Without them, each case scores 0.50 for plain Claude, so its Δ is +0.50, not +0.67.
 - In the full pass, `marks-its-guesses` failed `marks-in-the-draft` 3 of 3 with NAP, at 0.75. One draft left the same line unmarked as the real session: "My log is still there after I close it". The other two marked every "done when" line and missed only small inferences. That is why the rule was narrowed to choices, as the last entry of the list above says. The 0.92 in the table is from the rerun after that.
-- `one-open-question` joined two questions with "and" in 1 of 3 runs. This is still open, and it is the one case that keeps phase 3 from starting.
+- `one-open-question` joined two questions with "and" in 1 of 3 runs. After the question was given a shape, and the type line became a statement instead of a request to confirm it, the case passed 9 of 9, and the five cases whose first message the same rule governs each passed once.
 
 ## Phase 2: `/nap-prd`
 
