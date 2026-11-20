@@ -159,7 +159,7 @@ Full run on Sonnet with an Opus judge, 3 runs, after the fixes from the first re
 
 - Mean Δ over plain Claude: +0.44 over the seven cases with a baseline, and +0.62 over the five that aren't guards.
 - In 1 of 3 runs, `personal-tool-depth` added Key screens to a Personal tool whose brief has no screens trait. The check before the draft now says so, and that case and `writes-after-yes` then passed 3 of 3.
-- Both suites cost about $7.20.
+- Both suites cost about $7.20, plus $3.00 for the Opus judge.
 
 ## What carries over
 
