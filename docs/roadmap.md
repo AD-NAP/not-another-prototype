@@ -5,14 +5,28 @@ Start small. A skill comes back only with its tests, and a new one only when a r
 | Phase | Delivers | Done when | Built | Real use |
 |---|---|---|---|---|
 | 0. Clear the ground | Park the team version in git history, at commit `b18d3e3`. Rewrite the README, design and decisions for the documents before code. Add `evals/` and a small plugin manifest. | The repo holds only what the new goal uses | 20-11-2026 | Not needed |
-| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a real brief for A Day that the user keeps | 20-11-2026 | Not yet. Next |
-| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes A Day's PRD | 20-11-2026 | Not yet. After phase 1's |
-| 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes A Day's tech plan | | |
-| 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and A Day v0.1 is built from the documents with any tool. That is **NAP v1.0** | | |
+| 1. `/nap-start` | Reads the context, fills the gaps, proposes the type and traits, and writes the brief with its docs plan. Script, Personal tool and App. | Its cases pass at 3 runs and beat plain Claude, and it writes a brief for the weight and IPPT log that the user keeps | 20-11-2026 | Not yet. Next |
+| 2. `/nap-prd` | The versions, what each must do, and "done when" for each | Its cases pass, and it writes the log's PRD | 20-11-2026 | Not yet. After phase 1's |
+| 3. `/nap-architecture` | Architecture, ADRs and project rules | Its cases pass, and it writes the log's tech plan | | |
+| 4. `/nap-backlog` | The first version's tasks, as a file | Its cases pass, and the log's v0.1 is built from the documents with any tool. That is **NAP v1.0** | | |
 
 A phase is done when both columns are filled, and the next one starts only then (`CLAUDE.md`). Phases 1 and 2 were both built before either was used, so phase 3 waits for both.
 
 Each phase is about a weekend.
+
+## Real uses
+
+The projects NAP is used on for real, chosen 20-11-2026. One for each type, none close to an eval case, and none with code already.
+
+| Project | Expected type | What it is | What it tests |
+|---|---|---|---|
+| Weight and IPPT log | Personal tool | Log weigh-ins and IPPT results, and see the trend against targets | The whole chain, phases 1 to 4. Only this one gates the phases, and its v0.1 is NAP v1.0 |
+| Listing splitter | Script | Takes one URL or a list of them, and splits each listing into a fixed set of fields | That a Script gets a short brief and no PRD. `/nap-start` only |
+| Brick builder | App, if other people use it | Takes a building's point list, uses an LLM to work out what each point means and which class it belongs to, and writes a Brick model as a TTL file | The App path and the "uses AI" trait. `/nap-start` first, and further if it is worth building |
+
+The type is `/nap-start`'s call, not this table's. If it proposes another, note what it said and why.
+
+A Day was the first choice. It is a set of skills, like NAP, not an application, so it would test little of what NAP plans.
 
 ## Later, by need
 
@@ -24,7 +38,7 @@ Each phase is about a weekend.
 
 ## Phase 1: `/nap-start`
 
-Built 20-11-2026, tests first, on Haiku 5.5. Left to do: the real use, A Day's brief written with it and kept.
+Built 20-11-2026, tests first, on Haiku 5.5. Left to do: the real use, the weight and IPPT log's brief written with it and kept.
 
 Scores are the share of checks passed over 3 runs, in the last full run. Mean Δ over plain Claude: +0.52 over the seven cases with a baseline, and +0.53 over the five that aren't guards.
 
@@ -60,7 +74,7 @@ On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the se
 
 ## Phase 2: `/nap-prd`
 
-Built 20-11-2026, tests first, on Haiku 5.5, from the team version's `/nap-vision` without its GitHub parts. Left to do: the real use, A Day's PRD written with it and kept.
+Built 20-11-2026, tests first, on Haiku 5.5, from the team version's `/nap-vision` without its GitHub parts. Left to do: the real use, the weight and IPPT log's PRD written with it and kept.
 
 Scores are the share of checks passed over 3 runs, in the last full runs. Mean Δ over plain Claude: +0.57 over the seven cases with a baseline, and +0.80 over the five that aren't guards. The cases that need a brief get one from `setup.sh`: a spending tracker (Personal tool), a bakery order page (App) or a PNG to WebP converter (Script).
 

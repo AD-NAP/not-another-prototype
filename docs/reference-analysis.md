@@ -17,6 +17,8 @@ Still open: items 7 and 8 (two eval additions, which need a paid run), item 9 (t
 
 Also decided: `main`'s history stays as it is, since the docs point into it. From now on PRs are squash-merged, so each lands as one commit.
 
+The real use moved from A Day to a weight and IPPT log, with two more projects for the Script and App paths. A Day is a set of skills, not an application. Where the sections below say A Day, read the projects in the [roadmap](roadmap.md#real-uses).
+
 How this was checked:
 
 - The reference repo was cloned at commit `65c8ab6` (20-11-2026). All 97 commits were read with `git log --stat`, and the significant diffs were opened. Its 22 issues and 50 PRs were read from the GitHub pages.
