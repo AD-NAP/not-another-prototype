@@ -89,6 +89,8 @@ What the evals caught while writing it:
 
 Evals for phase 2 cost about $2.30 at list price, including two full runs with plain Claude.
 
+Rerun on Sonnet with an Opus judge the same day, the setup from then on ([decision 4](decisions.md#4-tests-before-skills-2026-11-20)). `/nap-prd` passed every check over 3 runs but one: a regex for "Python" caught a note before the draft saying it left Python out, so that check moved into the `llm` grader. Mean Δ over plain Claude: +0.48. `/nap-start` asked its one open question twice in other words in 1 of 3 runs ("Why do you want this for your running? What problem or itch is behind it?"). One line now says to ask it once, as the only "?" in the message, and the case passes 3 of 3. Mean Δ: +0.38. Both suites cost about $7.
+
 ## What carries over
 
 The team version's planning skills are the starting points, at commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35). Print one with `git show b18d3e3:<path>`, using the paths below:
