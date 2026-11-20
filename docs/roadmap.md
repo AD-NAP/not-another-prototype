@@ -79,6 +79,7 @@ What the evals caught while writing it:
 What the first real session caught, on the weight and IPPT log (20-11-2026):
 - Its guesses were named in a note after the draft, not marked in it: "under a minute", the run distance, and that entries are kept between uses. It also left the run distance as an open question, wrote "as I said" in the brief, and marked "no stack chosen yet" as a suggestion. The skill now checks the draft for all four, and the case `marks-its-guesses` tests them. At one run on Sonnet the case passes, but on the old skill only `marks-in-the-draft` failed, by 2 of 3 judge votes, so its other three checks don't yet test the fix.
 - After "Approve" it tried to make a git worktree before writing the brief. The folder wasn't a git repo, so that failed and it wrote in place. In a repo, the brief would have landed in a worktree. Both skills now say to write in the folder they are in, with no worktree. The evals grant no such tool, so only a real session can show this.
+- The full run showed the marks rule was too wide to hold: "anything the user didn't say" passed 2 of 5 runs. Decided 20-11-2026: mark only choices the user might disagree with, which are numbers, limits, features and "done when" lines. Inferences, such as a trait, aren't marked. The skill, the grader and the design say so now. Not yet rerun.
 
 On Sonnet with an Opus judge, the setup from phase 3 on, the mean Δ over the seven cases was +0.38. A stronger model already does more of this unasked. The run is described at the end of phase 2.
 

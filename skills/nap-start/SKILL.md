@@ -49,11 +49,11 @@ Stop once you can write the brief: usually one or two questions for a Script, up
 
 ## 5. Show the brief
 
-Show the whole draft in one message, using the template below. Anything the user didn't say ends with *(suggested: why)*. Close with: "Approve, and I'll write `docs/brief.md`. Or tell me what to change."
+Show the whole draft in one message, using the template below. A choice you made for the user ends with *(suggested: why)*. Close with: "Approve, and I'll write `docs/brief.md`. Or tell me what to change."
 
 Before you show it, check:
 
-- **Each guess is marked in the draft itself.** A number, a limit or a "done when" line the user didn't say ends with *(suggested: why)* on that line. A note after the draft doesn't count: the file is what lasts, and the note is gone. Mark only what you chose. "No deadline named" is a fact, not a suggestion.
+- **Each choice you made is marked in the draft itself.** A number, a limit, a feature or a "done when" line the user didn't say is a choice they might disagree with, so it ends with *(suggested: why)* on that line. That includes a "done when" line you added because it seemed obvious, such as that entries are kept between uses. A note after the draft doesn't count: the file is what lasts, and the note is gone. Mark nothing else: not their idea in your words, not a trait you can see, and not a fact such as "no deadline named".
 - **Open questions are choices a later document weighs,** such as how far back a trend looks. A plain fact the user could give in a word, such as which distance, is not one: ask it, or write your guess and mark it.
 - **The brief is a document, not a reply.** No "as I said", and nothing else that points back at the conversation.
 

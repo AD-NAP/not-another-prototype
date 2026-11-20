@@ -68,7 +68,7 @@ The docs plan in the brief sets the order: each document the type and traits nee
 
 1. **Read first.** Read what exists, and never ask what it already answers. So each skill also works on its own.
 2. **One question at a time.** Questions about the user's own view are open, with no suggested answer. The rest come with a suggested answer the user can accept with "yes". Ask only what would change the document.
-3. **Mark suggestions.** Anything the user didn't say ends with *(suggested: why)*.
+3. **Mark suggestions.** A choice the skill made for the user ends with *(suggested: why)*: a number, a limit, a feature or a "done when" line they didn't say. What it only inferred, such as a trait, isn't marked.
 4. **Write after a clear yes.** Local files only. No commits, branches or GitHub: the user commits.
 5. **Each fact lives in one document.** Later documents link back instead of repeating it.
 6. **Name the next step.** End with the next skill from the docs plan, or "build" once the plan is done.
