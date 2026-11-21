@@ -116,3 +116,9 @@ If any of the three is missing, fix the line that failed.
 ## Where the new version starts
 
 From an approved plan, not from a blank page: five project types, the documents each one needs, and the traits that add to them. It is in [design.md](design.md). The method above carries over. The skills are written again.
+
+## What happened next
+
+On 21-11-2026, before any new skill was written, a test showed that BMAD Method already does most of what the plan set out to do. NAP paused as a lessons-learnt repo ([decision 5](decisions.md#5-nap-pauses-as-a-lessons-learnt-repo-2026-11-21)).
+
+**The eighth lesson: compare against what exists before building.** BMAD was in the prior-art research on 30-10-2026. It wasn't run against NAP's plan until three attempts later, and that one test changed the direction more than any eval had.
