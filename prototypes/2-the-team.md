@@ -20,6 +20,7 @@ Reset on 20-11-2026. The planning half passed every run. The build half did not:
 | | Link | With git |
 |---|---|---|
 | The files, at its last commit | Commit [`b18d3e3`](https://github.com/AD-NAP/not-another-prototype/tree/b18d3e387d11bd11d90fe8032c339003b7479b35) | `git checkout b18d3e3` |
+| Its last fixes and the Run A result, never merged | Tag [`nap--team-run-a`](https://github.com/AD-NAP/not-another-prototype/tree/nap--team-run-a) | `git checkout nap--team-run-a` |
 | Its history, 45 commits | [Compare the reset with its last commit](https://github.com/AD-NAP/not-another-prototype/compare/510ea5d443307b06873a6ec022bcd5f4bf67b343...b18d3e387d11bd11d90fe8032c339003b7479b35) | `git log 510ea5d..b18d3e3` |
 | The reset that started it | [`510ea5d`](https://github.com/AD-NAP/not-another-prototype/commit/510ea5d443307b06873a6ec022bcd5f4bf67b343), 14-11-2026 | `git show 510ea5d` |
 | Its roadmap, with the blockers from each run | [`docs/roadmap.md` at the commit](https://github.com/AD-NAP/not-another-prototype/blob/b18d3e387d11bd11d90fe8032c339003b7479b35/docs/roadmap.md) | `git show b18d3e3:docs/roadmap.md` |
