@@ -1,14 +1,20 @@
 # NAP: Not Another Prototype
 
-AI makes code fast, but projects still start without a plan. The AI builds what is written and guesses the rest, and the result is another prototype.
+NAP was my attempt to make AI-built software start from a real plan, so the result isn't another prototype. I built it three times in three weeks. This repo keeps what those attempts taught.
 
-NAP writes the documents a project needs before code, sized to the project, so that an AI can build from them and a person can review them.
+> **Status: lessons-learnt repo since 21-11-2026.** NAP isn't being built right now, and there is nothing to install. [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) already covers general project planning, so I now build with existing tools and record what's missing. NAP may come back to fill a gap that real projects show.
 
-> **Status: restarted on 20-11-2026.** The document plan is approved. No skill has been built against it yet, so there is nothing to install. The three earlier attempts are in [`prototypes/`](prototypes/README.md).
+## Start here
 
-## The plan
+- [Lessons](docs/lessons.md): what went wrong, what fixed it, and what to keep.
+- [Prototypes](prototypes/README.md): the three attempts. Not Another Prototype had a few.
+- [Decisions](docs/decisions.md): what was decided and why.
+- [Design](docs/design.md): the last plan, approved and never built.
+- [Third-party notices](THIRD_PARTY_NOTICES.md).
 
-The type of project sets the documents. Traits, such as screens, AI or an interface others depend on, add to them.
+## The last plan
+
+The type of project set the documents. Traits, such as screens, AI or an interface others depend on, added to them.
 
 | Type | What it is | Documents |
 |---|---|---|
@@ -18,22 +24,12 @@ The type of project sets the documents. Traits, such as screens, AI or an interf
 | Product | An app that grows with its users | The App's set, with most sections as their own documents, and an operations plan |
 | System | Several apps or services working together | Every document as its own file, with interface contracts between the parts |
 
-The full plan is in the [design](docs/design.md).
+## Principles it was built on
 
-## Principles
-
-1. **For developers.** NAP is a planning partner for one person, and a way to keep AI-built projects to real engineering standards. It does not replace developers.
-2. **You decide.** NAP proposes, and marks what it proposed. Nothing is written until you approve it.
+1. **For developers.** A planning partner for one person, and a way to keep AI-built projects to real engineering standards. It does not replace developers.
+2. **You decide.** The tool proposes, and marks what it proposed. Nothing is written until you approve it.
 3. **All the work is visible.** Every decision ends up in a document a person can read. So do the failed attempts.
 4. **Honest limits.** Talking to users, product judgement, ethics and accountability stay with people.
-
-## Docs
-
-- [Design](docs/design.md): the types, the documents and the traits.
-- [Decisions](docs/decisions.md): what was decided and why.
-- [Lessons](docs/lessons.md): what three earlier attempts taught.
-- [Prototypes](prototypes/README.md): the earlier attempts. Not Another Prototype had a few.
-- [Third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## License
 

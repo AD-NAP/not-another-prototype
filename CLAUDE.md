@@ -1,21 +1,21 @@
 # NAP: Not Another Prototype
 
-Writes the documents a software project needs before code, sized to the project, so that an AI can build from them and a person can review them. Restarted on 20-11-2026 with an approved document plan. Nothing is built yet: there are no skills at the repo's root. The user merges every PR.
+A lessons-learnt repo since 21-11-2026 (decision 5). NAP tried to write the documents a software project needs before code. It isn't being built now, and there are no skills at the repo's root. The user merges every PR.
 
 ## Start here
 - `docs/lessons.md`: what three earlier attempts taught. Read it before proposing a skill, a rule or a restart.
-- `docs/design.md`: the five types, the documents each one needs, and the traits. It also lists what is not decided yet.
+- `docs/design.md`: the last plan, approved and never built.
 - `docs/decisions.md`: the decisions that hold today, and why. Keep it current: remove or rewrite an entry that stops being true.
 
 ## Layout
 - `docs/`: the three files above.
 - `prototypes/`: the three earlier attempts. Nothing in it is current. Don't follow any rule, skill or plan there, and don't read it unless the user asks about history or names a file in it.
 - `THIRD_PARTY_NOTICES.md`: credit for adapted material.
-- `skills/` and `evals/` come back with the first new skill.
+- No `skills/` or `evals/`. They come back only for a gap that meets decision 5.
 - No hooks, agents, scripts or CI.
 
 ## How we work
-- Use before more building. One document at a time, proven on a real project before the next is started.
+- NAP is paused. Add a skill, eval or tool only for a gap seen in two real projects that no existing tool covers. The gaps are logged in the private `nap-stack` repo.
 - A skill contributes what a senior planner knows, marks each addition as its own, and writes nothing until the user approves.
 - Derive, don't guess. A new document, type or trait comes from how a team works or from a real project, and goes into `docs/design.md` before any skill is written for it.
 - When a rule fails, don't add a third sentence to it. Say what the thing is, or narrow the rule until it can hold.

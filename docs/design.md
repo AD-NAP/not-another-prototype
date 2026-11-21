@@ -2,7 +2,7 @@
 
 What NAP writes, and for which kind of project. Approved 20-11-2026. The reasons are in [decisions.md](decisions.md), and what the earlier attempts taught is in [lessons.md](lessons.md).
 
-This is a plan on paper. No skill at the repo's root writes any of these documents yet, and the Product and System columns have never been tried.
+**Paused on 21-11-2026 ([decision 5](decisions.md#5-nap-pauses-as-a-lessons-learnt-repo-2026-11-21)).** This plan was approved and never built. No skill at the repo's root writes these documents, and the Product and System columns have never been tried.
 
 ## The idea
 
