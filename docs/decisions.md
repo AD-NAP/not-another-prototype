@@ -6,6 +6,8 @@ Earlier decisions are in git history and in [`prototypes/`](../prototypes/README
 
 ## 1. NAP writes the documents an AI builds from (2026-11-20)
 
+*Paused by [decision 5](#5-nap-pauses-as-a-lessons-learnt-repo-2026-11-21).*
+
 **Decision.** NAP writes the documents a software project needs before code, sized to the project, so that an AI can build from them and a person can review them. Its skills contribute what a senior planner knows: users, risks, versions, requirements. Everything a skill adds is marked as its own, and nothing is written until the user approves it. NAP writes local files only. It doesn't build, review code, merge or post to GitHub.
 
 **Why.** With an AI writing the code, a well-defined spec matters more than before: the AI builds what is written and guesses the rest. The third attempt wrote too little. On a real App its PRD recorded what the user said, with no versions between the first and the last, no quality targets and no risks, and the project's biggest risk left as an open question. Plain Claude wrote fuller plans, but filled them with guesses nobody had confirmed. The answer is depth with every addition marked and approved.
@@ -13,6 +15,8 @@ Earlier decisions are in git history and in [`prototypes/`](../prototypes/README
 **What we give up.** Short interviews and one-page documents for anything larger than a Personal tool. A simple measure of success: "it stayed small" no longer counts.
 
 ## 2. Five types set the documents, and traits add to them (2026-11-20)
+
+*Paused by [decision 5](#5-nap-pauses-as-a-lessons-learnt-repo-2026-11-21).*
 
 **Decision.** Five types, by size and by who uses the project: Script, Personal tool, App, Product and System. Each has a fixed set of documents, in [design.md](design.md#documents-for-each-type). A Script gets a brief. An App gets six documents, with the roadmap, glossary, quality targets and risks as sections of its PRD. A System gets every document as its own file. The agent rules file starts at Personal tool. The backlog covers only the next version, at every type. Six traits add documents: has screens, uses AI, other people's data, runs online, exposes an interface, and high stakes.
 
@@ -33,3 +37,11 @@ Earlier decisions are in git history and in [`prototypes/`](../prototypes/README
 **Decision.** NAP is MIT licensed. It does not install or depend on other skill collections such as [Superpowers](https://github.com/obra/superpowers). It adapts their best parts into its own words, with credit in `THIRD_PARTY_NOTICES.md`. Apache-2.0 sources can be adapted if their notices are kept there.
 
 **Why.** The repo is public and meant to be copied, and most of the work worth adapting is MIT already. Superpowers triggers on its own and overrides NAP's routing when installed beside it.
+
+## 5. NAP pauses as a lessons-learnt repo (2026-11-21)
+
+**Decision.** NAP isn't being built for now. This repo keeps the lessons, the three attempts and the last design. New projects use existing tools, tracked in a separate repo with the gaps that real use shows. NAP may come back to fill a gap seen in two real projects that no existing tool covers. If it comes back in a new direction, decision 3's bar still applies.
+
+**Why.** A test on 21-11-2026 showed that [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) already does most of what the design planned: it sizes planning to the work, writes briefs, PRDs and architecture, and marks its guesses. A domain-specific NAP wouldn't stay different either, since BMAD can research a domain. Three attempts were built before real use showed what was needed, so use comes first this time.
+
+**What we give up.** A tool of my own for now. The design in [design.md](design.md) stays unproven.
